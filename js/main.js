@@ -498,9 +498,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 7. Skill Bars Animation on Scroll
   // ------------------------------------------------------------------------
+  // 7. Progressive Scroll Reveal & Skill Progress Animation
+  // ------------------------------------------------------------------------
   const skillProgressFills = document.querySelectorAll('.skill-progress-fill');
   
   if (window.IntersectionObserver) {
+    // 7A. Skill Progress Animation
     const skillsObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -517,14 +520,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (skillsSection) {
       skillsObserver.observe(skillsSection);
     }
+
+    // 7B. Progressive Scroll Reveal (Smoothly reveals content as user scrolls)
+    const revealTargets = document.querySelectorAll(
+      '.section-header, .stats-bar, .about-grid > *, .timeline-item, .contact-grid > *'
+    );
+    const staggerGrids = document.querySelectorAll(
+      '.stats-grid, .skills-grid, .projects-grid'
+    );
+
+    revealTargets.forEach(el => el.classList.add('reveal'));
+    staggerGrids.forEach(grid => grid.classList.add('reveal-stagger'));
+
+    const scrollRevealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealTargets.forEach(el => scrollRevealObserver.observe(el));
+    staggerGrids.forEach(grid => scrollRevealObserver.observe(grid));
   } else {
     // Fallback if IntersectionObserver is not supported
     skillProgressFills.forEach(fill => {
       fill.style.width = fill.getAttribute('data-percentage') || '85%';
     });
-  }
-  if (skillsSection) {
-    skillsObserver.observe(skillsSection);
   }
 
   // ------------------------------------------------------------------------
