@@ -149,15 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close menu when clicking nav link
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('open');
-        const icon = mobileToggle.querySelector('i');
-        if (icon) icon.className = 'fas fa-bars';
-      });
-    });
-
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
       if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('open')) {
@@ -167,6 +158,62 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ------------------------------------------------------------------------
+  // Clean URL Architecture: Prevent & Strip URL Hashes (#about, #projects)
+  // Keeps address bar strictly clean as https://zihan.xyz/
+  // ------------------------------------------------------------------------
+  function cleanUrlHash() {
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
+
+  // Remove any existing hash on initial page load
+  cleanUrlHash();
+  window.addEventListener('hashchange', cleanUrlHash);
+
+  // Global smooth scrolling for all anchor links without hash in the address bar
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a[href*="#"]');
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href');
+    if (!href || href === '#' || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel')) {
+      return;
+    }
+
+    const hashIndex = href.indexOf('#');
+    if (hashIndex === -1) return;
+
+    const targetId = href.substring(hashIndex);
+    if (!targetId || targetId === '#') return;
+
+    try {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+
+        // Close mobile drawer if open
+        if (navMenu && navMenu.classList.contains('open')) {
+          navMenu.classList.remove('open');
+          const icon = mobileToggle?.querySelector('i');
+          if (icon) icon.className = 'fas fa-bars';
+        }
+
+        const headerHeight = siteHeader ? siteHeader.offsetHeight : 64;
+        const targetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 8;
+
+        window.scrollTo({
+          top: targetTop,
+          behavior: 'smooth'
+        });
+
+        // Ensure URL stays strictly clean as https://zihan.xyz/
+        cleanUrlHash();
+      }
+    } catch (err) {}
+  });
 
   // ------------------------------------------------------------------------
   // 4. Scroll Header & Active Navigation Highlighting (Throttled via rAF)
