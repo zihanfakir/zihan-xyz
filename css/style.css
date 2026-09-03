@@ -587,6 +587,29 @@ body.light-theme .theme-icon-moon {
   margin-bottom: 24px;
 }
 
+.badge-text-short,
+.turnaround-text-short {
+  display: none;
+}
+
+.hero-turnaround-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  padding: 7px 16px;
+  border-radius: var(--border-radius-full);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #a855f7;
+  margin-bottom: 24px;
+}
+
+.hero-turnaround-badge i {
+  color: #f59e0b;
+}
+
 .pulse-dot {
   width: 8px;
   height: 8px;
@@ -2291,6 +2314,49 @@ textarea.form-control {
   .site-search-input,
   .ai-chat-input {
     font-size: 16px !important;
+  }
+
+  /* Compact Hero Badges on Mobile (Requested by User) */
+  .badge-text-full {
+    display: none !important;
+  }
+  .badge-text-short {
+    display: inline !important;
+  }
+  .turnaround-text-full {
+    display: none !important;
+  }
+  .turnaround-text-short {
+    display: inline !important;
+  }
+
+  .hero-badge {
+    padding: 4px 12px !important;
+    font-size: 0.72rem !important;
+    gap: 6px !important;
+    margin-bottom: 12px !important;
+    line-height: 1.25 !important;
+    max-width: 100% !important;
+    border-radius: 20px !important;
+  }
+
+  .hero-badge .pulse-dot {
+    width: 6px !important;
+    height: 6px !important;
+  }
+
+  .hero-turnaround-badge {
+    padding: 4px 12px !important;
+    font-size: 0.72rem !important;
+    gap: 6px !important;
+    margin-bottom: 16px !important;
+    line-height: 1.25 !important;
+    max-width: 100% !important;
+    border-radius: 20px !important;
+  }
+
+  .hero-turnaround-badge i {
+    font-size: 0.75rem !important;
   }
 
   /* Hero Section */
