@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="100%" height="100%">
+  <defs>
+    <linearGradient id="p2-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+    <linearGradient id="p2-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="380" fill="url(#p2-bg)"/>
+  
+  <g transform="translate(30, 25)">
+    <rect width="540" height="330" rx="12" fill="#111827" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+    <circle cx="22" cy="18" r="6" fill="#ef4444"/>
+    <circle cx="40" cy="18" r="6" fill="#f59e0b"/>
+    <circle cx="58" cy="18" r="6" fill="#10b981"/>
+    <line x1="0" y1="36" x2="540" y2="36" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- Navbar items in store with Ecomace logo -->
+    <text x="25" y="65" font-family="'Plus Jakarta Sans', sans-serif" font-size="15" font-weight="800" fill="#ec4899">ECOMACE</text>
+    <rect x="120" y="56" width="40" height="8" rx="3" fill="#6b7280"/>
+    <rect x="180" y="56" width="45" height="8" rx="3" fill="#6b7280"/>
+    <rect x="245" y="56" width="35" height="8" rx="3" fill="#6b7280"/>
+    <!-- Cart button -->
+    <rect x="470" y="50" width="50" height="20" rx="6" fill="#4f46e5"/>
+
+    <!-- Product Grid Mockup -->
+    <!-- Card 1 -->
+    <rect x="25" y="90" width="155" height="210" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.05)"/>
+    <rect x="35" y="100" width="135" height="100" rx="6" fill="url(#p2-grad)"/>
+    <rect x="35" y="212" width="90" height="9" rx="3" fill="#e2e8f0"/>
+    <rect x="35" y="228" width="50" height="7" rx="3" fill="#94a3b8"/>
+    <text x="35" y="260" font-family="sans-serif" font-size="14" font-weight="bold" fill="#38bdf8">$129.00</text>
+    <rect x="125" y="245" width="45" height="22" rx="5" fill="#ec4899"/>
+
+    <!-- Card 2 -->
+    <rect x="195" y="90" width="155" height="210" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.05)"/>
+    <rect x="205" y="100" width="135" height="100" rx="6" fill="#334155"/>
+    <rect x="205" y="212" width="90" height="9" rx="3" fill="#e2e8f0"/>
+    <rect x="205" y="228" width="50" height="7" rx="3" fill="#94a3b8"/>
+    <text x="205" y="260" font-family="sans-serif" font-size="14" font-weight="bold" fill="#38bdf8">$89.50</text>
+    <rect x="295" y="245" width="45" height="22" rx="5" fill="#ec4899"/>
+
+    <!-- Card 3 -->
+    <rect x="365" y="90" width="150" height="210" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.05)"/>
+    <rect x="375" y="100" width="130" height="100" rx="6" fill="#334155"/>
+    <rect x="375" y="212" width="80" height="9" rx="3" fill="#e2e8f0"/>
+    <rect x="375" y="228" width="50" height="7" rx="3" fill="#94a3b8"/>
+    <text x="375" y="260" font-family="sans-serif" font-size="14" font-weight="bold" fill="#38bdf8">$249.00</text>
+    <rect x="460" y="245" width="45" height="22" rx="5" fill="#ec4899"/>
+  </g>
+</svg>

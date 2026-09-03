@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Vibrant Gradient for Dark Browser Chrome & Tabs -->
+    <linearGradient id="codeGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+
+    <!-- High-Contrast Rich Gradient for Light Browser Chrome & Tabs -->
+    <linearGradient id="codeGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4338ca"/>
+      <stop offset="50%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <!-- Subtle drop shadow to ensure 100% contrast on any tab background -->
+    <filter id="codeShadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.75"/>
+    </filter>
+  </defs>
+
+  <style>
+    .code-symbol {
+      stroke: url(#codeGradDark);
+      filter: url(#codeShadow);
+    }
+    @media (prefers-color-scheme: light) {
+      .code-symbol {
+        stroke: url(#codeGradLight);
+        filter: none;
+      }
+    }
+  </style>
+
+  <g class="code-symbol" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left Bracket < -->
+    <path d="M 19 17 L 8 32 L 19 47"/>
+    <!-- Center Slash / -->
+    <path d="M 35 13 L 29 51"/>
+    <!-- Right Bracket > -->
+    <path d="M 45 17 L 56 32 L 45 47"/>
+  </g>
+</svg>

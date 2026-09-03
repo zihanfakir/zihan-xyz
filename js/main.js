@@ -1,0 +1,1352 @@
+/**
+ * ZIHAN FAKIR - PROFESSIONAL PORTFOLIO
+ * Main Interactive Logic: Theme Switcher, Typing Effect, Filters, Modal, Form & Scroll
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ------------------------------------------------------------------------
+  // Helper Utilities (Safe Storage & HTML Escaping)
+  // ------------------------------------------------------------------------
+  function safeGetStorage(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (err) {
+      console.warn('Storage read blocked:', err);
+      return null;
+    }
+  }
+
+  function safeSetStorage(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (err) {
+      console.warn('Storage write blocked:', err);
+    }
+  }
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ------------------------------------------------------------------------
+  // 1. Light & Dark Theme Controller (Default: System Theme + Manual Persistence)
+  // ------------------------------------------------------------------------
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  const systemPrefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false, addEventListener: () => {} };
+  
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+      document.body.classList.remove('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.body.classList.remove('light-theme');
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }
+
+  // Get active theme: check user's saved choice first, otherwise default to System Theme
+  function getEffectiveTheme() {
+    const savedTheme = safeGetStorage('zihan-portfolio-theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      return savedTheme;
+    }
+    // Default to Device / OS System Theme
+    return systemPrefersDark.matches ? 'dark' : 'light';
+  }
+
+  applyTheme(getEffectiveTheme());
+
+  // Automatically react to system theme changes if user hasn't manually chosen one
+  if (systemPrefersDark.addEventListener) {
+    systemPrefersDark.addEventListener('change', (e) => {
+      const savedTheme = safeGetStorage('zihan-portfolio-theme');
+      if (!savedTheme) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
+
+  // Toggle button event: remembers user's manual choice across reloads
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = activeTheme === 'light' ? 'dark' : 'light';
+      applyTheme(newTheme);
+      safeSetStorage('zihan-portfolio-theme', newTheme);
+      showToast(`Switched to ${newTheme.toUpperCase()} mode`, 'info');
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 2. Dynamic Typewriter Effect for Hero Section
+  // ------------------------------------------------------------------------
+  const typedTextEl = document.getElementById('typed-text');
+  const roles = [
+    'AI-Powered Full Stack Engineer',
+    'GenAI & LLM Solutions Builder',
+    'Full Stack Software Developer',
+    'Prompt Engineer & Problem Solver',
+    'Open Source Innovator'
+  ];
+  
+  let roleIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let typingSpeed = 100;
+
+  function typeRole() {
+    if (!typedTextEl) return;
+    
+    const currentRole = roles[roleIndex];
+    
+    if (isDeleting) {
+      typedTextEl.textContent = currentRole.substring(0, charIndex - 1);
+      charIndex--;
+      typingSpeed = 50;
+    } else {
+      typedTextEl.textContent = currentRole.substring(0, charIndex + 1);
+      charIndex++;
+      typingSpeed = 110;
+    }
+
+    if (!isDeleting && charIndex === currentRole.length) {
+      // Pause at full word
+      typingSpeed = 2000;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+      typingSpeed = 400;
+    }
+
+    setTimeout(typeRole, typingSpeed);
+  }
+
+  typeRole();
+
+  // ------------------------------------------------------------------------
+  // 3. Mobile Navigation Menu Toggle
+  // ------------------------------------------------------------------------
+  const mobileToggle = document.getElementById('mobile-toggle');
+  const navMenu = document.getElementById('nav-menu');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  if (mobileToggle && navMenu) {
+    mobileToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+      const icon = mobileToggle.querySelector('i');
+      if (icon) {
+        if (navMenu.classList.contains('open')) {
+          icon.className = 'fas fa-times';
+        } else {
+          icon.className = 'fas fa-bars';
+        }
+      }
+    });
+
+    // Close menu when clicking nav link
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+        const icon = mobileToggle.querySelector('i');
+        if (icon) icon.className = 'fas fa-bars';
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('open')) {
+        navMenu.classList.remove('open');
+        const icon = mobileToggle.querySelector('i');
+        if (icon) icon.className = 'fas fa-bars';
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 4. Scroll Header & Active Navigation Highlighting (Throttled via rAF)
+  // ------------------------------------------------------------------------
+  const sections = document.querySelectorAll('section[id]');
+  const siteHeader = document.querySelector('.site-header');
+  let scrollTicking = false;
+  
+  function highlightNavOnScroll() {
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+
+    if (siteHeader) {
+      if (scrollY > 15) {
+        siteHeader.classList.add('scrolled');
+      } else {
+        siteHeader.classList.remove('scrolled');
+      }
+    }
+
+    sections.forEach(current => {
+      const sectionHeight = current.offsetHeight;
+      const sectionTop = current.offsetTop - 100;
+      const sectionId = current.getAttribute('id');
+      const targetNavLink = document.querySelector(`.nav-menu a[href*='${sectionId}']`);
+
+      if (targetNavLink) {
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+          targetNavLink.classList.add('active');
+        } else {
+          targetNavLink.classList.remove('active');
+        }
+      }
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(() => {
+        highlightNavOnScroll();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
+
+  // ------------------------------------------------------------------------
+  // 5. Projects Filter (Zero Race-Condition with WeakMap)
+  // ------------------------------------------------------------------------
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+  const cardAnimationTimeouts = new WeakMap();
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
+      const filterValue = btn.getAttribute('data-filter');
+
+      projectCards.forEach(card => {
+        const category = card.getAttribute('data-category');
+
+        if (cardAnimationTimeouts.has(card)) {
+          clearTimeout(cardAnimationTimeouts.get(card));
+        }
+
+        if (filterValue === 'all' || category === filterValue) {
+          card.style.display = 'flex';
+          const tId = setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 20);
+          cardAnimationTimeouts.set(card, tId);
+        } else {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          const tId = setTimeout(() => {
+            card.style.display = 'none';
+          }, 250);
+          cardAnimationTimeouts.set(card, tId);
+        }
+      });
+    });
+  });
+
+  // ------------------------------------------------------------------------
+  // 6. Project Details Modal
+  // ------------------------------------------------------------------------
+  const modal = document.getElementById('project-modal');
+  const modalCloseBtn = document.getElementById('modal-close-btn');
+  const modalContentEl = document.getElementById('modal-details-body');
+  const viewDetailBtns = document.querySelectorAll('.view-project-details');
+
+  const projectDetailsDatabase = {
+    'proj-1': {
+      title: 'NextGen Cloud SaaS Platform',
+      category: 'Full Stack & Cloud',
+      duration: '4 Months',
+      description: 'An enterprise-grade cloud workspace with real-time collaboration, analytics dashboards, subscription billing via Stripe, and role-based access control.',
+      features: [
+        'Real-time collaborative editing using WebSockets',
+        'Stripe billing with automated tiered subscription webhooks',
+        'Secure multi-tenant data partitioning with PostgreSQL & Redis caching',
+        'Comprehensive audit logging and team management'
+      ],
+      techStack: ['Next.js 14', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'TailwindCSS', 'Redis', 'Docker'],
+      liveUrl: 'https://zihan.xyz',
+      codeUrl: 'https://github.com/zihanfakir/nextgen-cloud-saas'
+    },
+    'proj-2': {
+      title: 'Ecomace — Full Stack Modern E-Commerce',
+      category: 'Full Stack & E-Commerce',
+      duration: 'Active Production',
+      description: 'A high-performance modern e-commerce platform built with a decoupled React frontend and Node/Express backend. Features ultra-fast render-as-you-fetch data streaming, responsive catalog browsing, persistent cart synchronization, and production deployment on Vercel.',
+      features: [
+        'Ultra-fast render-as-you-fetch architecture prefetching critical catalog data',
+        'Decoupled React client on Vercel communicating with dedicated backend API services',
+        'Dynamic product filtering, responsive catalog layout, and instant search',
+        'Persistent multi-item shopping cart state and smooth checkout workflow',
+        '170+ commits of continuous engineering, clean code, and performance optimization'
+      ],
+      techStack: ['React', 'Node.js', 'Express', 'Vite', 'TailwindCSS', 'REST APIs', 'Vercel'],
+      liveUrl: 'https://ecomace.vercel.app/',
+      codeUrl: 'https://github.com/zihanfakir/Ecomace'
+    },
+    'proj-3': {
+      title: 'Alokpo — Web Search Engine & Indexing API',
+      category: 'Search Engine & APIs',
+      duration: 'Active Project',
+      description: 'A custom web search engine engineered with a decoupled architecture. Features an ultra-responsive frontend search interface, sub-second query latency, indexing algorithms, and a dedicated backend crawler server.',
+      features: [
+        'Decoupled architecture: standalone frontend client communicating with dedicated crawler & indexing backend API',
+        'High-speed search query execution with sub-second response times',
+        'Built-in theme switcher (Dark & Light modes) and SEO structured data schemas',
+        'Dedicated crawler server repository (alokpo-backend) for crawling and indexing nodes',
+        'Live deployment and instant hosting via GitHub Pages'
+      ],
+      techStack: ['JavaScript', 'Node.js', 'Express', 'Crawler API', 'REST API', 'GitHub Pages'],
+      liveUrl: 'https://zihanfakir.github.io/alokpo-search/',
+      codeUrl: 'https://github.com/zihanfakir/alokpo-search',
+      backendUrl: 'https://github.com/zihanfakir/alokpo-backend'
+    },
+    'proj-4': {
+      title: 'বয়স ক্যালকুলেটর (Age Calculator by Zihan 26.0)',
+      category: 'Frontend & Utilities',
+      duration: 'Completed Project',
+      description: 'A feature-packed, bilingual chronological age calculator and lifetime metrics utility built with pure JavaScript, modern CSS, and semantic HTML. Delivers real-time ticking counters down to the second, next birthday countdowns, and intriguing lifetime statistics.',
+      features: [
+        'Detailed chronological age computation (Years, Months, Days, Hours, Minutes, Seconds)',
+        'Live real-time ticking counter with continuous dynamic clock intervals',
+        'Fascinating lifetime health stats (Estimated total heartbeats, breaths, sleeping hours)',
+        'Upcoming birthday celebration countdown with exact days and months remaining',
+        'Responsive, accessible mobile-friendly UI published and hosted via GitHub Pages'
+      ],
+      techStack: ['JavaScript', 'HTML5', 'CSS3', 'GitHub Pages', 'Responsive Design'],
+      liveUrl: 'https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/',
+      codeUrl: 'https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0'
+    },
+    'proj-5': {
+      title: 'DevCollab - Real-Time Code Room',
+      category: 'Developer Tools',
+      duration: '2.5 Months',
+      description: 'A developer-first interactive browser environment supporting live collaborative code editing, syntax highlighting, integrated terminal simulation, and peer audio/video calls.',
+      features: [
+        'Monaco editor integration with multi-cursor sync',
+        'WebRTC peer-to-peer audio and screen sharing',
+        'In-browser JavaScript code execution sandbox',
+        'One-click room generation with access controls'
+      ],
+      techStack: ['React', 'Socket.io', 'WebRTC', 'Monaco Editor', 'Node.js', 'TailwindCSS'],
+      liveUrl: 'https://zihan.xyz',
+      codeUrl: 'https://github.com/zihanfakir/dev-collab'
+    },
+    'proj-6': {
+      title: 'HealthSync Mobile Care App',
+      category: 'Mobile / Cross-Platform',
+      duration: '3 Months',
+      description: 'A holistic healthcare and appointment booking mobile application connecting patients with specialized doctors, managing electronic prescriptions, and tracking vitals.',
+      features: [
+        'Instant doctor consultation appointment scheduling',
+        'Digital prescription storage with PDF export',
+        'Daily medication reminder push notifications',
+        'Vitals tracking with visual trend charts'
+      ],
+      techStack: ['React Native', 'Expo', 'Node.js', 'Firebase', 'Redux'],
+      liveUrl: 'https://zihan.xyz',
+      codeUrl: 'https://github.com/zihanfakir/health-sync'
+    }
+  };
+
+  let lastFocusedTrigger = null;
+
+  function openModal() {
+    if (!modal) return;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      modalCloseBtn?.focus();
+    }, 80);
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocusedTrigger && lastFocusedTrigger.focus) {
+      lastFocusedTrigger.focus();
+    }
+  }
+
+  viewDetailBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      lastFocusedTrigger = btn;
+      const projId = btn.getAttribute('data-project-id');
+      const data = projectDetailsDatabase[projId];
+
+      if (data && modal && modalContentEl) {
+        modalContentEl.innerHTML = `
+          <div style="margin-bottom: 20px; padding-right: 44px;">
+            <span class="section-tag">${data.category}</span>
+            <h2 style="font-size: 1.8rem; margin: 8px 0 12px; color: var(--text-main);">${data.title}</h2>
+            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">${data.description}</p>
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 8px;"></i>Key Features:</h4>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+              ${data.features.map(f => `<li style="display: flex; align-items: flex-start; gap: 10px; color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-arrow-right" style="color: var(--secondary); margin-top: 5px; font-size: 0.8rem;"></i> ${f}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 28px;">
+            <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fas fa-layer-group" style="color: var(--primary); margin-right: 8px;"></i>Technologies:</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${data.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+            <a href="${data.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+              <i class="fas fa-external-link-alt"></i> Live Demo
+            </a>
+            <a href="${data.codeUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+              <i class="fab fa-github"></i> ${data.backendUrl ? 'Frontend Code' : 'View Source'}
+            </a>
+            ${data.backendUrl ? `
+            <a href="${data.backendUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+              <i class="fab fa-github"></i> Backend Code
+            </a>` : ''}
+          </div>
+        `;
+        openModal();
+      }
+    });
+  });
+
+  if (modalCloseBtn && modal) {
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  // Escape key closes topmost overlay first
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (modal && modal.classList.contains('open')) {
+        closeModal();
+      } else if (aiChatWindow && aiChatWindow.classList.contains('open')) {
+        aiChatWindow.classList.remove('open');
+      }
+    }
+  });
+
+  // ------------------------------------------------------------------------
+  // 7. Skill Bars Animation on Scroll
+  // ------------------------------------------------------------------------
+  const skillProgressFills = document.querySelectorAll('.skill-progress-fill');
+  
+  if (window.IntersectionObserver) {
+    const skillsObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          skillProgressFills.forEach(fill => {
+            const targetWidth = fill.getAttribute('data-percentage') || '85%';
+            fill.style.width = targetWidth;
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const skillsSection = document.getElementById('skills');
+    if (skillsSection) {
+      skillsObserver.observe(skillsSection);
+    }
+  } else {
+    // Fallback if IntersectionObserver is not supported
+    skillProgressFills.forEach(fill => {
+      fill.style.width = fill.getAttribute('data-percentage') || '85%';
+    });
+  }
+  if (skillsSection) {
+    skillsObserver.observe(skillsSection);
+  }
+
+  // ------------------------------------------------------------------------
+  // 7.1 Interactive Skill Card Details Modal
+  // ------------------------------------------------------------------------
+  const skillsData = {
+    'html': {
+      title: 'HTML5 & Semantic Web',
+      category: 'Frontend Engineering',
+      proficiency: '98%',
+      experience: '4+ Years Production Experience',
+      icon: 'fab fa-html5',
+      iconColor: '#e34f26',
+      summary: 'Architecting clean, semantic, accessible (WCAG compliant), and SEO-optimized web structures. Ensuring fast DOM rendering, metadata integrity, and modern HTML5 APIs.',
+      highlights: [
+        'Semantic HTML5 structure (article, section, nav, main, header, footer)',
+        'Accessibility (ARIA roles, screen reader optimization, keyboard navigation)',
+        'SEO metadata, OpenGraph tags, and Twitter Cards optimization',
+        'Responsive media embedding, canvas, and modern web storage APIs'
+      ],
+      usedIn: ['Ecomace eCommerce Store', 'Alokpo Search UI', 'Age Calculator 26.0', 'Portfolio Architecture']
+    },
+    'css': {
+      title: 'CSS3, Flexbox & Grid',
+      category: 'Frontend & UI Engineering',
+      proficiency: '96%',
+      experience: '4+ Years Production Experience',
+      icon: 'fab fa-css3-alt',
+      iconColor: '#1572b6',
+      summary: 'Crafting responsive, pixel-perfect, and modern user interfaces with advanced CSS3, CSS custom properties (variables), Flexbox, CSS Grid, keyframe animations, and glassmorphism styling.',
+      highlights: [
+        'Complex 2D/3D layouts using CSS Grid and Flexbox',
+        'Light & Dark mode themes via CSS Variables and data attributes',
+        'Hardware-accelerated animations, transitions, and micro-interactions',
+        'Cross-browser compatibility and mobile-first responsive media queries'
+      ],
+      usedIn: ['Ecomace UI Design', 'Age Calculator 26.0 Interactive Layout', 'Custom Portfolio Glassmorphism']
+    },
+    'js': {
+      title: 'JavaScript (ES6+ & Modern Web APIs)',
+      category: 'Core Programming Language',
+      proficiency: '95%',
+      experience: '4+ Years Production Experience',
+      icon: 'fab fa-js-square',
+      iconColor: '#f7df1e',
+      summary: 'Deep expertise in vanilla modern JavaScript (ES6 through ES2026), asynchronous programming (Promises, async/await), DOM manipulation, Fetch/XHR, Web Workers, and state management.',
+      highlights: [
+        'Advanced ES6+ syntax (Destructuring, Spread, Modules, Arrow functions)',
+        'Event loop, closures, prototypical inheritance, and asynchronous flows',
+        'Client-side state persistence via localStorage and sessionStorage',
+        'High-performance DOM manipulation with IntersectionObserver'
+      ],
+      usedIn: ['Age Calculator 26.0 (Ticking chrono-engine)', 'Alokpo Frontend Search Engine', 'Interactive Portfolio Engine']
+    },
+    'react': {
+      title: 'React & Next.js Ecosystem',
+      category: 'Frontend Framework & Architecture',
+      proficiency: '95%',
+      experience: '3+ Years Production Experience',
+      icon: 'fab fa-react',
+      iconColor: '#06b6d4',
+      summary: 'Building high-performance, single-page and server-rendered web applications using React and Next.js. Designing reusable component architectures with custom hooks, state management, and optimized render cycles.',
+      highlights: [
+        'Server-Side Rendering (SSR), Static Site Generation (SSG), and Server Components',
+        'Render-as-you-fetch data streaming and Suspense boundaries',
+        'Custom React hooks, Context API, and state libraries (Redux Toolkit, Zustand)',
+        'Next.js App Router, dynamic API routes, and incremental revalidation'
+      ],
+      usedIn: ['Ecomace Production eCommerce Platform (170+ commits on Vercel)', 'Modern Cloud Dashboard UIs']
+    },
+    'genai': {
+      title: 'GenAI & LLMs (Gemini, Claude, OpenAI, DeepSeek)',
+      category: 'Artificial Intelligence & Smart Automation',
+      proficiency: '99%',
+      experience: 'Specialized 10x AI Speed Superpower',
+      icon: 'fas fa-brain',
+      iconColor: '#a855f7',
+      summary: 'Unlocking 10x engineering speed by integrating cutting-edge LLMs, building autonomous coding workflows, and deploying intelligent AI assistants into production software with prompt engineering and structured API schemas.',
+      highlights: [
+        '10x development velocity using AI coding agents and automated refactoring',
+        'Google Gemini (3.6 Flash / 2.5 Pro) API integration with custom system instructions',
+        'Prompt Engineering: Few-shot prompting, chain-of-thought, deterministic JSON outputs',
+        'Multi-model orchestration across Anthropic Claude, OpenAI GPT-4o, and DeepSeek'
+      ],
+      usedIn: ['Live Portfolio AI Assistant (Gemini 3.6 Flash)', 'Autonomous Dev Workflows', 'Smart Code Generation']
+    },
+    'typescript': {
+      title: 'TypeScript',
+      category: 'Type-Safe Programming',
+      proficiency: '92%',
+      experience: '3+ Years Experience',
+      icon: 'fas fa-code',
+      iconColor: '#3178c6',
+      summary: 'Writing scalable, enterprise-grade, bug-resistant code with TypeScript. Utilizing strict typing, generics, interfaces, union types, and utility types across both frontend and backend systems.',
+      highlights: [
+        'Strict type checking, type inference, and custom generic utilities',
+        'Interface and type definitions for complex API schemas and state models',
+        'Seamless integration with React, Next.js, Express, and Prisma',
+        'Eliminating runtime null/undefined crashes during compilation'
+      ],
+      usedIn: ['Large-scale full stack web applications', 'API contracts and data layers']
+    },
+    'node': {
+      title: 'Node.js & Express',
+      category: 'Backend & Server Architecture',
+      proficiency: '90%',
+      experience: '3+ Years Production Experience',
+      icon: 'fab fa-node-js',
+      iconColor: '#10b981',
+      summary: 'Developing scalable, non-blocking, asynchronous RESTful APIs and backend microservices using Node.js and Express. Managing authentication, middleware pipelines, and third-party integrations.',
+      highlights: [
+        'RESTful API design, routing, and modular controller architecture',
+        'Authentication & authorization via JWT, bcrypt, and secure sessions',
+        'Event-driven asynchronous I/O and stream processing',
+        'Rate limiting, CORS security, input validation, and centralized error handling'
+      ],
+      usedIn: ['Alokpo Backend Crawler & Indexer', 'Ecomace Backend Server', 'Microservices API']
+    },
+    'python': {
+      title: 'Python & FastAPI',
+      category: 'Backend & Machine Learning Services',
+      proficiency: '86%',
+      experience: '2+ Years Experience',
+      icon: 'fab fa-python',
+      iconColor: '#3b82f6',
+      summary: 'Developing blazing-fast asynchronous backend APIs using FastAPI and Python. Implementing data processing scripts, automated web scrapers, and AI tool integrations.',
+      highlights: [
+        'FastAPI async routes, Pydantic data validation, and automated Swagger documentation',
+        'Python web scraping, data cleaning, and automated tasks',
+        'AI/ML integration pipelines and LLM wrapper endpoints',
+        'Clean, PEP 8 compliant, modular Python code'
+      ],
+      usedIn: ['Web crawler services', 'Data pipelines & automation scripts']
+    },
+    'postgres': {
+      title: 'PostgreSQL & Prisma ORM',
+      category: 'Relational Database Engineering',
+      proficiency: '88%',
+      experience: '3+ Years Experience',
+      icon: 'fas fa-database',
+      iconColor: '#0284c7',
+      summary: 'Designing resilient relational database schemas, complex SQL queries, index optimization, and data migrations using PostgreSQL and modern ORMs like Prisma.',
+      highlights: [
+        'Relational schema design (1:1, 1:N, N:M) with foreign key constraints',
+        'Prisma ORM schema modeling, type-safe queries, and automated migrations',
+        'Query optimization, indexing strategies, and ACID transaction safety',
+        'Connection pooling and cloud database deployment (Supabase, Neon, AWS RDS)'
+      ],
+      usedIn: ['Ecomace product & user relational storage', 'Production transactional backends']
+    },
+    'mongo': {
+      title: 'MongoDB & Redis',
+      category: 'NoSQL & High-Speed In-Memory Cache',
+      proficiency: '85%',
+      experience: '3+ Years Experience',
+      icon: 'fas fa-leaf',
+      iconColor: '#10b981',
+      summary: 'Leveraging MongoDB for flexible, document-based NoSQL storage and Redis for sub-millisecond in-memory caching, session management, and rate limiting.',
+      highlights: [
+        'MongoDB document design, schema validation, and aggregation pipelines',
+        'Redis caching strategies (Cache-Aside, Write-Through, TTL expiration)',
+        'Distributed session storage and API rate limiting via Redis keys',
+        'High-throughput data storage for search indexing and crawler payloads'
+      ],
+      usedIn: ['Alokpo Search Index storage', 'Session & fast memory caching']
+    },
+    'tailwind': {
+      title: 'Tailwind CSS & Modern UI/UX',
+      category: 'Design Systems & Utility Styling',
+      proficiency: '96%',
+      experience: '3+ Years Experience',
+      icon: 'fab fa-css3-alt',
+      iconColor: '#06b6d4',
+      summary: 'Creating high-velocity, consistent, responsive design systems using Tailwind CSS. Translating Figma mockups into interactive, accessible, and polished user interfaces in record time.',
+      highlights: [
+        'Utility-first styling with zero CSS bloat and purge optimization',
+        'Custom Tailwind design tokens, typography scales, and color palettes',
+        'Responsive breakpoints, dark mode variants, and pseudo-class states',
+        'Component UI libraries integration (Shadcn/UI, Radix, TailwindUI)'
+      ],
+      usedIn: ['Ecomace Modern Storefront', 'Portfolio Design System', 'Landing Pages']
+    },
+    'docker': {
+      title: 'Docker & Cloud DevOps',
+      category: 'Containerization & Deployment',
+      proficiency: '82%',
+      experience: '2+ Years Experience',
+      icon: 'fab fa-docker',
+      iconColor: '#2563eb',
+      summary: 'Containerizing full-stack web applications for predictable, reproducible environments from local development to cloud production. Setting up automated CI/CD deployment pipelines.',
+      highlights: [
+        'Multi-stage Dockerfile builds for minimal, secure production container images',
+        'Docker Compose for multi-container development (Frontend, Backend, DB, Redis)',
+        'Automated CI/CD pipelines via GitHub Actions',
+        'Cloud deployments on Vercel, Render, Railway, and AWS EC2'
+      ],
+      usedIn: ['Ecomace deployment workflows', 'Containerized development microservices']
+    }
+  };
+
+  const skillCards = document.querySelectorAll('.skill-card');
+  skillCards.forEach(card => {
+    function triggerSkillModal() {
+      lastFocusedTrigger = card;
+      const skillId = card.getAttribute('data-skill-id');
+      const data = skillsData[skillId];
+      if (data && modal && modalContentEl) {
+        modalContentEl.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-right: 44px;">
+            <div style="width: 56px; height: 56px; border-radius: 14px; background: rgba(139, 92, 246, 0.12); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: ${data.iconColor}; flex-shrink: 0;">
+              <i class="${data.icon}"></i>
+            </div>
+            <div>
+              <span class="section-tag" style="margin-bottom: 4px; display: inline-block;">${data.category}</span>
+              <h2 style="font-size: 1.6rem; margin: 4px 0 2px; color: var(--text-main);">${data.title}</h2>
+              <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-main);">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: ${data.iconColor}; margin-right: 6px;"></span>
+                Proficiency: ${data.proficiency} • ${data.experience}
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">${data.summary}</p>
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);">
+              <i class="fas fa-check-circle" style="color: var(--primary); margin-right: 8px;"></i>Core Competencies & Capabilities:
+            </h4>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+              ${data.highlights.map(h => `<li style="display: flex; align-items: flex-start; gap: 10px; color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-arrow-right" style="color: var(--secondary); margin-top: 5px; font-size: 0.8rem;"></i> ${h}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);">
+              <i class="fas fa-laptop-code" style="color: var(--primary); margin-right: 8px;"></i>Applied In Real Projects:
+            </h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${data.usedIn.map(u => `<span class="tech-tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.25);">${u}</span>`).join('')}
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px;">
+            <a href="#projects" class="btn btn-primary btn-sm modal-action-btn">
+              <i class="fas fa-folder-open"></i> View Projects
+            </a>
+            <a href="#contact" class="btn btn-secondary btn-sm modal-action-btn">
+              <i class="fas fa-paper-plane"></i> Discuss This Tech
+            </a>
+          </div>
+        `;
+
+        modalContentEl.querySelectorAll('.modal-action-btn').forEach(actionBtn => {
+          actionBtn.addEventListener('click', closeModal);
+        });
+
+        openModal();
+      }
+    }
+
+    card.addEventListener('click', triggerSkillModal);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        triggerSkillModal();
+      }
+    });
+  });
+
+  // ------------------------------------------------------------------------
+  // 8. Contact Form Handling: Direct Email (mailto) & WhatsApp Integration
+  // ------------------------------------------------------------------------
+  const contactForm = document.getElementById('contact-form');
+  const whatsappBtn = document.getElementById('contact-whatsapp-btn');
+
+  function getFormData() {
+    const name = document.getElementById('form-name')?.value.trim() || '';
+    const email = document.getElementById('form-email')?.value.trim() || '';
+    const subject = document.getElementById('form-subject')?.value.trim() || '';
+    const message = document.getElementById('form-message')?.value.trim() || '';
+    return { name, email, subject, message };
+  }
+
+  // Handle Send via Email (mailto to x@zihan.xyz)
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const { name, email, subject, message } = getFormData();
+
+      if (!name || !email || !message) {
+        showToast('Please fill out all required fields.', 'error');
+        return;
+      }
+
+      const emailSubject = encodeURIComponent(subject ? `[Portfolio Inquiry] ${subject}` : `[Portfolio Inquiry] Message from ${name}`);
+      const emailBody = encodeURIComponent(
+        `Hi Zihan,\n\n` +
+        `Name: ${name}\n` +
+        `Email: ${email}\n` +
+        `Subject: ${subject || 'General Inquiry'}\n\n` +
+        `Message:\n${message}\n\n` +
+        `---\nSent from zihan.xyz portfolio`
+      );
+
+      const mailtoUrl = `mailto:x@zihan.xyz?subject=${emailSubject}&body=${emailBody}`;
+
+      showToast(`Opening your email app to send to x@zihan.xyz...`, 'info');
+      
+      setTimeout(() => {
+        window.location.href = mailtoUrl;
+      }, 400);
+    });
+  }
+
+  // Handle Send via WhatsApp (+880 1402-963123)
+  if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', () => {
+      const { name, email, subject, message } = getFormData();
+
+      if (!name || !message) {
+        showToast('Please enter at least your Name and Message to chat on WhatsApp.', 'error');
+        return;
+      }
+
+      const waText = encodeURIComponent(
+        `Hi Zihan,\n\n` +
+        `*Name:* ${name}\n` +
+        (email ? `*Email:* ${email}\n` : '') +
+        (subject ? `*Subject:* ${subject}\n` : '') +
+        `\n*Message:*\n${message}`
+      );
+
+      const waUrl = `https://wa.me/8801402963123?text=${waText}`;
+
+      showToast(`Opening WhatsApp chat with +880 1402-963123...`, 'success');
+      
+      window.open(waUrl, '_blank');
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 9. Floating Back-to-Top Button
+  // ------------------------------------------------------------------------
+  const backToTopBtn = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 350) {
+      backToTopBtn?.classList.add('visible');
+    } else {
+      backToTopBtn?.classList.remove('visible');
+    }
+  });
+
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 10. Toast Notification System (XSS-Safe & Debounced)
+  // ------------------------------------------------------------------------
+  let lastToastTime = 0;
+  function showToast(message, type = 'info') {
+    const now = Date.now();
+    if (now - lastToastTime < 500) return;
+    lastToastTime = now;
+
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+      toastContainer = document.createElement('div');
+      toastContainer.id = 'toast-container';
+      toastContainer.className = 'toast-container';
+      document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let iconClass = 'fa-info-circle';
+    if (type === 'success') iconClass = 'fa-check-circle';
+    if (type === 'error') iconClass = 'fa-exclamation-triangle';
+
+    const iconEl = document.createElement('i');
+    iconEl.className = `fas ${iconClass}`;
+    iconEl.setAttribute('aria-hidden', 'true');
+
+    const spanEl = document.createElement('span');
+    spanEl.textContent = message;
+
+    toast.appendChild(iconEl);
+    toast.appendChild(spanEl);
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    }, 3800);
+  }
+
+  // ------------------------------------------------------------------------
+  // 11. Interactive AI Portfolio Assistant
+  // ------------------------------------------------------------------------
+  const aiChatBtn = document.getElementById('ai-chat-btn');
+  const aiChatWindow = document.getElementById('ai-chat-window');
+  const aiChatClose = document.getElementById('ai-chat-close');
+  const aiChatForm = document.getElementById('ai-chat-form');
+  const aiChatInput = document.getElementById('ai-chat-input');
+  const aiChatMessages = document.getElementById('ai-chat-messages');
+  const aiChips = document.querySelectorAll('.ai-chip');
+
+  if (aiChatBtn && aiChatWindow) {
+    aiChatBtn.addEventListener('click', () => {
+      aiChatWindow.classList.toggle('open');
+      if (aiChatWindow.classList.contains('open')) {
+        setTimeout(() => aiChatInput?.focus(), 200);
+      }
+    });
+
+    aiChatClose?.addEventListener('click', () => {
+      aiChatWindow.classList.remove('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (aiChatWindow.classList.contains('open') &&
+          !aiChatWindow.contains(e.target) &&
+          !aiChatBtn.contains(e.target)) {
+        aiChatWindow.classList.remove('open');
+      }
+    });
+
+    function appendMessage(text, sender = 'bot', isHTML = false) {
+      if (!aiChatMessages) return;
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `ai-msg ai-msg-${sender}`;
+      if (isHTML) {
+        msgDiv.innerHTML = text;
+      } else {
+        msgDiv.textContent = text;
+      }
+      aiChatMessages.appendChild(msgDiv);
+      aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+    }
+
+    const GEMINI_API_KEY = window.GEMINI_API_KEY || localStorage.getItem('gemini_api_key') || '';
+    const GEMINI_API_URL = GEMINI_API_KEY
+      ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`
+      : '';
+
+    const AI_SYSTEM_INSTRUCTION = `You are the official Portfolio AI Assistant on Zihan Fakir's website (zihan.xyz).
+Your goal is to represent Zihan Fakir with high intelligence, professionalism, and warmth, answering questions from recruiters, clients, and developers.
+
+Profile of Zihan Fakir:
+- Full Name: Zihan Fakir
+- Official Domain: https://zihan.xyz
+- Primary Email: x@zihan.xyz (Backup: zihanfakir@gmail.com)
+- Phone & WhatsApp: +880 1402-963123 (01402963123)
+- Universal Social Username: @zihanfakir across all networks (GitHub: https://github.com/zihanfakir , Facebook: https://facebook.com/zihanfakir , Instagram: https://instagram.com/zihanfakir , Telegram: https://t.me/zihanfakir , LinkedIn: https://linkedin.com/in/zihanfakir , Twitter/X: https://x.com/zihanfakir)
+- Core Superpower: Builds and ships production-grade software 10x faster than traditional developers using advanced AI workflows, prompt engineering, and autonomous coding agents without compromising code architecture or security.
+- Technical Skills: GenAI & LLMs (Gemini, Claude, OpenAI, DeepSeek - 99%), HTML5 (98%), CSS3 (96%), JavaScript ES6+ (95%), React & Next.js (95%), TypeScript (92%), Node.js & Express (90%), Python & FastAPI (86%), PostgreSQL & Prisma (88%), MongoDB & Redis (85%), Tailwind CSS (96%), Docker (82%).
+- Real Production Projects:
+  1. Ecomace: Modern full-stack eCommerce engine with decoupled React client and Node/Express backend. Features render-as-you-fetch data streaming, persistent multi-item cart, 170+ commits, deployed on Vercel. (Live: https://ecomace.vercel.app/ | Code: https://github.com/zihanfakir/Ecomace)
+  2. Alokpo: Custom web search engine & crawler backend. Modern search UI communicating with crawler indexing APIs. (Live: https://zihanfakir.github.io/alokpo-search/ | Frontend: https://github.com/zihanfakir/alokpo-search | Backend: https://github.com/zihanfakir/alokpo-backend)
+  3. বয়স ক্যালকুলেটর (Age Calculator 26.0): Real-time ticking chronological age calculator with lifetime stats (heartbeats, breaths, next birthday countdown). (Live: https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/ | Code: https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0)
+- Curriculum Vitae (CV / Resume): Available for download at "Zihan Fakir CV.pdf". Covers Zihan's Full Stack (MERN), Android (Kotlin), AI development, application security auditing, and top projects.
+
+Guidelines:
+- If the visitor speaks Bengali (Bangla), reply in polite and friendly Bengali. If they speak English, reply in English.
+- Keep answers concise, clear, and engaging (1 to 3 short paragraphs or bullet points).
+- Do NOT use raw emojis in your responses. Always use clean professional text formatting.
+- Format text nicely with HTML tags like <strong>, <br>, or clickable links <a href="..." target="_blank">.`;
+
+    function formatMarkdown(text) {
+      if (!text) return '';
+      const escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return escaped
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/(https?:\/\/[^\s<]+[^\s<.,!?:;()])/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">$1</a>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
+    function generateLocalAIResponse(query) {
+      const q = query.toLowerCase().trim();
+
+      if (q.includes('cv') || q.includes('resume') || q.includes('curriculum') || q.includes('bio') || q.includes('pdf')) {
+        return `<i class="fas fa-file-pdf" style="color:#ef4444;margin-right:6px;"></i> <strong>Zihan Fakir's Curriculum Vitae:</strong><br>
+        Zihan's official CV details his full-stack engineering skills, MERN stack, Android (Kotlin), AI development, and production software portfolio.<br><br>
+        <i class="fas fa-download" style="color:var(--primary);margin-right:4px;"></i> <a href="Zihan%20Fakir%20CV.pdf" target="_blank" rel="noopener noreferrer" download="Zihan Fakir CV.pdf" style="color:var(--primary);font-weight:700;text-decoration:underline;">Download Zihan Fakir CV (PDF)</a>`;
+      }
+
+      if (q.includes('fast') || q.includes('speed') || q.includes('quick') || q.includes('druto') || q.includes('time') || q.includes('delivery')) {
+        return `<i class="fas fa-bolt" style="color:var(--accent-amber);margin-right:6px;"></i> <strong>10x AI Delivery Superpower:</strong><br>
+        Zihan builds and ships production-ready applications <strong>up to 10x faster than traditional developers</strong>!<br>
+        • <strong>How?</strong> By mastering advanced generative AI workflows, prompt engineering, and autonomous coding agents.<br>
+        • <strong>Quality:</strong> Strict maintainability, clean modular architecture, and zero technical debt.<br>
+        • <strong>Result:</strong> Extreme velocity from wireframe concept to live production!`;
+      }
+
+      if (q.includes('ai') || q.includes('llm') || q.includes('prompt') || q.includes('agent') || q.includes('gpt') || q.includes('gemini') || q.includes('claude') || q.includes('deepseek')) {
+        return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>Zihan's AI Engineering Capabilities:</strong><br>
+        • <strong>GenAI & LLMs:</strong> 99% proficiency working with Google Gemini, Anthropic Claude, OpenAI, and DeepSeek.<br>
+        • <strong>Prompt Engineering:</strong> Expert in crafting structured system instructions, few-shot prompting, and deterministic JSON schemas.<br>
+        • <strong>Autonomous Agents:</strong> Designing tool-calling agents and automated reasoning workflows.<br>
+        • <strong>10x AI-Powered Dev:</strong> Accelerating delivery speed using modern AI developer tooling while maintaining rigorous code quality.`;
+      }
+
+      if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('banano')) {
+        return `<i class="fas fa-layer-group" style="color:var(--secondary);margin-right:6px;"></i> <strong>Zihan's Top Real Projects:</strong><br>
+        1. <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Ecomace</a>: High-performance eCommerce engine with render-as-you-fetch data streaming.<br>
+        2. <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Alokpo</a>: Decoupled web search engine & crawler backend.<br>
+        3. <a href="https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">বয়স ক্যালকুলেটর (v26.0)</a>: Real-time ticking chronological age calculator with lifetime stats!`;
+      }
+
+      if (q.includes('ecomace') || q.includes('ecommerce') || q.includes('shop') || q.includes('store')) {
+        return `<i class="fas fa-shopping-bag" style="color:var(--primary);margin-right:6px;"></i> <strong>About Ecomace:</strong><br>
+        A decoupled modern eCommerce platform built with React, Node.js, Express, and Vite. Deployed on Vercel with 170+ commits, featuring render-as-you-fetch streaming, persistent multi-item cart, and product search.<br>
+        <i class="fas fa-external-link-alt" style="margin-right:4px;"></i> <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Live Demo</a> • <i class="fab fa-github" style="margin-right:4px;"></i> <a href="https://github.com/zihanfakir/Ecomace" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">GitHub Source</a>`;
+      }
+
+      if (q.includes('alokpo') || q.includes('search')) {
+        return `<i class="fas fa-search" style="color:var(--secondary);margin-right:6px;"></i> <strong>About Alokpo Search Engine:</strong><br>
+        A custom search engine with a modern frontend interface and a dedicated backend web crawler API for rapid index queries.<br>
+        <i class="fas fa-external-link-alt" style="margin-right:4px;"></i> <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Live Search</a> • <i class="fab fa-github" style="margin-right:4px;"></i> <a href="https://github.com/zihanfakir/alokpo-search" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Frontend Repo</a> • <i class="fab fa-github" style="margin-right:4px;"></i> <a href="https://github.com/zihanfakir/alokpo-backend" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Backend Repo</a>`;
+      }
+
+      if (q.includes('age') || q.includes('calculator') || q.includes('boyos') || q.includes('বয়স')) {
+        return `<i class="fas fa-calculator" style="color:var(--accent-pink);margin-right:6px;"></i> <strong>About বয়স ক্যালকুলেটর (v26.0):</strong><br>
+        Interactive chronological age calculator with real-time ticking second counter, next birthday countdown, and fun lifetime health stats (estimated total heartbeats and breaths).<br>
+        <i class="fas fa-external-link-alt" style="margin-right:4px;"></i> <a href="https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Try Live Calculator</a>`;
+      }
+
+      if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('hire') || q.includes('whatsapp') || q.includes('reach')) {
+        return `<i class="fas fa-envelope-open-text" style="color:var(--accent-emerald);margin-right:6px;"></i> <strong>Contact Zihan Fakir:</strong><br>
+        • <strong>Email:</strong> <a href="mailto:x@zihan.xyz" style="color:var(--primary);">x@zihan.xyz</a><br>
+        • <strong>Phone & WhatsApp:</strong> <a href="tel:+8801402963123" style="color:var(--primary);">+880 1402-963123</a><br>
+        • <strong>Domain:</strong> <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.xyz</a><br>
+        • <strong>All Usernames:</strong> <strong style="color:var(--text-main);">@zihanfakir</strong> (GitHub, Facebook, Instagram, Telegram, LinkedIn, X)`;
+      }
+
+      if (q.includes('skill') || q.includes('tech') || q.includes('stack') || q.includes('language')) {
+        return `<i class="fas fa-code" style="color:var(--primary);margin-right:6px;"></i> <strong>Zihan's Tech Stack:</strong><br>
+        • <strong>Frontend:</strong> React, Next.js, TypeScript, JavaScript, HTML5/CSS3, Tailwind CSS<br>
+        • <strong>Backend & APIs:</strong> Node.js, Express, Python, FastAPI, REST APIs<br>
+        • <strong>AI & LLMs:</strong> Gemini, Claude, OpenAI, DeepSeek (99%), Prompt Engineering, Agents<br>
+        • <strong>Database & DevOps:</strong> PostgreSQL, MongoDB, Redis, Docker, Vercel, Git`;
+      }
+
+      return `Thanks for asking! Zihan Fakir is a Full Stack Engineer & AI Builder. You can check out his projects (<a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.xyz" style="color:var(--primary);">x@zihan.xyz</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
+    }
+
+    let isAIResponding = false;
+
+    async function handleUserQuery(query) {
+      if (!query || !query.trim() || isAIResponding) return;
+      if (!aiChatMessages) return;
+
+      isAIResponding = true;
+      appendMessage(query, 'user', false);
+
+      // Show animated typing indicator
+      const indicator = document.createElement('div');
+      indicator.className = 'ai-msg ai-msg-bot typing-indicator';
+      indicator.innerHTML = '<span></span><span></span><span></span>';
+      aiChatMessages.appendChild(indicator);
+      aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+
+      try {
+        if (!GEMINI_API_KEY || !GEMINI_API_URL) {
+          await new Promise(resolve => setTimeout(resolve, 350));
+          indicator.remove();
+          const localReply = generateLocalAIResponse(query);
+          appendMessage(localReply, 'bot', true);
+          isAIResponding = false;
+          return;
+        }
+
+        const response = await fetch(GEMINI_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            system_instruction: {
+              parts: [{ text: AI_SYSTEM_INSTRUCTION }]
+            },
+            contents: [
+              {
+                role: 'user',
+                parts: [{ text: query }]
+              }
+            ]
+          })
+        });
+
+        indicator.remove();
+
+        if (response.ok) {
+          const data = await response.json();
+          const candidate = data.candidates?.[0];
+          const textPart = candidate?.content?.parts?.find(p => p.text && !p.thought);
+          const rawText = textPart?.text || candidate?.content?.parts?.[0]?.text;
+
+          if (rawText) {
+            appendMessage(formatMarkdown(rawText), 'bot', true);
+            isAIResponding = false;
+            return;
+          }
+        }
+
+        // Fallback to local intelligent response if API response format is unexpected
+        const localReply = generateLocalAIResponse(query);
+        appendMessage(localReply, 'bot', true);
+      } catch (err) {
+        console.warn('Gemini API fetch error, using local fallback:', err);
+        indicator.remove();
+        const fallbackReply = generateLocalAIResponse(query);
+        appendMessage(fallbackReply, 'bot', true);
+      } finally {
+        isAIResponding = false;
+      }
+    }
+
+    aiChatForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!aiChatInput) return;
+      const text = aiChatInput.value;
+      aiChatInput.value = '';
+      handleUserQuery(text);
+    });
+
+    aiChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const queryType = chip.getAttribute('data-query');
+        let queryText = 'Tell me about your projects';
+        if (queryType === 'ai') queryText = 'What are your AI skills and how fast do you build?';
+        if (queryType === 'contact') queryText = 'How can I contact Zihan Fakir?';
+        if (queryType === 'ecomace') queryText = 'Tell me about Ecomace project';
+        handleUserQuery(queryText);
+      });
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 12. Full Website Content & Text Copy Protection (Refined & Anti-Duplicate)
+  // ------------------------------------------------------------------------
+  function isInputField(element) {
+    if (!element) return false;
+    const tag = element.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || element.isContentEditable;
+  }
+
+  function isPermittedSelection(target) {
+    if (!target) return false;
+    if (isInputField(target)) return true;
+    if (target.closest && (target.closest('.contact-info-card') || target.closest('.social-link') || target.closest('a') || target.closest('.ai-msg-bot'))) {
+      return true;
+    }
+    return false;
+  }
+
+  // Intercept Copy event
+  document.addEventListener('copy', (e) => {
+    if (!isPermittedSelection(document.activeElement || e.target)) {
+      e.preventDefault();
+      showToast('Text copying is disabled on this website.', 'error');
+    }
+  });
+
+  // Intercept Cut event
+  document.addEventListener('cut', (e) => {
+    if (!isInputField(document.activeElement || e.target)) {
+      e.preventDefault();
+    }
+  });
+
+  // Intercept Right Click Context Menu (permit on interactive links)
+  document.addEventListener('contextmenu', (e) => {
+    if (!isInputField(e.target) && !e.target.closest('a') && !e.target.closest('button')) {
+      e.preventDefault();
+      showToast('Right-click is disabled to protect content.', 'info');
+    }
+  });
+
+  // Intercept Keyboard Copy Shortcuts (Ctrl+C, Cmd+C) without duplicate toast
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+      if (!isPermittedSelection(document.activeElement)) {
+        e.preventDefault();
+        showToast('Text copying is disabled on this website.', 'error');
+      }
+    }
+  });
+
+  // Prevent Dragging Images and Text
+  document.addEventListener('dragstart', (e) => {
+    if (!isInputField(e.target)) {
+      e.preventDefault();
+    }
+  });
+
+  // ------------------------------------------------------------------------
+  // 13. Dynamic Current Year for Copyright
+  // ------------------------------------------------------------------------
+  const currentYearEl = document.getElementById('current-year');
+  if (currentYearEl) {
+    currentYearEl.textContent = new Date().getFullYear();
+  }
+
+  // ------------------------------------------------------------------------
+  // 14. Live Site Search & Google Search Integration
+  // ------------------------------------------------------------------------
+  const searchModal = document.getElementById('search-modal');
+  const searchToggleBtn = document.getElementById('search-toggle-btn');
+  const navSearchLink = document.getElementById('nav-search-link');
+  const searchCloseBtn = document.getElementById('search-modal-close');
+  const siteSearchInput = document.getElementById('site-search-input');
+  const searchResultsList = document.getElementById('search-results-list');
+  const searchGoogleBtn = document.getElementById('search-google-btn');
+  const googleQueryPreview = document.getElementById('google-query-preview');
+  const searchTagChips = document.querySelectorAll('.search-tag-chip');
+
+  const searchableCatalog = [
+    { title: 'Ecomace — Modern E-Commerce Platform', category: 'Featured Project / Full Stack (React, Node, Express)', icon: 'fas fa-shopping-bag', url: '#projects' },
+    { title: 'Alokpo — Web Search Engine & Crawler', category: 'Featured Project / Search & AI Backend', icon: 'fas fa-search', url: '#projects' },
+    { title: 'বয়স ক্যালকুলেটর (Age Calculator 26.0)', category: 'Featured Project / Interactive Frontend Utility', icon: 'fas fa-calculator', url: '#projects' },
+    { title: 'NextGen Cloud SaaS Workspace', category: 'Project / Next.js 14, TypeScript, Docker', icon: 'fas fa-cloud', url: '#projects' },
+    { title: 'DevCollab — Real-Time Code Room', category: 'Project / WebRTC, Monaco Editor, Socket.io', icon: 'fas fa-laptop-code', url: '#projects' },
+    { title: 'HealthSync Mobile Care App', category: 'Project / React Native, Expo, Firebase', icon: 'fas fa-mobile-alt', url: '#projects' },
+    { title: 'Curriculum Vitae (Zihan Fakir CV.pdf)', category: 'Credentials & Full Resume PDF', icon: 'fas fa-file-pdf', url: 'Zihan%20Fakir%20CV.pdf', isExternal: true },
+    { title: 'GenAI & LLMs (Gemini, Claude, OpenAI)', category: 'Technical Skill / AI Engineering (99%)', icon: 'fas fa-brain', url: '#skills' },
+    { title: 'React & Next.js 14 Frameworks', category: 'Technical Skill / Frontend (95%)', icon: 'fab fa-react', url: '#skills' },
+    { title: 'JavaScript (ES6+) & TypeScript', category: 'Technical Skill / Core Languages (95%)', icon: 'fab fa-js', url: '#skills' },
+    { title: 'Node.js & Express REST APIs', category: 'Technical Skill / Backend Services (90%)', icon: 'fab fa-node-js', url: '#skills' },
+    { title: 'HTML5 & Responsive CSS3', category: 'Technical Skill / Web Standards (98%)', icon: 'fab fa-html5', url: '#skills' },
+    { title: 'Python & FastAPI Backend', category: 'Technical Skill / Python Microservices (86%)', icon: 'fab fa-python', url: '#skills' },
+    { title: 'PostgreSQL, MongoDB & Redis', category: 'Technical Skill / Databases (88%)', icon: 'fas fa-database', url: '#skills' },
+    { title: 'Docker Containerization & DevOps', category: 'Technical Skill / CI/CD (82%)', icon: 'fab fa-docker', url: '#skills' },
+    { title: 'Tailwind CSS & Glassmorphism UI', category: 'Technical Skill / Design Systems (96%)', icon: 'fas fa-paint-brush', url: '#skills' },
+    { title: 'About Zihan Fakir & Clean Architecture', category: 'About Me / Background & Experience', icon: 'fas fa-user-circle', url: '#about' },
+    { title: 'Contact Zihan Fakir (x@zihan.xyz, WhatsApp)', category: 'Direct Inquiry / Hire & Collaborate', icon: 'fas fa-envelope', url: '#contact' }
+  ];
+
+  function openSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.add('open');
+    searchModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      siteSearchInput?.focus();
+      renderSearchResults(siteSearchInput?.value || '');
+    }, 60);
+  }
+
+  function closeSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.remove('open');
+    searchModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function renderSearchResults(query) {
+    if (!searchResultsList) return;
+    const cleanQuery = query.toLowerCase().trim();
+
+    if (searchGoogleBtn && googleQueryPreview) {
+      if (cleanQuery) {
+        googleQueryPreview.textContent = `"${cleanQuery}" on zihan.xyz`;
+        searchGoogleBtn.href = `https://www.google.com/search?q=site:zihan.xyz+${encodeURIComponent(cleanQuery)}`;
+      } else {
+        googleQueryPreview.textContent = 'site:zihan.xyz';
+        searchGoogleBtn.href = 'https://www.google.com/search?q=site:zihan.xyz';
+      }
+    }
+
+    const matches = cleanQuery
+      ? searchableCatalog.filter(item =>
+          item.title.toLowerCase().includes(cleanQuery) ||
+          item.category.toLowerCase().includes(cleanQuery)
+        )
+      : searchableCatalog.slice(0, 6);
+
+    if (matches.length === 0) {
+      searchResultsList.innerHTML = `
+        <div class="search-empty-state">
+          <i class="fas fa-search" style="font-size: 1.6rem; margin-bottom: 8px; opacity: 0.5;"></i>
+          <p>No direct on-page matches for "<strong>${siteSearchInput.value}</strong>".</p>
+          <p style="font-size: 0.82rem; margin-top: 5px;">Use the Google Search link below to search the live web index.</p>
+        </div>
+      `;
+      return;
+    }
+
+    searchResultsList.innerHTML = matches.map(item => `
+      <a href="${item.url}" ${item.isExternal ? 'target="_blank" rel="noopener noreferrer" download="Zihan Fakir CV.pdf"' : ''} class="search-result-item">
+        <div class="search-result-icon">
+          <i class="${item.icon}" aria-hidden="true"></i>
+        </div>
+        <div class="search-result-info">
+          <div class="search-result-title">${item.title}</div>
+          <div class="search-result-category">${item.category}</div>
+        </div>
+        <i class="fas fa-chevron-right" style="font-size: 0.75rem; color: var(--text-muted);" aria-hidden="true"></i>
+      </a>
+    `).join('');
+
+    searchResultsList.querySelectorAll('.search-result-item').forEach(link => {
+      link.addEventListener('click', () => {
+        closeSearchModal();
+      });
+    });
+  }
+
+  searchToggleBtn?.addEventListener('click', openSearchModal);
+  navSearchLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openSearchModal();
+  });
+  searchCloseBtn?.addEventListener('click', closeSearchModal);
+
+  searchModal?.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+      closeSearchModal();
+    }
+  });
+
+  siteSearchInput?.addEventListener('input', (e) => {
+    renderSearchResults(e.target.value);
+  });
+
+  searchTagChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const term = chip.getAttribute('data-search') || '';
+      if (siteSearchInput) {
+        siteSearchInput.value = term;
+        renderSearchResults(term);
+        siteSearchInput.focus();
+      }
+    });
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      if (searchModal?.classList.contains('open')) {
+        closeSearchModal();
+      } else {
+        openSearchModal();
+      }
+    } else if (e.key === 'Escape') {
+      if (searchModal?.classList.contains('open')) {
+        closeSearchModal();
+      }
+    }
+  });
+
+  // Expose toast function for debugging/testing
+  window.showToast = showToast;
+});

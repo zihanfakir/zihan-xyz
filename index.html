@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Zihan Fakir | Full Stack Developer & Software Engineer</title>
+  <link rel="canonical" href="https://zihan.xyz">
+  <meta name="description" content="Official portfolio of Zihan Fakir (@zihanfakir) - Full Stack Software Engineer specializing in modern web applications, scalable backend systems, and delightful user experiences.">
+  <meta name="keywords" content="Zihan Fakir, zihan.xyz, zihanfakir, Portfolio, Full Stack Developer, Software Engineer, React, Node.js, Next.js, TypeScript, Web Development">
+  <meta name="author" content="Zihan Fakir">
+
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zihan.xyz">
+  <meta property="og:site_name" content="Zihan Fakir Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Zihan Fakir (@zihanfakir) | Full Stack Developer & AI Builder">
+  <meta property="og:description" content="Official portfolio of Zihan Fakir (@zihanfakir) - Full Stack Software Engineer building high-velocity web apps and AI solutions.">
+  <meta property="og:image" content="https://zihan.xyz/assets/z.jpeg">
+  <meta property="og:image:secure_url" content="https://zihan.xyz/assets/z.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Zihan Fakir - Full Stack Software Engineer">
+
+  <!-- Twitter / X Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@zihanfakir">
+  <meta name="twitter:creator" content="@zihanfakir">
+  <meta name="twitter:title" content="Zihan Fakir (@zihanfakir) | Full Stack Developer & AI Builder">
+  <meta name="twitter:description" content="Explore real projects, skills, and experience of Zihan Fakir on zihan.xyz. Modern web applications built with precision and 10x AI speed.">
+  <meta name="twitter:image" content="https://zihan.xyz/assets/z.jpeg">
+
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/svg+xml" href="x.svg?v=2">
+  <link rel="apple-touch-icon" href="assets/z.jpeg">
+
+  <!-- Google Search Console & SEO -->
+  <meta name="google-site-verification" content="google-site-verification-zihanfakir">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml">
+
+  <!-- Schema.org JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Zihan Fakir",
+    "url": "https://zihan.xyz",
+    "image": "https://zihan.xyz/assets/z.jpeg",
+    "jobTitle": "Full Stack Software Engineer",
+    "email": "mailto:x@zihan.xyz",
+    "telephone": "+8801402963123",
+    "sameAs": [
+      "https://github.com/zihanfakir",
+      "https://linkedin.com/in/zihanfakir",
+      "https://x.com/zihanfakir",
+      "https://facebook.com/zihanfakir",
+      "https://instagram.com/zihanfakir",
+      "https://t.me/zihanfakir"
+    ]
+  }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons 6.5.1 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Instant Theme Persistence Script (System Theme Default + Manual Override) -->
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('zihan-portfolio-theme');
+        var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (systemDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="dark-theme">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Ambient Background Glow Orbs -->
+  <div class="bg-ambient-orb orb-1"></div>
+  <div class="bg-ambient-orb orb-2"></div>
+  <div class="bg-ambient-orb orb-3"></div>
+
+  <!-- =========================================================================
+       Site Header / Navigation Bar
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#home" class="logo">
+        <span class="logo-code-prefix">&lt;/&gt;</span>
+        <span class="logo-brand-name">zihanfakir</span>
+      </a>
+
+      <!-- Navigation Menu -->
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#search" class="nav-link nav-search-link" id="nav-search-link"><i class="fas fa-search" aria-hidden="true" style="font-size: 0.85rem; margin-right: 4px;"></i> Search</a>
+      </nav>
+
+      <!-- Header Actions: Search, Theme Toggle & CTA -->
+      <div class="nav-actions">
+        <!-- Search Trigger Button -->
+        <button type="button" id="search-toggle-btn" class="theme-toggle-btn" aria-label="Search website or Google" title="Search (Ctrl + K)">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
+
+        <!-- Light / Dark Theme Switcher Button -->
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Light/Dark Theme" title="Toggle Light/Dark Theme">
+          <i class="fas fa-sun theme-icon-sun"></i>
+          <i class="fas fa-moon theme-icon-moon"></i>
+        </button>
+
+        <a href="#contact" class="btn btn-primary btn-sm">
+          <i class="fas fa-paper-plane" aria-hidden="true"></i> Let's Talk
+        </a>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Open Navigation Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Semantic Main Landmark -->
+  <main id="main-content">
+
+  <!-- =========================================================================
+       1. Hero Section
+       ========================================================================= -->
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Hero Text Column -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            <span>Available for New Projects • AI-Powered Full Stack Builder</span>
+          </div>
+
+          <p class="hero-greeting"><i class="fas fa-terminal" style="color: var(--primary); margin-right: 6px;" aria-hidden="true"></i> Hello, World! I am</p>
+          <h1 class="hero-title">
+            <span class="gradient-text">Zihan Fakir</span>
+          </h1>
+
+          <div class="hero-subtitle">
+            I am a <span id="typed-text"></span>
+          </div>
+
+          <p class="hero-bio">
+            Passionate full stack software engineer and AI-driven builder. By harnessing the power of modern LLMs, autonomous coding agents, and prompt engineering, I build and ship production software 10x faster than traditional development workflows.
+          </p>
+
+          <div class="hero-turnaround-badge" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.35); padding: 7px 16px; border-radius: 20px; font-size: 0.86rem; font-weight: 600; color: #a855f7; margin-bottom: 24px;">
+            <i class="fas fa-bolt" style="color: #f59e0b;" aria-hidden="true"></i>
+            <span>10x Faster Project Turnaround &amp; Rapid Prototyping</span>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">
+              <i class="fas fa-laptop-code" aria-hidden="true"></i> View My Work
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              <i class="fas fa-envelope" aria-hidden="true"></i> Contact Me
+            </a>
+            <a href="Zihan%20Fakir%20CV.pdf" target="_blank" rel="noopener noreferrer" download="Zihan Fakir CV.pdf" class="btn btn-secondary" title="Download / View Zihan Fakir's Curriculum Vitae">
+              <i class="fas fa-file-pdf" style="color: #ef4444;" aria-hidden="true"></i> Get CV
+            </a>
+          </div>
+
+          <!-- Social Links -->
+          <div class="hero-socials">
+            <a href="https://github.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub (@zihanfakir)" aria-label="GitHub profile of Zihan Fakir">
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://facebook.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Facebook (@zihanfakir)" aria-label="Facebook profile of Zihan Fakir">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a href="https://instagram.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram (@zihanfakir)" aria-label="Instagram profile of Zihan Fakir">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="https://t.me/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Telegram (@zihanfakir)" aria-label="Telegram profile of Zihan Fakir">
+              <i class="fab fa-telegram" aria-hidden="true"></i>
+            </a>
+            <a href="https://linkedin.com/in/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn (@zihanfakir)" aria-label="LinkedIn profile of Zihan Fakir">
+              <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a href="https://x.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Twitter / X (@zihanfakir)" aria-label="Twitter X profile of Zihan Fakir">
+              <i class="fab fa-x-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="mailto:x@zihan.xyz" class="social-link" title="Send Email (x@zihan.xyz)" aria-label="Send Email to x@zihan.xyz">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Visual / Avatar Column -->
+        <div class="hero-visual">
+          <div class="avatar-wrapper">
+            <div class="avatar-glow"></div>
+            <div class="avatar-container">
+              <img src="assets/z.jpeg" alt="Zihan Fakir - Full Stack Software Engineer" class="avatar-img" width="260" height="260" fetchpriority="high" decoding="async">
+            </div>
+
+            <!-- Floating Badges -->
+            <div class="float-badge float-badge-1">
+              <i class="fab fa-react" style="color: #06b6d4; font-size: 1.2rem;" aria-hidden="true"></i>
+              <span>React &amp; Next.js</span>
+            </div>
+
+            <div class="float-badge float-badge-2">
+              <i class="fab fa-node-js" style="color: #10b981; font-size: 1.2rem;" aria-hidden="true"></i>
+              <span>Node.js &amp; APIs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       2. Quick Metrics & Stats Bar
+       ========================================================================= -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number gradient-text">4+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number gradient-text">35+</div>
+          <div class="stat-label">Completed Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number gradient-text" style="color: #a855f7;">10x</div>
+          <div class="stat-label">Faster AI Delivery</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number gradient-text">20+</div>
+          <div class="stat-label">Global Clients</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number gradient-text">99.8%</div>
+          <div class="stat-label">Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       3. About Me Section
+       ========================================================================= -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">About Me</span>
+        <h2 class="section-title">Driven by Curiosity, <br>Defined by Code</h2>
+        <p class="section-desc">Get to know the developer behind the keyboard and my technical philosophy.</p>
+      </div>
+
+      <div class="about-grid">
+        <!-- Bio text -->
+        <div class="about-text">
+          <h3>Transforming complex challenges into clean, scalable software</h3>
+          <p>
+            I am a full-stack engineer who loves crafting elegant solutions to intricate web and cloud architecture problems. Over the past 4+ years, I have worked across the entire engineering spectrum—from designing intuitive user interfaces with micro-interactions to structuring scalable databases and real-time backend microservices.
+          </p>
+          <p>
+            When I am not debugging edge cases or building new applications, I contribute to open-source projects, explore emerging AI developer tooling, and stay abreast of the latest tech innovations.
+          </p>
+
+          <!-- Core Feature Pillars -->
+          <div class="about-features">
+            <div class="about-feature-item">
+              <i class="fas fa-layer-group feature-icon" style="color: #6366f1;"></i>
+              <div>
+                <div class="feature-title">Clean Architecture</div>
+                <div class="feature-desc">Modular, testable, and maintainable design patterns.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="fas fa-tachometer-alt feature-icon" style="color: #06b6d4;"></i>
+              <div>
+                <div class="feature-title">Peak Performance</div>
+                <div class="feature-desc">Blazing fast load times and optimized database queries.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="fas fa-mobile-alt feature-icon" style="color: #ec4899;"></i>
+              <div>
+                <div class="feature-title">Responsive &amp; Accessible</div>
+                <div class="feature-desc">Flawless, accessible experiences across all screens.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="fas fa-bolt feature-icon" style="color: #f59e0b;"></i>
+              <div>
+                <div class="feature-title">10x AI Delivery Velocity</div>
+                <div class="feature-desc">Rapid prototyping &amp; shipping with advanced AI workflows.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="fas fa-shield-alt feature-icon" style="color: #10b981;"></i>
+              <div>
+                <div class="feature-title">Secure &amp; Reliable</div>
+                <div class="feature-desc">Strict security standards and resilient cloud systems.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="fas fa-cloud feature-icon" style="color: #3b82f6;"></i>
+              <div>
+                <div class="feature-title">Cloud &amp; DevOps</div>
+                <div class="feature-desc">Automated CI/CD pipelines and Docker containerization.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Info Glass Cards -->
+        <div class="about-cards-side">
+          <div class="glass-card">
+            <div class="card-title">
+              <i class="fas fa-user-circle"></i> Personal Quick Facts
+            </div>
+            <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px;">
+              <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-muted);">Name:</span>
+                <span style="font-weight: 600; color: var(--text-main);">Zihan Fakir</span>
+              </li>
+              <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-muted);">Domain:</span>
+                <a href="https://zihan.xyz" style="font-weight: 600; color: var(--secondary);">zihan.xyz</a>
+              </li>
+              <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-muted);">Username:</span>
+                <span style="font-weight: 600; color: var(--primary);">@zihanfakir</span>
+              </li>
+              <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-muted);">Role:</span>
+                <span style="font-weight: 600; color: var(--primary);">Senior Full Stack Engineer</span>
+              </li>
+              <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-muted);">Location:</span>
+                <span style="font-weight: 600; color: var(--text-main);">Dhaka, Bangladesh (Remote Available)</span>
+              </li>
+              <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                <span style="color: var(--text-muted);">Degree:</span>
+                <span style="font-weight: 600; color: var(--text-main);">B.Sc. in Computer Science &amp; Eng.</span>
+              </li>
+              <li style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Languages:</span>
+                <span style="font-weight: 600; color: var(--text-main);">English (Fluent), Bengali (Native)</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <h4 style="font-size: 1.15rem; margin-bottom: 4px;">Interested in working together?</h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">Available for contract and full-time opportunities.</p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <a href="Zihan%20Fakir%20CV.pdf" target="_blank" rel="noopener noreferrer" download="Zihan Fakir CV.pdf" class="btn btn-secondary btn-sm" title="Download Official CV">
+                <i class="fas fa-file-pdf" style="color: #ef4444;" aria-hidden="true"></i> View CV
+              </a>
+              <a href="#contact" class="btn btn-primary btn-sm">Let's Connect</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       4. Skills & Tech Stack Section
+       ========================================================================= -->
+  <section id="skills" class="section" style="background-color: var(--bg-body-secondary);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Tech Stack</span>
+        <h2 class="section-title">Skills &amp; Technologies</h2>
+        <p class="section-desc">The modern toolchain and technologies I leverage to build state-of-the-art applications.</p>
+      </div>
+
+      <!-- Skills Category Grid -->
+      <div class="skills-grid">
+        <!-- Skill: HTML5 -->
+        <div class="skill-card" data-skill-id="html" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for HTML5" title="Click to view HTML5 details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-html5" style="color: #e34f26;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">HTML5</div>
+                <div class="skill-subtitle">Semantic &amp; Accessible Web</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">98%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="98%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Core Foundation</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: CSS3 -->
+        <div class="skill-card" data-skill-id="css" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for CSS3 & Styling" title="Click to view CSS3 details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-css3-alt" style="color: #1572b6;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">CSS3 &amp; Styling</div>
+                <div class="skill-subtitle">Flexbox, Grid &amp; Animations</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">96%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="96%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Responsive UI</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: JavaScript -->
+        <div class="skill-card" data-skill-id="js" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for JavaScript" title="Click to view JavaScript details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-js-square" style="color: #f7df1e;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">JavaScript</div>
+                <div class="skill-subtitle">ES6+, Async &amp; DOM APIs</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">95%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="95%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Advanced Level</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: React / Next.js -->
+        <div class="skill-card" data-skill-id="react" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for React & Next.js" title="Click to view React & Next.js details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-react" style="color: #06b6d4;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">React &amp; Next.js</div>
+                <div class="skill-subtitle">SSR, Hooks &amp; State</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">95%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="95%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Frontend Engine</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: GenAI & LLMs -->
+        <div class="skill-card" data-skill-id="genai" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for GenAI & LLMs" title="Click to view GenAI & LLMs details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fas fa-brain" style="color: #a855f7;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">GenAI &amp; LLMs</div>
+                <div class="skill-subtitle">Gemini, Claude, DeepSeek, OpenAI</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">99%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="99%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span style="color: #a855f7; font-weight: 600;"><i class="fas fa-bolt" style="color: #f59e0b; margin-right: 4px;" aria-hidden="true"></i> 10x AI Speed</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: TypeScript -->
+        <div class="skill-card" data-skill-id="typescript" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for TypeScript" title="Click to view TypeScript details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fas fa-code" style="color: #3178c6;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">TypeScript</div>
+                <div class="skill-subtitle">Strict Types &amp; Scalability</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">92%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="92%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Type Safety</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: Node.js & Express -->
+        <div class="skill-card" data-skill-id="node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for Node.js & Express" title="Click to view Node.js & Express details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-node-js" style="color: #10b981;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">Node.js &amp; Express</div>
+                <div class="skill-subtitle">REST APIs &amp; Microservices</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">90%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="90%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Backend Systems</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: Python & FastAPI -->
+        <div class="skill-card" data-skill-id="python" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for Python & FastAPI" title="Click to view Python & FastAPI details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-python" style="color: #3b82f6;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">Python &amp; FastAPI</div>
+                <div class="skill-subtitle">Async APIs &amp; Scripting</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">86%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="86%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>AI &amp; Backends</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: PostgreSQL & SQL -->
+        <div class="skill-card" data-skill-id="postgres" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for PostgreSQL & Prisma" title="Click to view PostgreSQL & SQL details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fas fa-database" style="color: #0284c7;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">PostgreSQL &amp; Prisma</div>
+                <div class="skill-subtitle">Relational Schemas &amp; Queries</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">88%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="88%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Data Modeling</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: MongoDB & NoSQL -->
+        <div class="skill-card" data-skill-id="mongo" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for MongoDB & Redis" title="Click to view MongoDB & Redis details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fas fa-leaf" style="color: #10b981;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">MongoDB &amp; Redis</div>
+                <div class="skill-subtitle">Document Store &amp; High-Speed Cache</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">85%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="85%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Cache &amp; Storage</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: Tailwind CSS -->
+        <div class="skill-card" data-skill-id="tailwind" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for Tailwind CSS" title="Click to view Tailwind CSS details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-css3-alt" style="color: #06b6d4;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">Tailwind CSS</div>
+                <div class="skill-subtitle">Responsive UI/UX &amp; Systems</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">96%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="96%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Modern Styling</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- Skill: Docker & Cloud DevOps -->
+        <div class="skill-card" data-skill-id="docker" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View details for Docker & DevOps" title="Click to view Docker & DevOps details">
+          <div class="skill-card-top">
+            <div class="skill-card-brand">
+              <div class="skill-icon"><i class="fab fa-docker" style="color: #2563eb;" aria-hidden="true"></i></div>
+              <div class="skill-title-group">
+                <div class="skill-title">Docker &amp; DevOps</div>
+                <div class="skill-subtitle">Containers, CI/CD &amp; Cloud</div>
+              </div>
+            </div>
+            <div class="skill-percentage-badge">82%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-progress-track">
+              <div class="skill-progress-fill" data-percentage="82%" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="skill-card-footer">
+            <span>Cloud &amp; Deployments</span>
+            <span class="skill-click-hint">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       5. Featured Projects Showcase
+       ========================================================================= -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Portfolio</span>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-desc">A curated collection of production web applications, open-source utilities, and full-stack solutions.</p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="projects-filter">
+        <button class="filter-btn active" data-filter="all" aria-pressed="true">All Projects</button>
+        <button class="filter-btn" data-filter="fullstack" aria-pressed="false">Full Stack</button>
+        <button class="filter-btn" data-filter="frontend" aria-pressed="false">Frontend</button>
+        <button class="filter-btn" data-filter="ai" aria-pressed="false">AI &amp; Productivity</button>
+        <button class="filter-btn" data-filter="mobile" aria-pressed="false">Mobile</button>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid">
+        <!-- Project 1: Cloud SaaS Platform -->
+        <div class="project-card" data-category="fullstack">
+          <div class="project-thumbnail">
+            <img src="assets/project-1.svg" alt="NextGen Cloud SaaS Platform" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag">Full Stack</span>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">NextGen Cloud SaaS Platform</h3>
+            <p class="project-desc">
+              Enterprise workspace platform with real-time multi-user collaboration, automated Stripe tiered subscription billing, and deep analytics.
+            </p>
+            <div class="project-techs">
+              <span class="tech-tag">Next.js 14</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">Docker</span>
+            </div>
+            <div class="project-footer">
+              <div class="project-links">
+                <button type="button" class="project-link-btn view-project-details" data-project-id="proj-1" aria-haspopup="dialog">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> Details
+                </button>
+                <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+              <a href="https://github.com/zihanfakir/nextgen-cloud-saas" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (@zihanfakir)" aria-label="View source code on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Ecomace - Modern E-Commerce Platform -->
+        <div class="project-card" data-category="fullstack">
+          <div class="project-thumbnail">
+            <img src="assets/project-2.svg" alt="Ecomace - Full Stack E-Commerce Platform" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag">Full Stack</span>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Ecomace — Modern E-Commerce</h3>
+            <p class="project-desc">
+              High-performance full stack retail shopping experience built with React and Express, featuring render-as-you-fetch data streaming, persistent cart, and product search.
+            </p>
+            <div class="project-techs">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">Express</span>
+              <span class="tech-tag">Vite</span>
+              <span class="tech-tag">Vercel</span>
+            </div>
+            <div class="project-footer">
+              <div class="project-links">
+                <button type="button" class="project-link-btn view-project-details" data-project-id="proj-2" aria-haspopup="dialog">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> Details
+                </button>
+                <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link-btn" title="Visit Live Site on Vercel">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+              <a href="https://github.com/zihanfakir/Ecomace" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (zihanfakir/Ecomace)" aria-label="View source code on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Alokpo - Web Search Engine -->
+        <div class="project-card" data-category="ai">
+          <div class="project-thumbnail">
+            <img src="assets/project-3.svg" alt="Alokpo - Web Search Engine &amp; Crawler" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag">Search &amp; Crawler</span>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Alokpo — Web Search Engine</h3>
+            <p class="project-desc">
+              Custom web search engine and indexing engine with a decoupled architecture: modern search UI communicating with dedicated crawler and ranking backend APIs.
+            </p>
+            <div class="project-techs">
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">REST API</span>
+              <span class="tech-tag">Crawler</span>
+              <span class="tech-tag">GitHub Pages</span>
+            </div>
+            <div class="project-footer">
+              <div class="project-links">
+                <button type="button" class="project-link-btn view-project-details" data-project-id="proj-3" aria-haspopup="dialog">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> Details
+                </button>
+                <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" class="project-link-btn" title="Live Search Engine">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+              <a href="https://github.com/zihanfakir/alokpo-search" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Frontend Source on GitHub" aria-label="View source code on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Age Calculator by Zihan 26.0 -->
+        <div class="project-card" data-category="frontend">
+          <div class="project-thumbnail">
+            <img src="assets/project-4.svg" alt="বয়স ক্যালকুলেটর - Age Calculator by Zihan 26.0" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag">Frontend &amp; Utility</span>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">বয়স ক্যালকুলেটর — Age Calculator 26.0</h3>
+            <p class="project-desc">
+              Interactive chronological age computation tool with live real-time ticking counters (years, months, days, seconds), next birthday countdown, and lifetime fun statistics.
+            </p>
+            <div class="project-techs">
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">CSS3</span>
+              <span class="tech-tag">HTML5</span>
+              <span class="tech-tag">GitHub Pages</span>
+            </div>
+            <div class="project-footer">
+              <div class="project-links">
+                <button type="button" class="project-link-btn view-project-details" data-project-id="proj-4" aria-haspopup="dialog">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> Details
+                </button>
+                <a href="https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/" target="_blank" rel="noopener noreferrer" class="project-link-btn" title="Live Demo on GitHub Pages">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+              <a href="https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (zihanfakir/Age-Calculator-by-Zihan-26.0)" aria-label="View source code on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: DevCollab - Real-Time Code Room -->
+        <div class="project-card" data-category="fullstack">
+          <div class="project-thumbnail">
+            <img src="assets/project-5.svg" alt="DevCollab - Real-Time Code Room" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag">Developer Tools</span>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">DevCollab - Real-Time Code Room</h3>
+            <p class="project-desc">
+              Collaborative coding IDE with Monaco editor, multi-cursor synchronization, in-browser code execution sandbox, and WebRTC peer voice audio.
+            </p>
+            <div class="project-techs">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Socket.io</span>
+              <span class="tech-tag">WebRTC</span>
+              <span class="tech-tag">Monaco</span>
+            </div>
+            <div class="project-footer">
+              <div class="project-links">
+                <button type="button" class="project-link-btn view-project-details" data-project-id="proj-5" aria-haspopup="dialog">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> Details
+                </button>
+                <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+              <a href="https://github.com/zihanfakir/dev-collab" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (@zihanfakir)" aria-label="View source code on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: HealthSync Mobile Care App -->
+        <div class="project-card" data-category="mobile">
+          <div class="project-thumbnail">
+            <img src="assets/project-6.svg" alt="HealthSync Mobile Care App" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag">Mobile</span>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">HealthSync Mobile Care App</h3>
+            <p class="project-desc">
+              Cross-platform mobile application providing instant doctor video appointments, digital prescriptions, and daily vitals telemetry.
+            </p>
+            <div class="project-techs">
+              <span class="tech-tag">React Native</span>
+              <span class="tech-tag">Expo</span>
+              <span class="tech-tag">Firebase</span>
+              <span class="tech-tag">Node.js</span>
+            </div>
+            <div class="project-footer">
+              <div class="project-links">
+                <button type="button" class="project-link-btn view-project-details" data-project-id="proj-6" aria-haspopup="dialog">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> Details
+                </button>
+                <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+              <a href="https://github.com/zihanfakir/health-sync" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (@zihanfakir)" aria-label="View source code on GitHub">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       6. Experience & Education Timeline
+       ========================================================================= -->
+  <section id="experience" class="section" style="background-color: var(--bg-body-secondary);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Career Journey</span>
+        <h2 class="section-title">Experience &amp; Education</h2>
+        <p class="section-desc">Milestones that have shaped my technical journey and engineering philosophy.</p>
+      </div>
+
+      <div class="timeline-container">
+        <!-- Milestone 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-date">2024 — PRESENT</span>
+            <h3 class="timeline-role">Lead Full Stack Engineer</h3>
+            <div class="timeline-company"><i class="fas fa-building" style="color: var(--primary); margin-right: 6px;"></i> TechSphere Solutions Ltd.</div>
+            <p class="timeline-desc">
+              Spearheading engineering efforts on mission-critical SaaS applications. Architected resilient microservices with Node.js and Next.js, cutting server latency by 42% and boosting daily active user engagement.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-date">2022 — 2024</span>
+            <h3 class="timeline-role">Full Stack Software Developer</h3>
+            <div class="timeline-company"><i class="fas fa-briefcase" style="color: var(--primary); margin-right: 6px;"></i> Horizon Digital Labs</div>
+            <p class="timeline-desc">
+              Engineered end-to-end web applications with React, TypeScript, Express, and PostgreSQL. Implemented continuous integration and automated testing suites ensuring 99.9% deployment stability.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-date">2020 — 2022</span>
+            <h3 class="timeline-role">Frontend Web Developer</h3>
+            <div class="timeline-company"><i class="fas fa-code" style="color: var(--primary); margin-right: 6px;"></i> Nexus Creative Agency</div>
+            <p class="timeline-desc">
+              Designed and built performant, responsive web user interfaces for over 20+ international clients. Collaborated closely with UI/UX designers to translate Figma prototypes into pixel-perfect web experiences.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 4: Education -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-date">2018 — 2022</span>
+            <h3 class="timeline-role">B.Sc. in Computer Science &amp; Engineering</h3>
+            <div class="timeline-company"><i class="fas fa-graduation-cap" style="color: var(--primary); margin-right: 6px;"></i> University of Engineering &amp; Technology</div>
+            <p class="timeline-desc">
+              Graduated with Honours. Focused coursework on Data Structures &amp; Algorithms, Database Management Systems, Distributed Networks, Object-Oriented Software Engineering, and Artificial Intelligence.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline CV Call to Action -->
+      <div style="text-align: center; margin-top: 45px;">
+        <a href="Zihan%20Fakir%20CV.pdf" target="_blank" rel="noopener noreferrer" download="Zihan Fakir CV.pdf" class="btn btn-secondary" title="Download Official CV">
+          <i class="fas fa-file-pdf" style="color: #ef4444;" aria-hidden="true"></i> Download Full Curriculum Vitae (PDF)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       7. Contact Me Section
+       ========================================================================= -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">Let's Build Something <br>Amazing Together</h2>
+        <p class="section-desc">Have a question, a project idea, or want to explore collaboration? My inbox is always open.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Contact Cards Column -->
+        <div class="contact-info-cards">
+          <!-- Email Card -->
+          <div class="contact-item-card">
+            <div class="contact-card-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <div class="contact-card-title">Email Me Directly</div>
+              <a href="mailto:x@zihan.xyz" class="contact-card-value">x@zihan.xyz</a>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
+                Backup: <a href="mailto:zihanfakir@gmail.com" style="color: var(--text-secondary);">zihanfakir@gmail.com</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone / WhatsApp Card -->
+          <div class="contact-item-card">
+            <div class="contact-card-icon">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <div>
+              <div class="contact-card-title">Phone &amp; WhatsApp</div>
+              <a href="tel:+8801402963123" class="contact-card-value">+880 1402-963123</a>
+              <div style="margin-top: 3px;">
+                <a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="font-size: 0.82rem; color: var(--accent-emerald); font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                  <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location Card -->
+          <div class="contact-item-card">
+            <div class="contact-card-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div>
+              <div class="contact-card-title">Official Domain</div>
+              <a href="https://zihan.xyz" class="contact-card-value" style="color: var(--secondary);">zihan.xyz</a>
+            </div>
+          </div>
+
+          <!-- Social Links Card -->
+          <div class="glass-card" style="padding: 22px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main);">
+                Connect Across Platforms
+              </div>
+              <span class="tech-tag">@zihanfakir</span>
+            </div>
+            <div class="hero-socials">
+              <a href="https://github.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub (@zihanfakir)" aria-label="GitHub profile of Zihan Fakir">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+              <a href="https://facebook.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Facebook (@zihanfakir)" aria-label="Facebook profile of Zihan Fakir">
+                <i class="fab fa-facebook-f" aria-hidden="true"></i>
+              </a>
+              <a href="https://instagram.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram (@zihanfakir)" aria-label="Instagram profile of Zihan Fakir">
+                <i class="fab fa-instagram" aria-hidden="true"></i>
+              </a>
+              <a href="https://t.me/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Telegram (@zihanfakir)" aria-label="Telegram profile of Zihan Fakir">
+                <i class="fab fa-telegram" aria-hidden="true"></i>
+              </a>
+              <a href="https://linkedin.com/in/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn (@zihanfakir)" aria-label="LinkedIn profile of Zihan Fakir">
+                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+              </a>
+              <a href="https://x.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" title="Twitter / X (@zihanfakir)" aria-label="Twitter X profile of Zihan Fakir">
+                <i class="fab fa-x-twitter" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form Box -->
+        <div class="contact-form-box">
+          <form id="contact-form">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="form-name" class="form-label">Your Name *</label>
+                <input type="text" id="form-name" name="name" class="form-control" placeholder="e.g. John Doe" autocomplete="name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="form-email" class="form-label">Email Address *</label>
+                <input type="email" id="form-email" name="email" class="form-control" placeholder="e.g. john@company.com" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="form-subject" class="form-label">Subject</label>
+              <input type="text" id="form-subject" name="subject" class="form-control" placeholder="e.g. New Web App Development Project">
+            </div>
+
+            <div class="form-group">
+              <label for="form-message" class="form-label">Your Message *</label>
+              <textarea id="form-message" name="message" class="form-control" placeholder="Tell me a bit about your project or inquiry..." required></textarea>
+            </div>
+
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px;">
+              <button type="submit" id="contact-email-btn" class="btn btn-primary" style="flex: 1; min-width: 180px;">
+                <i class="fas fa-envelope" aria-hidden="true"></i> Send via Email
+              </button>
+              <button type="button" id="contact-whatsapp-btn" class="btn btn-secondary" style="flex: 1; min-width: 180px; border-color: #10b981; color: #10b981;">
+                <i class="fab fa-whatsapp" style="font-size: 1.15rem;" aria-hidden="true"></i> Send via WhatsApp
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- End of Semantic Main Landmark -->
+  </main>
+
+  <!-- =========================================================================
+       8. Site Footer
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#home" class="logo">
+            <span class="logo-code-prefix">&lt;/&gt;</span>
+            <span class="logo-brand-name">zihanfakir</span>
+          </a>
+          <p>Architecting high-performance digital systems &amp; modern web interfaces.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="footer-links">
+            <a href="#home" class="footer-link">Home</a>
+            <a href="#about" class="footer-link">About</a>
+            <a href="#skills" class="footer-link">Skills</a>
+            <a href="#projects" class="footer-link">Projects</a>
+            <a href="Zihan%20Fakir%20CV.pdf" target="_blank" rel="noopener noreferrer" download="Zihan Fakir CV.pdf" class="footer-link" title="Download CV">Resume / CV</a>
+            <a href="#contact" class="footer-link">Contact</a>
+          </div>
+          <div class="hero-socials" style="gap: 10px;">
+            <a href="https://github.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 32px; height: 32px; font-size: 0.9rem;" title="GitHub (@zihanfakir)" aria-label="GitHub profile of Zihan Fakir">
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://facebook.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 32px; height: 32px; font-size: 0.9rem;" title="Facebook (@zihanfakir)" aria-label="Facebook profile of Zihan Fakir">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a href="https://instagram.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 32px; height: 32px; font-size: 0.9rem;" title="Instagram (@zihanfakir)" aria-label="Instagram profile of Zihan Fakir">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="https://t.me/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 32px; height: 32px; font-size: 0.9rem;" title="Telegram (@zihanfakir)" aria-label="Telegram profile of Zihan Fakir">
+              <i class="fab fa-telegram" aria-hidden="true"></i>
+            </a>
+            <a href="https://linkedin.com/in/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 32px; height: 32px; font-size: 0.9rem;" title="LinkedIn (@zihanfakir)" aria-label="LinkedIn profile of Zihan Fakir">
+              <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a href="https://x.com/zihanfakir" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 32px; height: 32px; font-size: 0.9rem;" title="Twitter / X (@zihanfakir)" aria-label="Twitter X profile of Zihan Fakir">
+              <i class="fab fa-x-twitter" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span id="current-year">2026</span> Zihan Fakir (<a href="https://zihan.xyz" style="color: var(--primary);">zihan.xyz</a>) • All usernames: <strong style="color: var(--text-main);">@zihanfakir</strong>
+        </div>
+        <div>
+          <span>Crafted with <i class="fas fa-heart" style="color: #ec4899;" aria-hidden="true"></i> for the web</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Back to Top Button -->
+  <button type="button" id="back-to-top" class="back-to-top" aria-label="Scroll to top" title="Scroll to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- Floating AI Assistant Launcher Button -->
+  <button type="button" id="ai-chat-btn" class="ai-assistant-btn" aria-label="Open AI Assistant" title="Chat with Zihan's AI Assistant">
+    <i class="fas fa-robot" aria-hidden="true"></i>
+    <span class="ai-btn-label">Ask AI</span>
+    <span class="ai-badge-pulse"></span>
+  </button>
+
+  <!-- Interactive AI Assistant Chat Window -->
+  <div id="ai-chat-window" class="ai-chat-window" role="dialog" aria-modal="false" aria-labelledby="ai-chat-title">
+    <div class="ai-chat-header">
+      <div class="ai-header-title" id="ai-chat-title">
+        <i class="fas fa-robot" style="color: #a855f7;" aria-hidden="true"></i>
+        <span>Zihan's AI Assistant</span>
+        <span class="ai-badge-pulse" title="Online"></span>
+      </div>
+      <button type="button" id="ai-chat-close" class="ai-header-close" aria-label="Close AI Assistant">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div id="ai-chat-messages" class="ai-chat-messages">
+      <div class="ai-msg ai-msg-bot">
+        <i class="fas fa-robot" style="color: #a855f7; margin-right: 6px;" aria-hidden="true"></i> Hi! I'm Zihan Fakir's AI portfolio assistant. Ask me anything about Zihan's AI engineering capabilities, real projects (Ecomace, Alokpo, Age Calculator), tech skills, or how to contact him!
+      </div>
+    </div>
+    <div class="ai-quick-prompts">
+      <button type="button" class="ai-chip" data-query="ai"><i class="fas fa-brain" style="color: #a855f7;" aria-hidden="true"></i> AI Skills</button>
+      <button type="button" class="ai-chip" data-query="projects"><i class="fas fa-folder-open" style="color: #06b6d4;" aria-hidden="true"></i> Real Projects</button>
+      <button type="button" class="ai-chip" data-query="cv"><i class="fas fa-file-pdf" style="color: #ef4444;" aria-hidden="true"></i> View CV</button>
+      <button type="button" class="ai-chip" data-query="contact"><i class="fas fa-envelope" style="color: #10b981;" aria-hidden="true"></i> Contact</button>
+      <button type="button" class="ai-chip" data-query="ecomace"><i class="fas fa-shopping-bag" style="color: #6366f1;" aria-hidden="true"></i> Ecomace</button>
+    </div>
+    <form id="ai-chat-form" class="ai-chat-input-area">
+      <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="Ask about Zihan's AI skills or work..." autocomplete="off" aria-label="Ask Zihan's AI Assistant a question">
+      <button type="submit" class="ai-chat-send" aria-label="Send query">
+        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Project Details Modal -->
+  <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-details-body" aria-hidden="true">
+    <div class="modal-window">
+      <button type="button" id="modal-close-btn" class="modal-close-btn" aria-label="Close dialog">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+      <div id="modal-details-body">
+        <!-- Content dynamically injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Modal Overlay (Live Search & Google Search) -->
+  <div id="search-modal" class="modal-overlay search-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="search-modal-title" aria-hidden="true">
+    <div class="modal-window search-modal-window">
+      <div class="search-modal-header">
+        <div class="search-input-wrapper">
+          <i class="fas fa-search search-input-icon" aria-hidden="true"></i>
+          <input type="text" id="site-search-input" class="site-search-input" placeholder="Search projects, skills, or Google..." autocomplete="off" aria-label="Search website or Google">
+          <span class="search-kbd-hint">ESC</span>
+        </div>
+        <button type="button" id="search-modal-close" class="modal-close-btn" aria-label="Close search dialog">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Quick Search Suggestions -->
+      <div class="search-quick-tags">
+        <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Popular:</span>
+        <button type="button" class="search-tag-chip" data-search="Ecomace">Ecomace</button>
+        <button type="button" class="search-tag-chip" data-search="Alokpo">Alokpo</button>
+        <button type="button" class="search-tag-chip" data-search="React">React</button>
+        <button type="button" class="search-tag-chip" data-search="AI">AI &amp; LLMs</button>
+        <button type="button" class="search-tag-chip" data-search="CV">CV / Resume</button>
+      </div>
+
+      <!-- Search Results List -->
+      <div id="search-results-list" class="search-results-list" role="region" aria-live="polite">
+        <!-- Dynamically populated via JavaScript -->
+      </div>
+
+      <!-- Search on Google Action Footer -->
+      <div class="search-modal-footer">
+        <a href="https://www.google.com/search?q=site:zihan.xyz" target="_blank" rel="noopener noreferrer" id="search-google-btn" class="search-google-btn">
+          <i class="fab fa-google" style="color: #4285f4;" aria-hidden="true"></i>
+          <span>Search Google for <strong id="google-query-preview" style="color: var(--primary);">site:zihan.xyz</strong></span>
+          <i class="fas fa-external-link-alt" style="font-size: 0.8rem; margin-left: auto;" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="js/main.js"></script>
+</body>
+</html>

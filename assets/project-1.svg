@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="100%" height="100%">
+  <defs>
+    <linearGradient id="p1-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+    <linearGradient id="p1-accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="600" height="380" fill="url(#p1-bg)"/>
+  
+  <!-- App Window Frame -->
+  <g transform="translate(30, 25)">
+    <rect width="540" height="330" rx="12" fill="#111827" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+    
+    <!-- Window Controls -->
+    <circle cx="22" cy="18" r="6" fill="#ef4444"/>
+    <circle cx="40" cy="18" r="6" fill="#f59e0b"/>
+    <circle cx="58" cy="18" r="6" fill="#10b981"/>
+    <line x1="0" y1="36" x2="540" y2="36" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    
+    <!-- Left Sidebar -->
+    <rect x="0" y="36" width="90" height="294" fill="#0b0f19"/>
+    <rect x="15" y="55" width="60" height="12" rx="4" fill="#6366f1" opacity="0.8"/>
+    <rect x="15" y="80" width="60" height="8" rx="4" fill="#374151"/>
+    <rect x="15" y="100" width="45" height="8" rx="4" fill="#374151"/>
+    <rect x="15" y="120" width="55" height="8" rx="4" fill="#374151"/>
+    <rect x="15" y="140" width="50" height="8" rx="4" fill="#374151"/>
+
+    <!-- Main Content Area -->
+    <!-- Top KPI cards -->
+    <rect x="110" y="55" width="125" height="65" rx="8" fill="#1f2937" stroke="rgba(255,255,255,0.05)"/>
+    <rect x="122" y="68" width="50" height="7" rx="3" fill="#9ca3af"/>
+    <text x="122" y="100" font-family="sans-serif" font-size="18" font-weight="bold" fill="#38bdf8">$48,250</text>
+
+    <rect x="250" y="55" width="125" height="65" rx="8" fill="#1f2937" stroke="rgba(255,255,255,0.05)"/>
+    <rect x="262" y="68" width="55" height="7" rx="3" fill="#9ca3af"/>
+    <text x="262" y="100" font-family="sans-serif" font-size="18" font-weight="bold" fill="#10b981">+28.4%</text>
+
+    <rect x="390" y="55" width="125" height="65" rx="8" fill="#1f2937" stroke="rgba(255,255,255,0.05)"/>
+    <rect x="402" y="68" width="45" height="7" rx="3" fill="#9ca3af"/>
+    <text x="402" y="100" font-family="sans-serif" font-size="18" font-weight="bold" fill="#818cf8">1,420</text>
+
+    <!-- Chart Card -->
+    <rect x="110" y="135" width="405" height="170" rx="8" fill="#1f2937" stroke="rgba(255,255,255,0.05)"/>
+    <text x="125" y="160" font-family="sans-serif" font-size="12" font-weight="600" fill="#f3f4f6">SaaS Performance Analytics</text>
+    
+    <!-- Chart Trend Line -->
+    <path d="M 130 270 Q 180 230, 230 240 T 330 190 T 430 210 T 490 165" fill="none" stroke="url(#p1-accent)" stroke-width="4"/>
+    <circle cx="490" cy="165" r="5" fill="#06b6d4"/>
+  </g>
+</svg>

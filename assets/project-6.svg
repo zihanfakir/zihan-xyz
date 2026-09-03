@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="100%" height="100%">
+  <defs>
+    <linearGradient id="p6-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#042f2e" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="p6-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="380" fill="url(#p6-bg)"/>
+
+  <!-- Two Mobile Phone Frames -->
+  <!-- Left Phone -->
+  <g transform="translate(130, 20)">
+    <rect width="160" height="335" rx="28" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+    <rect x="6" y="6" width="148" height="323" rx="24" fill="#0f172a"/>
+    <!-- Notch / Dynamic island -->
+    <rect x="52" y="14" width="56" height="12" rx="6" fill="#000000"/>
+    
+    <!-- Phone 1 UI: Doctor profile & booking -->
+    <circle cx="80" cy="70" r="26" fill="url(#p6-accent)"/>
+    <rect x="40" y="105" width="80" height="10" rx="4" fill="#e2e8f0"/>
+    <rect x="50" y="122" width="60" height="7" rx="3" fill="#14b8a6"/>
+
+    <!-- Stats row -->
+    <rect x="20" y="145" width="120" height="40" rx="8" fill="#1e293b"/>
+    <rect x="28" y="158" width="30" height="8" rx="2" fill="#94a3b8"/>
+    <rect x="80" y="158" width="45" height="8" rx="2" fill="#38bdf8"/>
+
+    <!-- Appointment schedule slots -->
+    <rect x="20" y="200" width="120" height="25" rx="6" fill="#334155"/>
+    <rect x="20" y="235" width="120" height="25" rx="6" fill="#14b8a6"/>
+    <rect x="20" y="270" width="120" height="35" rx="10" fill="url(#p6-accent)"/>
+  </g>
+
+  <!-- Right Phone -->
+  <g transform="translate(320, 30)">
+    <rect width="160" height="335" rx="28" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+    <rect x="6" y="6" width="148" height="323" rx="24" fill="#0f172a"/>
+    <rect x="52" y="14" width="56" height="12" rx="6" fill="#000000"/>
+
+    <!-- Phone 2 UI: Health Vitals & Heart Rate Tracker -->
+    <text x="24" y="55" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">Daily Vitals</text>
+    
+    <!-- Heart rate card -->
+    <rect x="20" y="70" width="120" height="85" rx="10" fill="#1e293b"/>
+    <text x="32" y="95" font-family="sans-serif" font-size="10" fill="#f43f5e">❤️ Heart Rate</text>
+    <text x="32" y="120" font-family="sans-serif" font-size="16" font-weight="bold" fill="#f8fafc">74 bpm</text>
+    <path d="M 32 140 L 45 140 L 52 130 L 60 148 L 70 125 L 80 145 L 90 140 L 120 140" fill="none" stroke="#f43f5e" stroke-width="2"/>
+
+    <!-- Water intake card -->
+    <rect x="20" y="168" width="120" height="60" rx="10" fill="#1e293b"/>
+    <text x="32" y="190" font-family="sans-serif" font-size="10" fill="#38bdf8">💧 Hydration</text>
+    <text x="32" y="212" font-family="sans-serif" font-size="14" font-weight="bold" fill="#f8fafc">2,100 ml</text>
+
+    <!-- Medicine reminder card -->
+    <rect x="20" y="240" width="120" height="50" rx="10" fill="#1e293b"/>
+    <text x="32" y="260" font-family="sans-serif" font-size="10" fill="#a78bfa">💊 Vitamin D3</text>
+    <text x="32" y="278" font-family="sans-serif" font-size="10" fill="#10b981">Completed 9:00 AM</text>
+  </g>
+</svg>
