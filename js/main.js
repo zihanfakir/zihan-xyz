@@ -498,12 +498,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 7. Skill Bars Animation on Scroll
   // ------------------------------------------------------------------------
-  // 7. Progressive Scroll Reveal & Skill Progress Animation
+  // 7. Skill Progress Bars Animation
   // ------------------------------------------------------------------------
   const skillProgressFills = document.querySelectorAll('.skill-progress-fill');
   
   if (window.IntersectionObserver) {
-    // 7A. Skill Progress Animation
     const skillsObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -514,38 +513,12 @@ document.addEventListener('DOMContentLoaded', () => {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.15 });
 
     const skillsSection = document.getElementById('skills');
     if (skillsSection) {
       skillsObserver.observe(skillsSection);
     }
-
-    // 7B. Progressive Scroll Reveal (Smooth, ultra-fast anticipatory reveal)
-    const revealTargets = document.querySelectorAll(
-      '.section-header, .about-grid > *, .timeline-item, .contact-grid > *'
-    );
-    const staggerGrids = document.querySelectorAll(
-      '.skills-grid, .projects-grid'
-    );
-
-    revealTargets.forEach(el => el.classList.add('reveal'));
-    staggerGrids.forEach(grid => grid.classList.add('reveal-stagger'));
-
-    const scrollRevealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.02,
-      rootMargin: '0px 0px 200px 0px'
-    });
-
-    revealTargets.forEach(el => scrollRevealObserver.observe(el));
-    staggerGrids.forEach(grid => scrollRevealObserver.observe(grid));
   } else {
     // Fallback if IntersectionObserver is not supported
     skillProgressFills.forEach(fill => {
