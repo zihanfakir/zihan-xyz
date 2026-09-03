@@ -70,7 +70,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Custom Stylesheet (with cache-busting version) -->
-  <link rel="stylesheet" href="css/style.css?v=2.6">
+  <link rel="stylesheet" href="css/style.css?v=2.7">
 
   <!-- Instant Theme Persistence Script (System Theme Default + Manual Override) -->
   <script>
@@ -111,16 +111,10 @@
         <a href="#projects" class="nav-link">Projects</a>
         <a href="#experience" class="nav-link">Experience</a>
         <a href="#contact" class="nav-link">Contact</a>
-        <a href="#search" class="nav-link nav-search-link" id="nav-search-link"><i class="fas fa-search" aria-hidden="true" style="font-size: 0.85rem; margin-right: 4px;"></i> Search</a>
       </nav>
 
-      <!-- Header Actions: Search, Theme Toggle & CTA -->
+      <!-- Header Actions: Theme Toggle & CTA -->
       <div class="nav-actions">
-        <!-- Search Trigger Button -->
-        <button type="button" id="search-toggle-btn" class="theme-toggle-btn" aria-label="Search website or Google" title="Search (Ctrl + K)">
-          <i class="fas fa-search" aria-hidden="true"></i>
-        </button>
-
         <!-- Light / Dark Theme Switcher Button -->
         <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Light/Dark Theme" title="Toggle Light/Dark Theme">
           <i class="fas fa-sun theme-icon-sun"></i>
@@ -1228,50 +1222,10 @@
     </div>
   </div>
 
-  <!-- Search Modal Overlay (Live Search & Google Search) -->
-  <div id="search-modal" class="modal-overlay search-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="search-modal-title" aria-hidden="true">
-    <div class="modal-window search-modal-window">
-      <div class="search-modal-header">
-        <div class="search-input-wrapper">
-          <i class="fas fa-search search-input-icon" aria-hidden="true"></i>
-          <input type="text" id="site-search-input" class="site-search-input" placeholder="Search projects, skills, or Google..." autocomplete="off" aria-label="Search website or Google">
-          <span class="search-kbd-hint">ESC</span>
-        </div>
-        <button type="button" id="search-modal-close" class="modal-close-btn" aria-label="Close search dialog">
-          <i class="fas fa-times" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <!-- Quick Search Suggestions -->
-      <div class="search-quick-tags">
-        <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Popular:</span>
-        <button type="button" class="search-tag-chip" data-search="Ecomace">Ecomace</button>
-        <button type="button" class="search-tag-chip" data-search="Alokpo">Alokpo</button>
-        <button type="button" class="search-tag-chip" data-search="React">React</button>
-        <button type="button" class="search-tag-chip" data-search="AI">AI &amp; LLMs</button>
-        <button type="button" class="search-tag-chip" data-search="CV">CV / Resume</button>
-      </div>
-
-      <!-- Search Results List -->
-      <div id="search-results-list" class="search-results-list" role="region" aria-live="polite">
-        <!-- Dynamically populated via JavaScript -->
-      </div>
-
-      <!-- Search on Google Action Footer -->
-      <div class="search-modal-footer">
-        <a href="https://www.google.com/search?q=site:zihan.xyz" target="_blank" rel="noopener noreferrer" id="search-google-btn" class="search-google-btn">
-          <i class="fab fa-google" style="color: #4285f4;" aria-hidden="true"></i>
-          <span>Search Google for <strong id="google-query-preview" style="color: var(--primary);">site:zihan.xyz</strong></span>
-          <i class="fas fa-external-link-alt" style="font-size: 0.8rem; margin-left: auto;" aria-hidden="true"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Main JavaScript File (with cache-busting version) -->
-  <script src="js/main.js?v=2.6"></script>
+  <script src="js/main.js?v=2.7"></script>
 </body>
 </html>
