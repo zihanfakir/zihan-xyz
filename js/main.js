@@ -899,15 +899,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const aiChips = document.querySelectorAll('.ai-chip');
 
   if (aiChatBtn && aiChatWindow) {
-    aiChatBtn.addEventListener('click', () => {
-      aiChatWindow.classList.toggle('open');
-      if (aiChatWindow.classList.contains('open')) {
-        setTimeout(() => aiChatInput?.focus(), 200);
+    function toggleAIChat(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
       }
+      const isOpen = aiChatWindow.classList.toggle('open');
+      aiChatBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        setTimeout(() => aiChatInput?.focus(), 150);
+      }
+    }
+
+    aiChatBtn.addEventListener('click', toggleAIChat);
+    aiChatBtn.addEventListener('touchend', (e) => {
+      toggleAIChat(e);
+    }, { passive: false });
+
+    aiChatClose?.addEventListener('click', (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      aiChatWindow.classList.remove('open');
+      aiChatBtn.setAttribute('aria-expanded', 'false');
     });
 
-    aiChatClose?.addEventListener('click', () => {
-      aiChatWindow.classList.remove('open');
+    aiChatWindow.addEventListener('click', (e) => {
+      e.stopPropagation();
     });
 
     document.addEventListener('click', (e) => {
@@ -915,6 +934,7 @@ document.addEventListener('DOMContentLoaded', () => {
           !aiChatWindow.contains(e.target) &&
           !aiChatBtn.contains(e.target)) {
         aiChatWindow.classList.remove('open');
+        aiChatBtn.setAttribute('aria-expanded', 'false');
       }
     });
 
