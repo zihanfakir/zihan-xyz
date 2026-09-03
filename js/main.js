@@ -521,12 +521,12 @@ document.addEventListener('DOMContentLoaded', () => {
       skillsObserver.observe(skillsSection);
     }
 
-    // 7B. Progressive Scroll Reveal (Smoothly reveals content as user scrolls)
+    // 7B. Progressive Scroll Reveal (Smooth, ultra-fast anticipatory reveal)
     const revealTargets = document.querySelectorAll(
-      '.section-header, .stats-bar, .about-grid > *, .timeline-item, .contact-grid > *'
+      '.section-header, .about-grid > *, .timeline-item, .contact-grid > *'
     );
     const staggerGrids = document.querySelectorAll(
-      '.stats-grid, .skills-grid, .projects-grid'
+      '.skills-grid, .projects-grid'
     );
 
     revealTargets.forEach(el => el.classList.add('reveal'));
@@ -540,8 +540,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, {
-      threshold: 0.08,
-      rootMargin: '0px 0px -40px 0px'
+      threshold: 0.02,
+      rootMargin: '0px 0px 200px 0px'
     });
 
     revealTargets.forEach(el => scrollRevealObserver.observe(el));

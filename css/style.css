@@ -318,12 +318,12 @@ button, input, textarea {
 }
 
 /* --------------------------------------------------------------------------
-   2.5. Progressive Scroll-Reveal / Gentle Lazy Entrance
+   2.5. Progressive Scroll-Reveal / Ultra-Fast & Smooth Entrance
    -------------------------------------------------------------------------- */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(14px);
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
@@ -335,18 +335,25 @@ button, input, textarea {
 /* Staggered progressive cards entrance */
 .reveal-stagger > * {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(12px);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
-.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.04s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.20s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.28s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.36s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.44s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(n+7) { transition-delay: 0.50s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.02s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.11s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.14s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.17s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(n+7) { transition-delay: 0.20s; opacity: 1; transform: translateY(0); }
+
+/* On mobile devices: Zero delay so elements reveal instantly as soon as scrolled */
+@media (max-width: 768px) {
+  .reveal-stagger > * {
+    transition-delay: 0s !important;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .reveal,
