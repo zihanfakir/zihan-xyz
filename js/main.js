@@ -87,11 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   const typedTextEl = document.getElementById('typed-text');
   const roles = [
-    'AI-Powered Full Stack Engineer',
-    'GenAI & LLM Solutions Builder',
     'Full Stack Software Developer',
-    'Prompt Engineer & Problem Solver',
-    'Open Source Innovator'
+    'Open Source Innovator',
+    'GenAI & LLM Solutions Builder',
+    'AI-Powered Full Stack Engineer',
+    'Prompt Engineer & Problem Solver'
   ];
   
   let roleIndex = 0;
