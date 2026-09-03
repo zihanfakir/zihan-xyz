@@ -812,6 +812,18 @@ body.light-theme .theme-icon-moon {
 
 .stat-item {
   text-align: center;
+  padding: 20px 16px;
+  background: var(--bg-card-solid);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.stat-item:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-number {
@@ -2273,6 +2285,11 @@ textarea.form-control {
     background: var(--bg-card-solid) !important;
     box-shadow: var(--shadow-sm) !important;
     border: 1px solid var(--border-color) !important;
+  }
+
+  .stat-item {
+    border-radius: 14px !important;
+    padding: 16px 14px !important;
   }
 
   /* Disable heavy GPU-draining infinite repaints on mobile */
