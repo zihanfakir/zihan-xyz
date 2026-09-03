@@ -2565,6 +2565,14 @@ textarea.form-control {
     z-index: 1100;
   }
 
+  .ai-chat-window.open {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
   .toast-container {
     top: 20px;
     bottom: auto;

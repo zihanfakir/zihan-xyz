@@ -899,42 +899,71 @@ document.addEventListener('DOMContentLoaded', () => {
   const aiChips = document.querySelectorAll('.ai-chip');
 
   if (aiChatBtn && aiChatWindow) {
+    let lastActionTime = 0;
+
+    function openAIChat() {
+      aiChatWindow.classList.add('open');
+      aiChatBtn.setAttribute('aria-expanded', 'true');
+      setTimeout(() => aiChatInput?.focus(), 150);
+    }
+
+    function closeAIChat() {
+      aiChatWindow.classList.remove('open');
+      aiChatBtn.setAttribute('aria-expanded', 'false');
+    }
+
     function toggleAIChat(e) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
       }
-      const isOpen = aiChatWindow.classList.toggle('open');
-      aiChatBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      if (isOpen) {
-        setTimeout(() => aiChatInput?.focus(), 150);
+      const now = Date.now();
+      if (now - lastActionTime < 350) return;
+      lastActionTime = now;
+
+      if (aiChatWindow.classList.contains('open')) {
+        closeAIChat();
+      } else {
+        openAIChat();
       }
     }
 
+    // Expose globally for inline onclick fallback
+    window.toggleAIChatGlobal = toggleAIChat;
+
     aiChatBtn.addEventListener('click', toggleAIChat);
-    aiChatBtn.addEventListener('touchend', (e) => {
-      toggleAIChat(e);
-    }, { passive: false });
+    aiChatBtn.addEventListener('touchend', toggleAIChat, { passive: false });
 
     aiChatClose?.addEventListener('click', (e) => {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
       }
-      aiChatWindow.classList.remove('open');
-      aiChatBtn.setAttribute('aria-expanded', 'false');
+      closeAIChat();
     });
+
+    aiChatClose?.addEventListener('touchend', (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      closeAIChat();
+    }, { passive: false });
 
     aiChatWindow.addEventListener('click', (e) => {
       e.stopPropagation();
     });
 
+    aiChatWindow.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+
     document.addEventListener('click', (e) => {
+      if (Date.now() - lastActionTime < 350) return;
       if (aiChatWindow.classList.contains('open') &&
           !aiChatWindow.contains(e.target) &&
           !aiChatBtn.contains(e.target)) {
-        aiChatWindow.classList.remove('open');
-        aiChatBtn.setAttribute('aria-expanded', 'false');
+        closeAIChat();
       }
     });
 
