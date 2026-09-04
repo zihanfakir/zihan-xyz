@@ -70,7 +70,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Custom Stylesheet (with cache-busting version) -->
-  <link rel="stylesheet" href="css/style.css?v=3.3">
+  <link rel="stylesheet" href="css/style.css?v=3.4">
 
   <!-- Instant Theme Persistence Script (System Theme Default + Manual Override) -->
   <script>
@@ -704,33 +704,34 @@
 
       <!-- Projects Grid -->
       <div class="projects-grid">
-        <!-- Project 1: Cloud SaaS Platform -->
-        <div class="project-card" data-category="fullstack">
+        <!-- Project 1: Alokpath AI - Multi-Model AI Chat Platform -->
+        <div class="project-card" data-category="ai fullstack">
           <div class="project-thumbnail">
-            <img src="assets/project-1.svg" alt="NextGen Cloud SaaS Platform" class="project-img" loading="lazy" decoding="async" width="400" height="225">
-            <span class="project-badge-tag">Full Stack</span>
+            <img src="assets/project-1.svg" alt="আলোকপথ AI - Multi-Model AI Chat Platform" class="project-img" loading="lazy" decoding="async" width="400" height="225">
+            <span class="project-badge-tag" style="background: rgba(79, 70, 229, 0.9);"><i class="fas fa-crown" style="color: #fbbf24; margin-right: 4px;" aria-hidden="true"></i> Flagship AI</span>
           </div>
           <div class="project-content">
-            <h3 class="project-title">NextGen Cloud SaaS Platform</h3>
+            <h3 class="project-title">আলোকপথ AI — Multi-Model AI Platform</h3>
             <p class="project-desc">
-              Enterprise workspace platform with real-time multi-user collaboration, automated Stripe tiered subscription billing, and deep analytics.
+              Production-ready multi-model generative AI chat application powered by 11 cutting-edge LLMs (Gemini, Claude, DeepSeek, GPT). Features zero client-side API key exposure, real-time token streaming, multimodal file/image recognition, and full Bengali UI.
             </p>
             <div class="project-techs">
-              <span class="tech-tag">Next.js 14</span>
-              <span class="tech-tag">TypeScript</span>
-              <span class="tech-tag">PostgreSQL</span>
-              <span class="tech-tag">Docker</span>
+              <span class="tech-tag">GenAI &amp; LLMs</span>
+              <span class="tech-tag">11 Models</span>
+              <span class="tech-tag">Streaming API</span>
+              <span class="tech-tag">Bengali UI</span>
+              <span class="tech-tag">Cloudflare</span>
             </div>
             <div class="project-footer">
               <div class="project-links">
                 <button type="button" class="project-link-btn view-project-details" data-project-id="proj-1" aria-haspopup="dialog">
                   <i class="fas fa-info-circle" aria-hidden="true"></i> Details
                 </button>
-                <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                <a href="https://ai.zihan.xyz" target="_blank" rel="noopener noreferrer" class="project-link-btn" title="Visit Live Alokpath AI on ai.zihan.xyz">
                   <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
                 </a>
               </div>
-              <a href="https://github.com/zihanfakir/nextgen-cloud-saas" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (@zihanfakir)" aria-label="View source code on GitHub">
+              <a href="https://github.com/zihanfakir/ai.zihan.xyz" target="_blank" rel="noopener noreferrer" class="social-link" style="width: 34px; height: 34px; font-size: 1rem;" title="View Source on GitHub (zihanfakir/ai.zihan.xyz)" aria-label="View source code on GitHub">
                 <i class="fab fa-github" aria-hidden="true"></i>
               </a>
             </div>
@@ -1192,10 +1193,11 @@
     </div>
     <div id="ai-chat-messages" class="ai-chat-messages">
       <div class="ai-msg ai-msg-bot">
-        <i class="fas fa-robot" style="color: var(--primary); margin-right: 6px;" aria-hidden="true"></i> Hi! I'm Zihan Fakir's AI portfolio assistant. Ask me anything about Zihan's AI engineering capabilities, real projects (Ecomace, Alokpo, Age Calculator), tech skills, or how to contact him!
+        <i class="fas fa-robot" style="color: var(--primary); margin-right: 6px;" aria-hidden="true"></i> Hi! I'm Zihan Fakir's AI portfolio assistant. Ask me anything about Zihan's AI engineering capabilities, flagship projects (Alokpath AI, Ecomace, Alokpo), tech skills, or how to contact him!
       </div>
     </div>
     <div class="ai-quick-prompts">
+      <button type="button" class="ai-chip" data-query="alokpath"><i class="fas fa-crown" style="color: #fbbf24;" aria-hidden="true"></i> Alokpath AI</button>
       <button type="button" class="ai-chip" data-query="ai"><i class="fas fa-brain" style="color: #a855f7;" aria-hidden="true"></i> AI Skills</button>
       <button type="button" class="ai-chip" data-query="projects"><i class="fas fa-folder-open" style="color: #06b6d4;" aria-hidden="true"></i> Real Projects</button>
       <button type="button" class="ai-chip" data-query="cv"><i class="fas fa-file-pdf" style="color: #ef4444;" aria-hidden="true"></i> View CV</button>
@@ -1226,6 +1228,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Main JavaScript File (with cache-busting version) -->
-  <script src="js/main.js?v=3.3"></script>
+  <script src="js/main.js?v=3.4"></script>
 </body>
 </html>

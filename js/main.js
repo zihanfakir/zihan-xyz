@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
           clearTimeout(cardAnimationTimeouts.get(card));
         }
 
-        if (filterValue === 'all' || category === filterValue) {
+        if (filterValue === 'all' || category === filterValue || (category && category.split(' ').includes(filterValue))) {
           card.style.display = 'flex';
           const tId = setTimeout(() => {
             card.style.opacity = '1';
@@ -313,19 +313,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const projectDetailsDatabase = {
     'proj-1': {
-      title: 'NextGen Cloud SaaS Platform',
-      category: 'Full Stack & Cloud',
-      duration: '4 Months',
-      description: 'An enterprise-grade cloud workspace with real-time collaboration, analytics dashboards, subscription billing via Stripe, and role-based access control.',
+      title: 'আলোকপথ AI — Multi-Model Generative AI Platform',
+      category: 'Flagship Generative AI & Full Stack Platform',
+      duration: 'Active Production Flagship',
+      description: 'Alokpath AI (আলোকপথ AI) is a powerful, production-ready multi-model AI chat platform engineered by Zihan Fakir. Designed with an ultra-secure serverless proxy architecture that prevents client-side API key leakage, it provides access to 11 top-tier frontier models (Gemini, Claude, DeepSeek, GPT-4o, Llama). Features include live token streaming, image & document context parsing, token counters, and a rich Bengali user interface.',
       features: [
-        'Real-time collaborative editing using WebSockets',
-        'Stripe billing with automated tiered subscription webhooks',
-        'Secure multi-tenant data partitioning with PostgreSQL & Redis caching',
-        'Comprehensive audit logging and team management'
+        'Access to 11 industry-leading LLMs in one unified workspace (Gemini, Claude, GPT, DeepSeek)',
+        'Zero-trust security: all API communications proxied safely without client-side key leakage',
+        'Real-time token streaming with smooth dynamic rendering and markdown formatting',
+        'Multimodal intelligence: supports image analysis and text/code document extraction',
+        'Custom Bengali user interface & prompt engineering tailored for native Bengali interactions',
+        'Live production deployment on custom domain: https://ai.zihan.xyz with Cloudflare edge caching'
       ],
-      techStack: ['Next.js 14', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'TailwindCSS', 'Redis', 'Docker'],
-      liveUrl: 'https://zihan.xyz',
-      codeUrl: 'https://github.com/zihanfakir/nextgen-cloud-saas'
+      techStack: ['GenAI & LLMs', 'JavaScript (ES6+)', 'Serverless API', 'Cloudflare Edge', 'Markdown / Prism', 'Bengali UI'],
+      liveUrl: 'https://ai.zihan.xyz',
+      codeUrl: 'https://github.com/zihanfakir/ai.zihan.xyz'
     },
     'proj-2': {
       title: 'Ecomace — Full Stack Modern E-Commerce',
@@ -1043,9 +1045,10 @@ Profile of Zihan Fakir:
 - Core Superpower: Builds and ships production-grade software 10x faster than traditional developers using advanced AI workflows, prompt engineering, and autonomous coding agents without compromising code architecture or security.
 - Technical Skills: GenAI & LLMs (Gemini, Claude, OpenAI, DeepSeek - 99%), HTML5 (98%), CSS3 (96%), JavaScript ES6+ (95%), React & Next.js (95%), TypeScript (92%), Node.js & Express (90%), Python & FastAPI (86%), PostgreSQL & Prisma (88%), MongoDB & Redis (85%), Tailwind CSS (96%), Docker (82%).
 - Real Production Projects:
-  1. Ecomace: Modern full-stack eCommerce engine with decoupled React client and Node/Express backend. Features render-as-you-fetch data streaming, persistent multi-item cart, 170+ commits, deployed on Vercel. (Live: https://ecomace.vercel.app/ | Code: https://github.com/zihanfakir/Ecomace)
-  2. Alokpo: Custom web search engine & crawler backend. Modern search UI communicating with crawler indexing APIs. (Live: https://zihanfakir.github.io/alokpo-search/ | Frontend: https://github.com/zihanfakir/alokpo-search | Backend: https://github.com/zihanfakir/alokpo-backend)
-  3. বয়স ক্যালকুলেটর (Age Calculator 26.0): Real-time ticking chronological age calculator with lifetime stats (heartbeats, breaths, next birthday countdown). (Live: https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/ | Code: https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0)
+  1. Alokpath AI (আলোকপথ AI): Zihan's flagship multi-model generative AI platform powered by 11 frontier models (Gemini, Claude, GPT-4o, DeepSeek, Llama). Features zero client-side API key exposure (100% secure serverless proxy), real-time token streaming, multimodal document/image analysis, and full Bengali UI. (Live: https://ai.zihan.xyz | Code: https://github.com/zihanfakir/ai.zihan.xyz)
+  2. Ecomace: Modern full-stack eCommerce engine with decoupled React client and Node/Express backend. Features render-as-you-fetch data streaming, persistent multi-item cart, 170+ commits, deployed on Vercel. (Live: https://ecomace.vercel.app/ | Code: https://github.com/zihanfakir/Ecomace)
+  3. Alokpo: Custom web search engine & crawler backend. Modern search UI communicating with crawler indexing APIs. (Live: https://zihanfakir.github.io/alokpo-search/ | Frontend: https://github.com/zihanfakir/alokpo-search | Backend: https://github.com/zihanfakir/alokpo-backend)
+  4. বয়স ক্যালকুলেটর (Age Calculator 26.0): Real-time ticking chronological age calculator with lifetime stats (heartbeats, breaths, next birthday countdown). (Live: https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/ | Code: https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0)
 - Curriculum Vitae (CV / Resume): Available for download at "Zihan Fakir CV.pdf". Covers Zihan's Full Stack (MERN), Android (Kotlin), AI development, application security auditing, and top projects.
 
 Guidelines:
@@ -1071,6 +1074,12 @@ Guidelines:
     function generateLocalAIResponse(query) {
       const q = query.toLowerCase().trim();
 
+      if (q.includes('alokpath') || q.includes('আলোকপথ') || q.includes('chatbot') || q.includes('chat bot') || q.includes('ai bot') || q.includes('ai.zihan.xyz')) {
+        return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>About আলোকপথ AI (Alokpath AI):</strong><br>
+        Zihan Fakir's flagship generative AI chat platform powered by <strong>11 frontier AI models</strong> (Gemini, Claude, GPT-4o, DeepSeek, Llama). Features zero client-side API key exposure (100% secure serverless proxy), real-time token streaming, multimodal image and file recognition, and an intuitive Bengali user interface.<br>
+        <i class="fas fa-external-link-alt" style="margin-right:4px;"></i> <a href="https://ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Try Live at ai.zihan.xyz</a> • <i class="fab fa-github" style="margin-right:4px;"></i> <a href="https://github.com/zihanfakir/ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">GitHub Repository</a>`;
+      }
+
       if (q.includes('cv') || q.includes('resume') || q.includes('curriculum') || q.includes('bio') || q.includes('pdf')) {
         return `<i class="fas fa-file-pdf" style="color:#ef4444;margin-right:6px;"></i> <strong>Zihan Fakir's Curriculum Vitae:</strong><br>
         Zihan's official CV details his full-stack engineering skills, MERN stack, Android (Kotlin), AI development, and production software portfolio.<br><br>
@@ -1087,6 +1096,7 @@ Guidelines:
 
       if (q.includes('ai') || q.includes('llm') || q.includes('prompt') || q.includes('agent') || q.includes('gpt') || q.includes('gemini') || q.includes('claude') || q.includes('deepseek')) {
         return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>Zihan's AI Engineering Capabilities:</strong><br>
+        • <strong>Alokpath AI (আলোকপথ AI):</strong> Multi-model flagship chat platform with 11 LLMs at <a href="https://ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">ai.zihan.xyz</a>.<br>
         • <strong>GenAI & LLMs:</strong> 99% proficiency working with Google Gemini, Anthropic Claude, OpenAI, and DeepSeek.<br>
         • <strong>Prompt Engineering:</strong> Expert in crafting structured system instructions, few-shot prompting, and deterministic JSON schemas.<br>
         • <strong>Autonomous Agents:</strong> Designing tool-calling agents and automated reasoning workflows.<br>
@@ -1095,9 +1105,10 @@ Guidelines:
 
       if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('banano')) {
         return `<i class="fas fa-layer-group" style="color:var(--secondary);margin-right:6px;"></i> <strong>Zihan's Top Real Projects:</strong><br>
-        1. <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Ecomace</a>: High-performance eCommerce engine with render-as-you-fetch data streaming.<br>
-        2. <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Alokpo</a>: Decoupled web search engine & crawler backend.<br>
-        3. <a href="https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">বয়স ক্যালকুলেটর (v26.0)</a>: Real-time ticking chronological age calculator with lifetime stats!`;
+        1. <a href="https://ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">আলোকপথ AI (Alokpath AI)</a>: Flagship multi-model AI platform powered by 11 LLMs with Bengali UI.<br>
+        2. <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Ecomace</a>: High-performance eCommerce engine with render-as-you-fetch data streaming.<br>
+        3. <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Alokpo</a>: Decoupled web search engine & crawler backend.<br>
+        4. <a href="https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">বয়স ক্যালকুলেটর (v26.0)</a>: Real-time ticking chronological age calculator with lifetime stats!`;
       }
 
       if (q.includes('ecomace') || q.includes('ecommerce') || q.includes('shop') || q.includes('store')) {
