@@ -4,7 +4,7 @@ An ultra-modern, high-performance, and fully responsive personal portfolio websi
 
 - **🌐 Domain**: [https://zihan.xyz](https://zihan.xyz)
 - **👤 All Usernames**: `@zihanfakir` (GitHub, Facebook, Instagram, Telegram, LinkedIn, Twitter/X)
-- **📧 Email**: `x@zihan.xyz` (Backup: `zihanfakir@gmail.com`)
+- **📧 Email**: `x@zihan.uk` (Backup: `zihanfakir@gmail.com`)
 - **📱 Phone & WhatsApp**: `+880 1402-963123` (01402963123)
 
 ---

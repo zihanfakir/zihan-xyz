@@ -811,7 +811,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { name, email, subject, message };
   }
 
-  // Handle Send via Email (mailto to x@zihan.xyz)
+  // Handle Send via Email (mailto to x@zihan.uk)
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -832,9 +832,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `---\nSent from zihan.xyz portfolio`
       );
 
-      const mailtoUrl = `mailto:x@zihan.xyz?subject=${emailSubject}&body=${emailBody}`;
+      const mailtoUrl = `mailto:x@zihan.uk?subject=${emailSubject}&body=${emailBody}`;
 
-      showToast(`Opening your email app to send to x@zihan.xyz...`, 'info');
+      showToast(`Opening your email app to send to x@zihan.uk...`, 'info');
       
       setTimeout(() => {
         window.location.href = mailtoUrl;
@@ -1039,7 +1039,7 @@ Your goal is to represent Zihan Fakir with high intelligence, professionalism, a
 Profile of Zihan Fakir:
 - Full Name: Zihan Fakir
 - Official Domain: https://zihan.xyz
-- Primary Email: x@zihan.xyz (Backup: zihanfakir@gmail.com)
+- Primary Email: x@zihan.uk (Backup: zihanfakir@gmail.com)
 - Phone & WhatsApp: +880 1402-963123 (01402963123)
 - Universal Social Username: @zihanfakir across all networks (GitHub: https://github.com/zihanfakir , Facebook: https://facebook.com/zihanfakir , Instagram: https://instagram.com/zihanfakir , Telegram: https://t.me/zihanfakir , LinkedIn: https://linkedin.com/in/zihanfakir , Twitter/X: https://x.com/zihanfakir)
 - Core Superpower: Builds and ships production-grade software 10x faster than traditional developers using advanced AI workflows, prompt engineering, and autonomous coding agents without compromising code architecture or security.
@@ -1131,7 +1131,7 @@ Guidelines:
 
       if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('hire') || q.includes('whatsapp') || q.includes('reach')) {
         return `<i class="fas fa-envelope-open-text" style="color:var(--accent-emerald);margin-right:6px;"></i> <strong>Contact Zihan Fakir:</strong><br>
-        • <strong>Email:</strong> <a href="mailto:x@zihan.xyz" style="color:var(--primary);">x@zihan.xyz</a><br>
+        • <strong>Email:</strong> <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a><br>
         • <strong>Phone & WhatsApp:</strong> <a href="tel:+8801402963123" style="color:var(--primary);">+880 1402-963123</a><br>
         • <strong>Domain:</strong> <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.xyz</a><br>
         • <strong>All Usernames:</strong> <strong style="color:var(--text-main);">@zihanfakir</strong> (GitHub, Facebook, Instagram, Telegram, LinkedIn, X)`;
@@ -1145,7 +1145,7 @@ Guidelines:
         • <strong>Database & DevOps:</strong> PostgreSQL, MongoDB, Redis, Docker, Vercel, Git`;
       }
 
-      return `Thanks for asking! Zihan Fakir is a Full Stack Engineer & AI Builder. You can check out his projects (<a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.xyz" style="color:var(--primary);">x@zihan.xyz</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
+      return `Thanks for asking! Zihan Fakir is a Full Stack Engineer & AI Builder. You can check out his projects (<a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
     }
 
     let isAIResponding = false;
