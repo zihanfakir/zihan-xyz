@@ -961,6 +961,17 @@ document.addEventListener('DOMContentLoaded', () => {
       downloadName: 'Microsoft-Business-Analytics-Zihan-Fakir.pdf',
       desc: 'Completed advanced training in data analysis with Excel, quantitative modeling, statistical variance, pivot insights, and business decision intelligence.'
     },
+    'cert-9': {
+      title: 'Automating with AI/ML for Small Business Owners',
+      issuer: 'Amazon Web Services (AWS) — AWS Training & Certification',
+      date: 'September 09, 2026',
+      id: 'AWS-TRAINING-CERTIFICATION-2026',
+      idLabel: 'Completion Certificate',
+      img: 'assets/certificates/cert-9.jpg',
+      pdf: 'assets/certificates/cert-9-aws-automating-ai-ml.pdf',
+      downloadName: 'AWS-Automating-AI-ML-Zihan-Fakir.pdf',
+      desc: 'Completed official AWS Training & Certification course on automating business workflows with Artificial Intelligence and Machine Learning (AI/ML) cloud services.'
+    },
     'cert-3': {
       title: 'Master ChatGPT & Generative AI',
       issuer: 'UniAthena | Athena Global Education (FEDE Member)',
@@ -1220,6 +1231,7 @@ Profile of Zihan Fakir:
   3. Alokpo: Custom web search engine & crawler backend. Modern search UI communicating with crawler indexing APIs. (Live: https://zihanfakir.github.io/alokpo-search/ | Frontend: https://github.com/zihanfakir/alokpo-search | Backend: https://github.com/zihanfakir/alokpo-backend)
   4. বয়স ক্যালকুলেটর (Age Calculator 26.0): Real-time ticking chronological age calculator with lifetime stats (heartbeats, breaths, next birthday countdown). (Live: https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/ | Code: https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0)
 - Curriculum Vitae (CV / Resume): Available for download at "Zihan Fakir CV.pdf". Covers Zihan's Full Stack (MERN), Android (Kotlin), AI development, application security auditing, and top projects.
+- Verified Honors & Certifications (9 Credentials): Amazon Web Services (AWS - Automating with AI/ML for Small Business Owners), Google Cloud (Create Image Captioning Models), Microsoft (Business Analytics with Excel), UniAthena (Master ChatGPT & Generative AI), HP Foundation / HP LIFE (AI for Beginners, Strategic Planning, Critical Thinking, Business Email), UNDP / ICPSD (ESG Standards & Institutional Governance).
 
 Guidelines:
 - If the visitor speaks Bengali (Bangla), reply in polite and friendly Bengali. If they speak English, reply in English.
@@ -1316,7 +1328,8 @@ Guidelines:
       }
 
       if (q.includes('cert') || q.includes('credential') || q.includes('honor') || q.includes('license')) {
-        return `<i class="fas fa-award" style="color:var(--primary);margin-right:6px;"></i> <strong>Verified Honors &amp; Certifications (8 Credentials):</strong><br>
+        return `<i class="fas fa-award" style="color:var(--primary);margin-right:6px;"></i> <strong>Verified Honors &amp; Certifications (9 Credentials):</strong><br>
+        • <strong>Amazon Web Services (AWS):</strong> Automating with AI/ML for Small Business Owners<br>
         • <strong>Google Cloud | Simplilearn:</strong> Create Image Captioning Models (ID: 10705792)<br>
         • <strong>Microsoft | Simplilearn:</strong> Business Analytics with Excel (ID: 10706852)<br>
         • <strong>UniAthena | FEDE:</strong> Master ChatGPT &amp; Generative AI (Blockchain ID: 2230-1508-9566)<br>
