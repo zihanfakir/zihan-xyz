@@ -1037,6 +1037,39 @@ document.addEventListener('DOMContentLoaded', () => {
       pdf: 'assets/certificates/cert-8-hp-strategic-planning-ai.pdf',
       downloadName: 'HP-LIFE-Strategic-Planning-AI-Zihan-Fakir.pdf',
       desc: 'Modern strategic roadmap formulation, strategic agile execution frameworks, and utilizing AI capabilities to achieve competitive enterprise advantages.'
+    },
+    'cert-10': {
+      title: 'AI Search Operating System',
+      issuer: 'Semrush Academy (Instructors: Leigh McKenzie & Rita Cidre)',
+      date: 'September 09, 2026 (Expires Sep 09, 2027)',
+      id: 'f087b01d3c',
+      idLabel: 'Certificate ID',
+      img: 'assets/certificates/cert-10.jpg',
+      pdf: 'assets/certificates/cert-10-semrush-ai-search-operating-system.pdf',
+      downloadName: 'Semrush-AI-Search-Operating-System-Zihan-Fakir.pdf',
+      desc: 'Mastery of AI-powered search engines, retrieval augmented generation (RAG) principles for search, generative search optimization (GEO), and semantic query understanding.'
+    },
+    'cert-11': {
+      title: 'Become an AI-Powered Marketer',
+      issuer: 'Semrush Academy (Instructor: Michael Olaye)',
+      date: 'September 09, 2026 (Expires Sep 09, 2027)',
+      id: '78ed8d2af5',
+      idLabel: 'Certificate ID',
+      img: 'assets/certificates/cert-11.jpg',
+      pdf: 'assets/certificates/cert-11-semrush-ai-powered-marketer.pdf',
+      downloadName: 'Semrush-AI-Powered-Marketer-Zihan-Fakir.pdf',
+      desc: 'Completed advanced training on integrating generative AI, automated marketing operations, predictive analytics, and algorithmic audience targeting.'
+    },
+    'cert-12': {
+      title: 'Get a Job in Digital Marketing (with no experience)',
+      issuer: 'Semrush Academy (Instructor: Olivia Mae Hanlon)',
+      date: 'September 09, 2026 (Expires Sep 09, 2027)',
+      id: 'b4a44f8aef',
+      idLabel: 'Certificate ID',
+      img: 'assets/certificates/cert-12.jpg',
+      pdf: 'assets/certificates/cert-12-semrush-digital-marketing.pdf',
+      downloadName: 'Semrush-Digital-Marketing-Zihan-Fakir.pdf',
+      desc: 'Comprehensive certification in digital marketing campaigns, SEO growth frameworks, conversion funnel design, and performance metrics.'
     }
   };
 
@@ -1231,7 +1264,7 @@ Profile of Zihan Fakir:
   3. Alokpo: Custom web search engine & crawler backend. Modern search UI communicating with crawler indexing APIs. (Live: https://zihanfakir.github.io/alokpo-search/ | Frontend: https://github.com/zihanfakir/alokpo-search | Backend: https://github.com/zihanfakir/alokpo-backend)
   4. বয়স ক্যালকুলেটর (Age Calculator 26.0): Real-time ticking chronological age calculator with lifetime stats (heartbeats, breaths, next birthday countdown). (Live: https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/ | Code: https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0)
 - Curriculum Vitae (CV / Resume): Available for download at "Zihan Fakir CV.pdf". Covers Zihan's Full Stack (MERN), Android (Kotlin), AI development, application security auditing, and top projects.
-- Verified Honors & Certifications (9 Credentials): Amazon Web Services (AWS - Automating with AI/ML for Small Business Owners), Google Cloud (Create Image Captioning Models), Microsoft (Business Analytics with Excel), UniAthena (Master ChatGPT & Generative AI), HP Foundation / HP LIFE (AI for Beginners, Strategic Planning, Critical Thinking, Business Email), UNDP / ICPSD (ESG Standards & Institutional Governance).
+- Verified Honors & Certifications (12 Credentials): Amazon Web Services (AWS - Automating with AI/ML for Small Business Owners), Google Cloud (Create Image Captioning Models), Microsoft (Business Analytics with Excel), Semrush Academy (AI Search Operating System, Become an AI-Powered Marketer, Digital Marketing), UniAthena (Master ChatGPT & Generative AI), HP Foundation / HP LIFE (AI for Beginners, Strategic Planning, Critical Thinking, Business Email), UNDP / ICPSD (ESG Standards & Institutional Governance).
 
 Guidelines:
 - If the visitor speaks Bengali (Bangla), reply in polite and friendly Bengali. If they speak English, reply in English.
@@ -1328,10 +1361,11 @@ Guidelines:
       }
 
       if (q.includes('cert') || q.includes('credential') || q.includes('honor') || q.includes('license')) {
-        return `<i class="fas fa-award" style="color:var(--primary);margin-right:6px;"></i> <strong>Verified Honors &amp; Certifications (9 Credentials):</strong><br>
+        return `<i class="fas fa-award" style="color:var(--primary);margin-right:6px;"></i> <strong>Verified Honors &amp; Certifications (12 Credentials):</strong><br>
         • <strong>Amazon Web Services (AWS):</strong> Automating with AI/ML for Small Business Owners<br>
         • <strong>Google Cloud | Simplilearn:</strong> Create Image Captioning Models (ID: 10705792)<br>
         • <strong>Microsoft | Simplilearn:</strong> Business Analytics with Excel (ID: 10706852)<br>
+        • <strong>Semrush Academy:</strong> AI Search Operating System, Become an AI-Powered Marketer, Digital Marketing<br>
         • <strong>UniAthena | FEDE:</strong> Master ChatGPT &amp; Generative AI (Blockchain ID: 2230-1508-9566)<br>
         • <strong>HP Foundation (HP LIFE):</strong> AI for Beginners, Strategic Planning, Critical Thinking, Business Email<br>
         • <strong>UNDP / ICPSD:</strong> ESG Standards &amp; Institutional Governance<br>
