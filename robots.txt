@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /*.pdf$
+Disallow: /*.pdf
+Disallow: /Zihan%20Fakir%20CV.pdf
+Disallow: /Zihan Fakir CV.pdf
 
 Sitemap: https://zihan.xyz/sitemap.xml
