@@ -936,6 +936,176 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
+  // 10.1 Certificate Database & Interactive Modal Viewer
+  // ------------------------------------------------------------------------
+  const certDatabase = {
+    'cert-1': {
+      title: 'Create Image Captioning Models',
+      issuer: 'Simplilearn | SkillUp (Powered by Google Cloud)',
+      date: 'September 8, 2026',
+      id: '10705792',
+      idLabel: 'Certificate Code',
+      img: 'assets/certificates/cert-1.jpg',
+      pdf: 'assets/certificates/cert-1-google-cloud-image-captioning.pdf',
+      downloadName: 'Google-Cloud-Image-Captioning-Zihan-Fakir.pdf',
+      desc: 'Completed comprehensive course covering computer vision, multimodal neural networks, encoder-decoder architectures, and deep learning models for automatic image captioning on Google Cloud.'
+    },
+    'cert-2': {
+      title: 'Business Analytics with Excel',
+      issuer: 'Simplilearn | SkillUp (Powered by Microsoft)',
+      date: 'September 8, 2026',
+      id: '10706852',
+      idLabel: 'Certificate Code',
+      img: 'assets/certificates/cert-2.jpg',
+      pdf: 'assets/certificates/cert-2-microsoft-business-analytics.pdf',
+      downloadName: 'Microsoft-Business-Analytics-Zihan-Fakir.pdf',
+      desc: 'Completed advanced training in data analysis with Excel, quantitative modeling, statistical variance, pivot insights, and business decision intelligence.'
+    },
+    'cert-3': {
+      title: 'Master ChatGPT & Generative AI',
+      issuer: 'UniAthena | Athena Global Education (FEDE Member)',
+      date: 'September 8, 2026',
+      id: '2230-1508-9566',
+      idLabel: 'Blockchain ID',
+      img: 'assets/certificates/cert-3.jpg',
+      pdf: 'assets/certificates/cert-3-uniathena-master-chatgpt.pdf',
+      downloadName: 'UniAthena-Master-ChatGPT-Zihan-Fakir.pdf',
+      desc: 'Blockchain-verified certificate validating mastery of conversational AI prompt engineering, LLM application architecture, automation pipelines, and advanced ChatGPT workflows.'
+    },
+    'cert-4': {
+      title: 'AI for Beginners',
+      issuer: 'HP LIFE | HP Foundation (Michele Malejki, Executive Director)',
+      date: 'September 8, 2026',
+      id: '834279ba-aa78-4bc1-9e02-c63ef14b1d99',
+      idLabel: 'Serial Number',
+      img: 'assets/certificates/cert-4.jpg',
+      pdf: 'assets/certificates/cert-4-hp-ai-for-beginners.pdf',
+      downloadName: 'HP-LIFE-AI-Beginners-Zihan-Fakir.pdf',
+      desc: 'Foundational artificial intelligence course covering machine learning taxonomy, business use cases, dataset preparation, and ethical AI deployment standards.'
+    },
+    'cert-5': {
+      title: 'Business Email & Executive Communication',
+      issuer: 'HP LIFE | HP Foundation (Michele Malejki, Executive Director)',
+      date: 'September 8, 2026',
+      id: 'dc217005-8a26-4c68-8e2f-f59f139fe935',
+      idLabel: 'Serial Number',
+      img: 'assets/certificates/cert-5.jpg',
+      pdf: 'assets/certificates/cert-5-hp-business-email.pdf',
+      downloadName: 'HP-LIFE-Business-Email-Zihan-Fakir.pdf',
+      desc: 'Professional communication training focusing on structural email design, executive tone, client negotiation, and high-impact digital correspondence.'
+    },
+    'cert-6': {
+      title: 'Critical Thinking in the AI Era',
+      issuer: 'HP LIFE | HP Foundation (Michele Malejki, Executive Director)',
+      date: 'September 8, 2026',
+      id: 'd8d2c126-1bfd-4801-a5aa-c19e9fca2608',
+      idLabel: 'Serial Number',
+      img: 'assets/certificates/cert-6.jpg',
+      pdf: 'assets/certificates/cert-6-hp-critical-thinking-ai.pdf',
+      downloadName: 'HP-LIFE-Critical-Thinking-AI-Zihan-Fakir.pdf',
+      desc: 'Cognitive decision science training on mitigating AI hallucination risks, detecting algorithmic bias, structured fact-checking, and objective reasoning.'
+    },
+    'cert-7': {
+      title: 'ESG Standards & Practices for Islamic Financial Institutions',
+      issuer: 'UNDP (United Nations Development Programme) / ICPSD & IsDBI',
+      date: 'September 8, 2026',
+      id: 'UNDP-ICPSD-VERIFIED-2026',
+      idLabel: 'Credential Verification',
+      img: 'assets/certificates/cert-7.jpg',
+      pdf: 'assets/certificates/cert-7-undp-esg-standards.pdf',
+      downloadName: 'UNDP-ESG-Standards-Zihan-Fakir.pdf',
+      desc: 'Completed advanced executive curriculum on Environmental, Social, and Governance (ESG) standards, impact measurement, and ethical institutional sustainability signed by Sahba Sobhani (UNDP ICPSD Director).'
+    },
+    'cert-8': {
+      title: 'Strategic Planning in the AI Age',
+      issuer: 'HP LIFE | HP Foundation (Michele Malejki, Executive Director)',
+      date: 'September 8, 2026',
+      id: 'fdd8afd9-46b2-4266-b6f8-4cb0441d7408',
+      idLabel: 'Serial Number',
+      img: 'assets/certificates/cert-8.jpg',
+      pdf: 'assets/certificates/cert-8-hp-strategic-planning-ai.pdf',
+      downloadName: 'HP-LIFE-Strategic-Planning-AI-Zihan-Fakir.pdf',
+      desc: 'Modern strategic roadmap formulation, strategic agile execution frameworks, and utilizing AI capabilities to achieve competitive enterprise advantages.'
+    }
+  };
+
+  let currentActiveCertId = null;
+
+  window.openCertModal = function(certId) {
+    const data = certDatabase[certId];
+    if (!data) return;
+    currentActiveCertId = certId;
+    const certModal = document.getElementById('cert-modal');
+    const nameEl = document.getElementById('cert-modal-name');
+    const imgEl = document.getElementById('cert-modal-img');
+    const detailsEl = document.getElementById('cert-modal-details');
+    const issuerInfoEl = document.getElementById('cert-modal-issuer-info');
+    const downloadLink = document.getElementById('cert-download-link');
+
+    if (nameEl) nameEl.textContent = data.title;
+    if (imgEl) {
+      imgEl.src = data.img;
+      imgEl.alt = `${data.title} Certificate`;
+    }
+    if (detailsEl) {
+      detailsEl.innerHTML = `
+        <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; margin-bottom: 8px;">${data.desc}</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted);">
+          <span><strong>Date:</strong> ${data.date}</span>
+          <span><strong>${data.idLabel}:</strong> <code style="font-family: var(--font-mono); color: var(--primary);">${data.id}</code></span>
+        </div>
+      `;
+    }
+    if (issuerInfoEl) {
+      issuerInfoEl.innerHTML = `<i class="fas fa-building" style="color: var(--secondary);"></i> ${data.issuer}`;
+    }
+    if (downloadLink) {
+      downloadLink.href = data.pdf;
+      downloadLink.setAttribute('download', data.downloadName);
+    }
+    if (certModal) {
+      certModal.classList.add('open');
+      certModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeCertModal = function() {
+    const certModal = document.getElementById('cert-modal');
+    if (certModal) {
+      certModal.classList.remove('open');
+      certModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  };
+
+  window.copyCertId = function() {
+    if (!currentActiveCertId) return;
+    const data = certDatabase[currentActiveCertId];
+    if (!data || !data.id) return;
+    navigator.clipboard.writeText(data.id).then(() => {
+      showToast(`Copied ${data.idLabel}: ${data.id}`, 'success');
+    }).catch(() => {
+      showToast(`${data.idLabel}: ${data.id}`, 'info');
+    });
+  };
+
+  // Close cert modal on backdrop click or Escape
+  const certModalEl = document.getElementById('cert-modal');
+  if (certModalEl) {
+    certModalEl.addEventListener('click', (e) => {
+      if (e.target === certModalEl) {
+        closeCertModal();
+      }
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeCertModal();
+    }
+  });
+
+  // ------------------------------------------------------------------------
   // 11. Interactive AI Portfolio Assistant
   // ------------------------------------------------------------------------
   const aiChatBtn = document.getElementById('ai-chat-btn');
@@ -1145,6 +1315,16 @@ Guidelines:
         • <strong>Database & DevOps:</strong> PostgreSQL, MongoDB, Redis, Docker, Vercel, Git`;
       }
 
+      if (q.includes('cert') || q.includes('credential') || q.includes('honor') || q.includes('license')) {
+        return `<i class="fas fa-award" style="color:var(--primary);margin-right:6px;"></i> <strong>Verified Honors &amp; Certifications (8 Credentials):</strong><br>
+        • <strong>Google Cloud | Simplilearn:</strong> Create Image Captioning Models (ID: 10705792)<br>
+        • <strong>Microsoft | Simplilearn:</strong> Business Analytics with Excel (ID: 10706852)<br>
+        • <strong>UniAthena | FEDE:</strong> Master ChatGPT &amp; Generative AI (Blockchain ID: 2230-1508-9566)<br>
+        • <strong>HP Foundation (HP LIFE):</strong> AI for Beginners, Strategic Planning, Critical Thinking, Business Email<br>
+        • <strong>UNDP / ICPSD:</strong> ESG Standards &amp; Institutional Governance<br>
+        <i class="fas fa-arrow-down" style="margin-right:4px;"></i> Explore interactive previews &amp; credentials in the <strong><a href="#certificates" style="color:var(--secondary);text-decoration:underline;">Certifications Section</a></strong>!`;
+      }
+
       return `Thanks for asking! Zihan Fakir is a Full Stack Engineer & AI Builder. You can check out his projects (<a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
     }
 
@@ -1233,6 +1413,7 @@ Guidelines:
         const queryType = chip.getAttribute('data-query');
         let queryText = 'Tell me about your projects';
         if (queryType === 'ai') queryText = 'What are your AI skills and how fast do you build?';
+        if (queryType === 'certificates') queryText = 'Show me your verified certificates';
         if (queryType === 'contact') queryText = 'How can I contact Zihan Fakir?';
         if (queryType === 'ecomace') queryText = 'Tell me about Ecomace project';
         handleUserQuery(queryText);
