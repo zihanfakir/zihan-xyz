@@ -311,19 +311,14 @@ body {
   z-index: 1;
 }
 
-/* Progressive Section Scroll-Loading (Lightweight On-Demand Rendering) */
+/* Progressive Section Scroll-Loading (Lightweight On-Demand Rendering - Zero Layout Shifts) */
 .progressive-section {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transition: opacity 0.35s ease-out;
 }
 
 .progressive-section.section-loaded {
   opacity: 1;
-  transform: translateY(0);
-  will-change: auto;
 }
 
 /* Typography Helpers */
@@ -935,7 +930,7 @@ p {
   border-radius: var(--border-radius-md);
   padding: 24px 20px;
   text-align: center;
-  transition: all var(--transition-normal);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
   position: relative;
   overflow: hidden;
 }
@@ -1390,7 +1385,7 @@ p {
   border-radius: var(--border-radius-md);
   padding: 22px;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), background-color var(--transition-normal);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1545,7 +1540,7 @@ p {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all var(--transition-normal);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
   position: relative;
 }
 
@@ -1768,7 +1763,7 @@ p {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all var(--transition-normal);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .cert-card:hover {
@@ -3059,30 +3054,49 @@ textarea.form-control {
    Desktop Dynamic Micro-Interactions & Scroll Reveals (Alive, High-End Feel)
    ========================================================================== */
 
-/* 1. Scroll-Triggered Reveal Animations */
-@media (min-width: 769px) {
+/* 1. Scroll-Triggered Reveal Animations (Fluid, Hardware-Accelerated 60fps/120fps) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-on-scroll.reveal-done {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Mobile: Snappy 12px glide with fast 0.38s response, zero lag, zero stutter */
+@media (max-width: 768px) {
   .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(12px);
+    transition: opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     will-change: opacity, transform;
   }
 
   .reveal-on-scroll.revealed {
     opacity: 1;
     transform: translateY(0);
-    will-change: auto;
   }
-}
 
-/* On Mobile: Instant visibility to prevent scroll lag or stutter */
-@media (max-width: 768px) {
-  .reveal-on-scroll {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    will-change: auto !important;
+  .reveal-on-scroll.reveal-done {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
   }
 }
 

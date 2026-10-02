@@ -1545,52 +1545,73 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 11. Scroll-Triggered Reveal Animations (Fluid Desktop Cascade, Instant Mobile)
+  // 11. Scroll-Triggered Reveal Animations (Fluid Universal Cascade 60fps/120fps)
   // ------------------------------------------------------------------------
   function initScrollReveal() {
-    if (isTouchDevice) {
-      // Mobile performance safeguard: all items immediately visible without lag
-      return;
-    }
-
     const revealTargets = document.querySelectorAll(
       '.section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
       '.skill-card, .project-card, .cert-card, .exp-timeline-item, .contact-method-card, .contact-form-card, .stat-item'
     );
 
+    if (!revealTargets.length) return;
+
     revealTargets.forEach(el => {
       el.classList.add('reveal-on-scroll');
     });
 
-    // Apply staggered delays inside grid containers
-    const gridContainers = document.querySelectorAll('.skills-grid, .projects-grid, .certs-grid, .about-features, .stats-grid');
+    // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats)
+    const gridContainers = document.querySelectorAll(
+      '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid'
+    );
+
+    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
+
     gridContainers.forEach(grid => {
       const children = grid.querySelectorAll('.reveal-on-scroll');
+      const colCount = isMobile ? 2 : 3;
+      const staggerStep = isMobile ? 0.04 : 0.07;
       children.forEach((child, idx) => {
-        const delay = (idx % 4) * 0.08;
+        const delay = (idx % colCount) * staggerStep;
         child.style.transitionDelay = `${delay}s`;
       });
     });
 
     if (!('IntersectionObserver' in window)) {
-      revealTargets.forEach(el => el.classList.add('revealed'));
+      revealTargets.forEach(el => {
+        el.classList.add('revealed', 'reveal-done');
+      });
       return;
     }
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
+          const el = entry.target;
+          el.classList.add('revealed');
+          observer.unobserve(el);
+
+          // Clear delay and enable native hover physics after entrance completes
+          const delaySec = parseFloat(el.style.transitionDelay) || 0;
+          setTimeout(() => {
+            el.classList.add('reveal-done');
+            el.style.transitionDelay = '';
+          }, (delaySec * 1000) + 550);
         }
       });
     }, {
       root: null,
-      rootMargin: '0px 0px -40px 0px',
-      threshold: 0.08
+      rootMargin: '0px 0px 80px 0px', // Trigger 80px before entering screen for zero pop-in!
+      threshold: 0.01
     });
 
     revealTargets.forEach(el => revealObserver.observe(el));
+
+    // Safety fallback: ensure all items are visible after 2s
+    setTimeout(() => {
+      revealTargets.forEach(el => {
+        el.classList.add('revealed', 'reveal-done');
+      });
+    }, 2000);
   }
 
   // ------------------------------------------------------------------------
@@ -1617,7 +1638,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 13. Progressive Section Scroll-Loader (On-Demand Section Loading with Light Animation)
+  // 13. Progressive Section Scroll-Loader (On-Demand Section Readiness)
   // ------------------------------------------------------------------------
   function initProgressiveSectionLoading() {
     const targetSections = document.querySelectorAll(
@@ -1643,8 +1664,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, {
       root: null,
-      rootMargin: '280px 0px 80px 0px',
-      threshold: 0.02
+      rootMargin: '300px 0px 100px 0px',
+      threshold: 0.01
     });
 
     targetSections.forEach(sec => progressiveObserver.observe(sec));
