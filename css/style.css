@@ -2541,10 +2541,34 @@ textarea.form-control {
     padding: 0 12px;
   }
 
-  .nav-container {
+  .site-header .nav-container {
     height: 52px;
     padding: 6px 12px 6px 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    background: rgba(11, 15, 25, 0.40) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  [data-theme="light"] .site-header .nav-container {
+    background: rgba(255, 255, 255, 0.50) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .site-header.scrolled .nav-container {
+    background: rgba(11, 15, 25, 0.65) !important;
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  [data-theme="light"] .site-header.scrolled .nav-container {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
   }
 
   .logo {
@@ -2666,7 +2690,17 @@ textarea.form-control {
     background-size: 24px 24px;
   }
 
-  /* Turn off expensive multi-pass backdrop-filters during mobile scroll */
+  /* Mobile Performance: Strip heavy blur & heavy effects from all cards, buttons & badges (Mobile Only) */
+  .btn,
+  .btn-secondary,
+  .btn-primary,
+  .btn-outline-glow,
+  .social-link,
+  .filter-btn,
+  .ai-chip,
+  .ai-assistant-btn,
+  .theme-toggle-btn,
+  .mobile-toggle,
   .project-card,
   .cert-card,
   .skill-card,
@@ -2674,12 +2708,82 @@ textarea.form-control {
   .dev-dossier-card,
   .about-connect-card,
   .glass-card,
+  .stat-item,
+  .exp-timeline-content,
+  .contact-method-card,
+  .contact-form-card,
+  .hero-turnaround-badge,
+  .hero-badge,
+  .about-credo-badge,
+  .project-badge-tag,
+  .cert-preview-badge,
+  .modal-window,
+  .cert-modal-window,
+  .ai-chat-window {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+  }
+
+  /* Clean solid / crisp surfaces for mobile cards */
+  .project-card,
+  .cert-card,
+  .skill-card,
+  .about-feature-item,
+  .dev-dossier-card,
+  .about-connect-card,
+  .glass-card,
+  .stat-item,
   .exp-timeline-content,
   .contact-method-card,
   .contact-form-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
     background: var(--bg-card-solid) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  [data-theme="light"] .project-card,
+  [data-theme="light"] .cert-card,
+  [data-theme="light"] .skill-card,
+  [data-theme="light"] .about-feature-item,
+  [data-theme="light"] .dev-dossier-card,
+  [data-theme="light"] .about-connect-card,
+  [data-theme="light"] .glass-card,
+  [data-theme="light"] .stat-item,
+  [data-theme="light"] .exp-timeline-content,
+  [data-theme="light"] .contact-method-card,
+  [data-theme="light"] .contact-form-card {
+    background: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+  }
+
+  /* Clean, crisp mobile buttons without heavy blurs or heavy glow shadows */
+  .btn-secondary {
+    background: var(--bg-card-solid) !important;
+    box-shadow: none !important;
+  }
+  [data-theme="light"] .btn-secondary {
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  }
+  .btn-primary {
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+  }
+  .social-link {
+    background: var(--bg-card-solid) !important;
+    box-shadow: none !important;
+  }
+  [data-theme="light"] .social-link {
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  }
+  .filter-btn {
+    box-shadow: none !important;
+  }
+  .ai-chip {
+    background: var(--bg-card-solid) !important;
+  }
+  [data-theme="light"] .ai-chip {
+    background: #ffffff !important;
   }
 
   /* Disable avatar badge floating animation */
