@@ -196,6 +196,7 @@ body {
   z-index: 0;
   opacity: 0.45;
   transition: opacity var(--transition-normal);
+  will-change: transform;
 }
 
 .orb-1 {
@@ -274,6 +275,16 @@ body {
   padding: 0 24px;
   position: relative;
   z-index: 1;
+}
+
+/* Rendering performance optimization for long pages */
+#skills,
+#projects,
+#experience,
+#certificates,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 650px;
 }
 
 /* Typography Helpers */
@@ -438,6 +449,10 @@ p {
   align-items: center;
   gap: 6px;
   list-style: none;
+}
+
+.nav-mobile-cta-wrapper {
+  display: none;
 }
 
 .nav-link {
@@ -2151,69 +2166,288 @@ textarea.form-control {
 }
 
 @media (max-width: 768px) {
-  .nav-menu {
-    position: fixed;
-    top: calc(var(--header-height) + 24px);
-    left: 20px;
-    right: 20px;
-    background: var(--bg-card-solid);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    padding: 20px;
-    flex-direction: column;
+  /* 1. Header & Decluttered Mobile Topbar */
+  .site-header {
+    top: 10px;
+    padding: 0 12px;
+  }
+
+  .nav-container {
+    height: 52px;
+    padding: 6px 12px 6px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .logo {
+    font-size: 1.15rem;
+    gap: 6px;
+  }
+
+  .logo-code-prefix {
+    font-size: 0.92rem;
+    padding: 2px 6px;
+  }
+
+  .logo-brand-name {
+    font-size: 1.08rem;
+  }
+
+  .nav-actions {
     gap: 8px;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px);
-    transition: all var(--transition-normal);
   }
-  
-  .nav-menu.open {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
+
+  /* Hide desktop "Let's Talk" button in mobile topbar to eliminate clutter ("hijibiji") */
+  .nav-desktop-cta {
+    display: none !important;
   }
-  
-  .nav-link {
-    width: 100%;
-    text-align: center;
-    padding: 10px;
+
+  .theme-toggle-btn,
+  .mobile-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 0.95rem;
   }
-  
+
   .mobile-toggle {
     display: flex;
   }
-  
+
+  /* 2. Sleek Mobile Navigation Drawer */
+  .nav-menu {
+    position: fixed;
+    top: 68px;
+    left: 12px;
+    right: 12px;
+    background: var(--bg-card-solid);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+    padding: 16px;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px) scale(0.98);
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1001;
+    max-height: calc(100vh - 84px);
+    overflow-y: auto;
+  }
+
+  .nav-menu.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0) scale(1);
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background var(--transition-fast), color var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .nav-mobile-cta-wrapper {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav-mobile-cta {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 12px 18px;
+    border-radius: var(--border-radius-full);
+  }
+
+  /* 3. Mobile Performance Boost: Eliminate constant GPU compositing loops */
+  .bg-ambient-orb {
+    filter: blur(45px) !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 0.20 !important;
+  }
+
+  .orb-1 { width: 320px; height: 320px; top: -50px; left: -50px; }
+  .orb-2 { width: 340px; height: 340px; top: 40%; right: -80px; }
+  .orb-3 { width: 320px; height: 320px; bottom: 5%; left: 0; }
+
+  .bg-tech-grid {
+    opacity: 0.35;
+  }
+
+  /* Turn off expensive multi-pass backdrop-filters during mobile scroll */
+  .project-card,
+  .cert-card,
+  .skill-card,
+  .about-feature-item,
+  .glass-card,
+  .exp-timeline-content,
+  .contact-method-card,
+  .contact-form-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--bg-card-solid) !important;
+  }
+
+  /* Disable avatar badge floating animation */
+  .float-badge {
+    display: none !important;
+  }
+
+  /* 4. Horizontal Scrollable Category Filter Pills for Projects */
+  .projects-filter {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 6px 12px 4px;
+    margin-bottom: 24px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 8px;
+  }
+  .projects-filter::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 7px 16px;
+    font-size: 0.84rem;
+  }
+
+  /* 5. Hero & Content Section Polish */
+  .hero-section {
+    padding-top: calc(var(--header-height) + 24px);
+    padding-bottom: 40px;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    text-align: center;
+  }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-greeting {
+    justify-content: center;
+  }
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.15rem;
+  }
+  .hero-bio {
+    max-width: 95%;
+    margin: 0 auto 20px;
+  }
+  .hero-actions {
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+  }
+  .hero-actions .btn {
+    flex: 1 1 auto;
+    min-width: 130px;
+    justify-content: center;
+  }
+  .hero-visual {
+    order: -1;
+  }
+  .avatar-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  .avatar-container {
+    width: 180px;
+    height: 180px;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .form-grid-2, .about-features {
     grid-template-columns: 1fr;
   }
-  
+
   .badge-text-full, .turnaround-text-full { display: none; }
   .badge-text-short, .turnaround-text-short { display: inline; }
 }
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2.4rem;
+    font-size: 2.1rem;
   }
-  
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .projects-grid, .cert-grid {
     grid-template-columns: 1fr;
   }
-  
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-assistant-btn {
+    bottom: 16px;
+    right: 14px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  .back-to-top {
+    bottom: 16px;
+    left: 14px;
+    width: 40px;
+    height: 40px;
+  }
+
   .ai-chat-window {
-    right: 12px;
-    bottom: 74px;
-    width: calc(100vw - 24px);
-    height: calc(100vh - 100px);
+    right: 10px;
+    bottom: 70px;
+    width: calc(100vw - 20px);
+    height: calc(100vh - 90px);
   }
 }

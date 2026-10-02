@@ -131,83 +131,93 @@ document.addEventListener('DOMContentLoaded', () => {
   const navMenu = document.getElementById('nav-menu');
   const navLinks = document.querySelectorAll('.nav-link');
   const siteHeader = document.querySelector('.site-header');
+  const backToTopBtn = document.getElementById('back-to-top');
 
   if (mobileToggle && navMenu) {
     mobileToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('open');
+      const isOpen = navMenu.classList.toggle('open');
+      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       const icon = mobileToggle.querySelector('i');
       if (icon) {
-        if (navMenu.classList.contains('open')) {
-          icon.className = 'fas fa-times';
-        } else {
-          icon.className = 'fas fa-bars';
-        }
+        icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
       }
     });
 
+    const closeNav = () => {
+      navMenu.classList.remove('open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      const icon = mobileToggle.querySelector('i');
+      if (icon) icon.className = 'fas fa-bars';
+    };
+
     navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('open');
-        const icon = mobileToggle.querySelector('i');
-        if (icon) icon.className = 'fas fa-bars';
-      });
+      link.addEventListener('click', closeNav);
     });
+
+    const mobileCta = navMenu.querySelector('.nav-mobile-cta');
+    if (mobileCta) {
+      mobileCta.addEventListener('click', closeNav);
+    }
 
     document.addEventListener('click', (e) => {
       if (navMenu.classList.contains('open') &&
           !navMenu.contains(e.target) &&
           !mobileToggle.contains(e.target)) {
-        navMenu.classList.remove('open');
-        const icon = mobileToggle.querySelector('i');
-        if (icon) icon.className = 'fas fa-bars';
+        closeNav();
       }
     });
   }
 
-  // Header elevation shadow on scroll
+  // Unified High-Performance Passive Scroll Handler (rAF Debounced)
+  let isScrolling = false;
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      siteHeader?.classList.add('scrolled');
-    } else {
-      siteHeader?.classList.remove('scrolled');
+    if (!isScrolling) {
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY || window.pageYOffset;
+        if (y > 30) {
+          siteHeader?.classList.add('scrolled');
+        } else {
+          siteHeader?.classList.remove('scrolled');
+        }
+        if (backToTopBtn) {
+          if (y > 350) {
+            backToTopBtn.classList.add('visible');
+          } else {
+            backToTopBtn.classList.remove('visible');
+          }
+        }
+        isScrolling = false;
+      });
+      isScrolling = true;
     }
   }, { passive: true });
 
   // ------------------------------------------------------------------------
-  // 4. Scroll Active Link Highlighting
+  // 4. Scroll Active Link Highlighting (Zero-Jank IntersectionObserver)
   // ------------------------------------------------------------------------
   const sections = document.querySelectorAll('section[id]');
-  let scrollTicking = false;
-
-  function highlightNavOnScroll() {
-    const scrollY = window.pageYOffset;
-
-    sections.forEach(sec => {
-      const sectionHeight = sec.offsetHeight;
-      const sectionTop = sec.offsetTop - 120;
-      const sectionId = sec.getAttribute('id');
-
-      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-        navLinks.forEach(link => {
-          if (link.getAttribute('href') === `#${sectionId}`) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
-      }
-    });
-  }
-
-  window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-      window.requestAnimationFrame(() => {
-        highlightNavOnScroll();
-        scrollTicking = false;
+  if ('IntersectionObserver' in window && sections.length > 0) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            if (link.getAttribute('href') === `#${sectionId}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
       });
-      scrollTicking = true;
-    }
-  }, { passive: true });
+    }, {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(sec => sectionObserver.observe(sec));
+  }
 
   // ------------------------------------------------------------------------
   // 5. Projects Filter
@@ -773,16 +783,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 9. Floating Back-to-Top Button
   // ------------------------------------------------------------------------
-  const backToTopBtn = document.getElementById('back-to-top');
-
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 350) {
-      backToTopBtn?.classList.add('visible');
-    } else {
-      backToTopBtn?.classList.remove('visible');
-    }
-  }, { passive: true });
-
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
       window.scrollTo({
