@@ -263,10 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const projectDetailsDatabase = {
     'proj-1': {
-      title: 'আলোকপথ AI — Multi-Model Generative AI Platform',
+      title: 'Alora AI — Multi-Model Generative AI Platform',
       category: 'Flagship Generative AI & Full Stack Platform',
       duration: 'Active Production Flagship',
-      description: 'Alokpath AI (আলোকপথ AI) is a powerful, production-ready multi-model AI chat platform engineered by Zihan Fakir. Designed with an ultra-secure serverless proxy architecture that prevents client-side API key leakage, it provides access to 11 top-tier frontier models (Gemini, Claude, DeepSeek, GPT-4o, Llama). Features include live token streaming, image & document context parsing, token counters, and a rich Bengali user interface.',
+      description: 'Alora AI is a powerful, production-ready multi-model AI chat platform engineered by Zihan Fakir. Designed with an ultra-secure serverless proxy architecture that prevents client-side API key leakage, it provides access to 11 top-tier frontier models (Gemini, Claude, DeepSeek, GPT-4o, Llama). Features include live token streaming, image & document context parsing, token counters, and a rich Bengali user interface.',
       features: [
         'Access to 11 industry-leading LLMs in one unified workspace (Gemini, Claude, GPT, DeepSeek)',
         'Zero-trust security: all API communications proxied safely without client-side key leakage',
@@ -538,12 +538,12 @@ document.addEventListener('DOMContentLoaded', () => {
       iconColor: '#a855f7',
       summary: 'Harnessing generative AI models to construct cutting-edge AI chat platforms, autonomous coding workflows, multimodal understanding systems, and achieving 10x developer delivery speed.',
       highlights: [
-        'Architected Alokpath AI (alora.zihan.xyz) integrating 11 frontier LLMs safely',
+        'Architected Alora AI (alora.zihan.xyz) integrating 11 frontier LLMs safely',
         'Zero-trust serverless proxy design preventing client-side API key leakage',
         'Real-time token streaming with server-sent events (SSE) & WebSocket protocols',
         'Advanced prompt engineering (Few-shot, CoT, structured JSON schemas, function calling)'
       ],
-      usedIn: ['Alokpath AI Flagship Multi-Model Chat Platform', 'Portfolio AI Assistant', 'Automated Code Generation']
+      usedIn: ['Alora AI Flagship Multi-Model Chat Platform', 'Portfolio AI Assistant', 'Automated Code Generation']
     },
     'typescript': {
       title: 'TypeScript (Strict Types & Scalability)',
@@ -1135,8 +1135,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateLocalAIResponse(query) {
       const q = query.toLowerCase().trim();
 
-      if (q.includes('alokpath') || q.includes('আলোকপথ') || q.includes('chatbot') || q.includes('ai bot') || q.includes('alora') || q.includes('alora.zihan.xyz') || q.includes('ai.zihan.xyz')) {
-        return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>About আলোকপথ AI (Alokpath AI):</strong><br>
+      if (q.includes('alora') || q.includes('alokpath') || q.includes('আলোকপথ') || q.includes('chatbot') || q.includes('ai bot') || q.includes('alora.zihan.xyz') || q.includes('ai.zihan.xyz')) {
+        return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>About Alora AI:</strong><br>
         Zihan Fakir's flagship generative AI chat platform powered by <strong>11 frontier AI models</strong> (Gemini, Claude, GPT-4o, DeepSeek, Llama). Features zero client-side API key exposure (100% secure serverless proxy), real-time token streaming, multimodal image and file recognition, and an intuitive Bengali user interface.<br>
         <i class="fas fa-external-link-alt" style="margin-right:4px;"></i> <a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Try Live at alora.zihan.xyz</a> • <i class="fab fa-github" style="margin-right:4px;"></i> <a href="https://github.com/zihanfakir/ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">GitHub Repository</a>`;
       }
@@ -1157,7 +1157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (q.includes('ai') || q.includes('llm') || q.includes('prompt') || q.includes('agent') || q.includes('gpt') || q.includes('gemini') || q.includes('claude') || q.includes('deepseek')) {
         return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>Zihan's AI Engineering Capabilities:</strong><br>
-        • <strong>Alokpath AI (আলোকপথ AI):</strong> Multi-model flagship chat platform with 11 LLMs at <a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">alora.zihan.xyz</a>.<br>
+        • <strong>Alora AI:</strong> Multi-model flagship chat platform with 11 LLMs at <a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">alora.zihan.xyz</a>.<br>
         • <strong>GenAI & LLMs:</strong> 99% proficiency working with Google Gemini, Anthropic Claude, OpenAI, and DeepSeek.<br>
         • <strong>Prompt Engineering:</strong> Expert in crafting structured system instructions, few-shot prompting, and deterministic JSON schemas.<br>
         • <strong>Autonomous Agents:</strong> Designing tool-calling agents and automated reasoning workflows.<br>
@@ -1166,7 +1166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('banano')) {
         return `<i class="fas fa-layer-group" style="color:var(--secondary);margin-right:6px;"></i> <strong>Zihan's Top Real Projects:</strong><br>
-        1. <a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">আলোকপথ AI (Alokpath AI)</a>: Flagship multi-model AI platform powered by 11 LLMs with Bengali UI.<br>
+        1. <a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Alora AI</a>: Flagship multi-model AI platform powered by 11 LLMs with Bengali UI.<br>
         2. <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Ecomace</a>: High-performance eCommerce engine with render-as-you-fetch data streaming.<br>
         3. <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">Alokpo</a>: Decoupled web search engine & crawler backend.<br>
         4. <a href="https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">বয়স ক্যালকুলেটর (v26.0)</a>: Real-time ticking chronological age calculator with lifetime stats!`;
@@ -1218,7 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <i class="fas fa-arrow-down" style="margin-right:4px;"></i> Explore interactive previews &amp; credentials in the <strong><a href="#certificates" style="color:var(--secondary);text-decoration:underline;">Certifications Section</a></strong>!`;
       }
 
-      return `Thanks for asking! Zihan Fakir is an AI Engineer & Full Software Developer. You can check out his projects (<a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpath AI</a>, <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
+      return `Thanks for asking! Zihan Fakir is an AI Engineer & Full Software Developer. You can check out his projects (<a href="https://alora.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alora AI</a>, <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
     }
 
     let isAIResponding = false;
