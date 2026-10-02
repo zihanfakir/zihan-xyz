@@ -174,6 +174,23 @@ html {
   width: 100%;
 }
 
+/* Lenis Smooth Scroll Configuration */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-body);
@@ -307,16 +324,25 @@ p {
 
 .gradient-text {
   background: var(--gradient-primary);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
+  animation: textShimmer 8s ease infinite alternate;
 }
 
 .gradient-text-accent {
   background: var(--gradient-accent);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
+  animation: textShimmer 8s ease infinite alternate;
+}
+
+@keyframes textShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 /* --------------------------------------------------------------------------
@@ -824,6 +850,37 @@ p {
 .float-badge-3 {
   bottom: -20px;
   right: 15px;
+}
+
+@keyframes floatBadge1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes floatBadge2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(7px); }
+}
+@keyframes floatBadge3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (min-width: 769px) {
+  .float-badge-1 {
+    animation: floatBadge1 4.2s ease-in-out infinite;
+  }
+  .float-badge-2 {
+    animation: floatBadge2 5.0s ease-in-out infinite;
+  }
+  .float-badge-3 {
+    animation: floatBadge3 4.6s ease-in-out infinite;
+  }
+  .float-badge:hover {
+    transform: scale(1.06) translateY(-2px) !important;
+    border-color: var(--primary);
+    box-shadow: 0 10px 24px rgba(99, 102, 241, 0.28);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -2846,4 +2903,257 @@ textarea.form-control {
   visibility: hidden !important;
   pointer-events: none !important;
   opacity: 0 !important;
+}
+
+/* ==========================================================================
+   Desktop Dynamic Micro-Interactions & Scroll Reveals (Alive, High-End Feel)
+   ========================================================================== */
+
+/* 1. Scroll-Triggered Reveal Animations */
+@media (min-width: 769px) {
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    will-change: auto;
+  }
+}
+
+/* On Mobile: Instant visibility to prevent scroll lag or stutter */
+@media (max-width: 768px) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* 2. Desktop Card Hover Micro-Physics (Clean 2D, Zero 3D Distortions) */
+@media (min-width: 769px) {
+  /* Project Cards */
+  .project-card {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 20px 38px -10px rgba(0, 0, 0, 0.5), 0 0 24px rgba(99, 102, 241, 0.2);
+  }
+  .project-img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  }
+  .project-card:hover .project-img {
+    transform: scale(1.045);
+    opacity: 1;
+  }
+
+  /* Certificate Cards */
+  .cert-card {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+  }
+  .cert-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 20px 38px -10px rgba(0, 0, 0, 0.5), 0 0 24px rgba(99, 102, 241, 0.2);
+  }
+  .cert-preview-img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cert-card:hover .cert-preview-img {
+    transform: scale(1.045);
+  }
+
+  /* Skill Cards */
+  .skill-card {
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.32s ease,
+                border-color 0.32s ease,
+                background-color 0.32s ease;
+  }
+  .skill-card:hover, .skill-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.45), 0 0 18px rgba(99, 102, 241, 0.22);
+  }
+  .skill-icon-wrapper {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .skill-card:hover .skill-icon-wrapper {
+    transform: scale(1.1);
+  }
+
+  /* About Feature Items */
+  .about-feature-item {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease,
+                background-color 0.3s ease;
+  }
+  .about-feature-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 22px -5px rgba(0, 0, 0, 0.35), 0 0 14px rgba(99, 102, 241, 0.16);
+  }
+  .feature-icon-box {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .about-feature-item:hover .feature-icon-box {
+    transform: scale(1.1);
+  }
+
+  /* Developer Dossier Card & Bento Cards */
+  .dev-dossier-card,
+  .about-connect-card,
+  .glass-card {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+  }
+  .dev-dossier-card:hover,
+  .about-connect-card:hover,
+  .glass-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 18px 36px -8px rgba(0, 0, 0, 0.45), 0 0 20px rgba(99, 102, 241, 0.16);
+  }
+
+  /* Stat Items */
+  .stat-item {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+  }
+  .stat-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 26px -6px rgba(0, 0, 0, 0.4), 0 0 18px rgba(99, 102, 241, 0.18);
+  }
+
+  /* Experience Timeline Content */
+  .exp-timeline-content {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+  }
+  .exp-timeline-item:hover .exp-timeline-content {
+    transform: translateY(-3px);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.16);
+  }
+  .exp-timeline-dot {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .exp-timeline-item:hover .exp-timeline-dot {
+    transform: scale(1.25);
+    box-shadow: 0 0 18px var(--primary);
+  }
+
+  /* Contact Method Cards */
+  .contact-method-card {
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.32s ease,
+                border-color 0.32s ease;
+  }
+  .contact-method-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.4), 0 0 18px rgba(99, 102, 241, 0.2);
+  }
+
+  /* Button Icon micro-nudge */
+  .btn:hover i {
+    transform: translateX(3px);
+  }
+  .btn i {
+    transition: transform 0.2s ease;
+  }
+
+  /* Social link hover */
+  .social-link {
+    transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+    border-color: var(--primary);
+  }
+}
+
+/* 3. Card Spotlight Cursor Tracking (Aceternity style, PC Only) */
+@media (min-width: 769px) {
+  .card-spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-spotlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      420px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+      rgba(99, 102, 241, 0.12),
+      transparent 80%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 1;
+  }
+  .card-spotlight:hover::before {
+    opacity: 1;
+  }
+  /* Keep interactive inner elements clickable and layered above spotlight */
+  .card-spotlight > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+/* 4. Mobile Lag-Free Hardware Performance Optimizations */
+@media (max-width: 768px) {
+  /* Fast touch interaction - remove 300ms tap delay */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  a, button, input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  /* Content-visibility for below-the-fold heavy sections */
+  #about,
+  #skills,
+  #projects,
+  #certificates,
+  #experience,
+  #contact {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 700px;
+  }
+
+  /* Pause background orb animations on mobile to conserve battery and CPU */
+  .bg-ambient-orb {
+    animation: none !important;
+  }
+
+  /* Force hardware acceleration layer on marquee */
+  .marquee-track {
+    will-change: transform;
+    transform: translateZ(0);
+  }
 }

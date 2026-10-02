@@ -5,6 +5,57 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
+  // 0. Lenis Ultra-Smooth Inertia Scroll (Desktop Only, Native 120Hz/60Hz on Mobile)
+  // ------------------------------------------------------------------------
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth <= 768;
+  let lenis = null;
+
+  if (!isTouchDevice && typeof Lenis !== 'undefined') {
+    try {
+      lenis = new Lenis({
+        duration: 1.15,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        smoothTouch: false,
+        touchMultiplier: 1,
+        wheelMultiplier: 1.0,
+        infinite: false,
+      });
+
+      function raf(time) {
+        if (lenis) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+      }
+      requestAnimationFrame(raf);
+
+      // Smooth anchor navigation with header offset compensation
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+          const targetId = anchor.getAttribute('href');
+          if (targetId && targetId !== '#') {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              e.preventDefault();
+              const headerEl = document.querySelector('.site-header');
+              const headerOffset = headerEl ? headerEl.offsetHeight + 18 : 80;
+              lenis.scrollTo(targetElement, {
+                offset: -headerOffset,
+                duration: 1.15
+              });
+            }
+          }
+        });
+      });
+    } catch (err) {
+      console.warn('Lenis smooth scroll initialization skipped:', err);
+    }
+  }
+
+  // ------------------------------------------------------------------------
   // Helper Utilities (Safe Storage, HTML Escaping & Toast Notifications)
   // ------------------------------------------------------------------------
   function safeGetStorage(key) {
@@ -374,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openModal() {
     if (!projectModal) return;
+    if (lenis) lenis.stop();
     projectModal.classList.add('open');
     projectModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -387,6 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
     projectModal.classList.remove('open');
     projectModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (lenis) lenis.start();
     if (lastFocusedTrigger && lastFocusedTrigger.focus) {
       lastFocusedTrigger.focus();
     }
@@ -1010,6 +1063,7 @@ document.addEventListener('DOMContentLoaded', () => {
       downloadLink.setAttribute('download', data.downloadName);
     }
     if (certModal) {
+      if (lenis) lenis.stop();
       certModal.classList.add('open');
       certModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1022,6 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
       certModal.classList.remove('open');
       certModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      if (lenis) lenis.start();
     }
   };
 
@@ -1337,12 +1392,42 @@ document.addEventListener('DOMContentLoaded', () => {
       particles.push(new Particle());
     }
 
+    let mouse = { x: -1000, y: -1000 };
+    const heroEl = document.getElementById('home');
+    if (!isMobile && heroEl) {
+      heroEl.addEventListener('mousemove', (e) => {
+        const rect = heroEl.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      }, { passive: true });
+      heroEl.addEventListener('mouseleave', () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      }, { passive: true });
+    }
+
     function render() {
       if (!isVisible) return;
       ctx.clearRect(0, 0, width, height);
       for (let i = 0; i < particles.length; i++) {
         particles[i].update();
         particles[i].draw();
+
+        // Interactive cursor connection on PC
+        if (!isMobile && mouse.x > 0) {
+          const mdx = particles[i].x - mouse.x;
+          const mdy = particles[i].y - mouse.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < 130) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(99, 102, 241, ${0.28 * (1 - mDist / 130)})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
@@ -1361,7 +1446,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Performance optimization: Pause loop when hero is off-screen
-    const heroEl = document.getElementById('home');
     if (heroEl && 'IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1380,6 +1464,80 @@ document.addEventListener('DOMContentLoaded', () => {
     animationFrameId = requestAnimationFrame(render);
   }
 
-  // Initialize hero particles
+  // ------------------------------------------------------------------------
+  // 11. Scroll-Triggered Reveal Animations (Fluid Desktop Cascade, Instant Mobile)
+  // ------------------------------------------------------------------------
+  function initScrollReveal() {
+    if (isTouchDevice) {
+      // Mobile performance safeguard: all items immediately visible without lag
+      return;
+    }
+
+    const revealTargets = document.querySelectorAll(
+      '.section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
+      '.skill-card, .project-card, .cert-card, .exp-timeline-item, .contact-method-card, .contact-form-card, .stat-item'
+    );
+
+    revealTargets.forEach(el => {
+      el.classList.add('reveal-on-scroll');
+    });
+
+    // Apply staggered delays inside grid containers
+    const gridContainers = document.querySelectorAll('.skills-grid, .projects-grid, .certs-grid, .about-features, .stats-grid');
+    gridContainers.forEach(grid => {
+      const children = grid.querySelectorAll('.reveal-on-scroll');
+      children.forEach((child, idx) => {
+        const delay = (idx % 4) * 0.08;
+        child.style.transitionDelay = `${delay}s`;
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      revealTargets.forEach(el => el.classList.add('revealed'));
+      return;
+    }
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08
+    });
+
+    revealTargets.forEach(el => revealObserver.observe(el));
+  }
+
+  // ------------------------------------------------------------------------
+  // 12. Interactive Card Cursor Spotlight (Aceternity-style Mouse Physics, PC Only)
+  // ------------------------------------------------------------------------
+  function initCardSpotlight() {
+    const isPointerFine = window.matchMedia('(pointer: fine)').matches && !('ontouchstart' in window);
+    if (!isPointerFine) return;
+
+    const spotlightCards = document.querySelectorAll(
+      '.project-card, .cert-card, .skill-card, .dev-dossier-card, .about-connect-card, .stat-item, .contact-method-card'
+    );
+
+    spotlightCards.forEach(card => {
+      card.classList.add('card-spotlight');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      }, { passive: true });
+    });
+  }
+
+  // Initialize Hero Particles and Desktop Dynamic Interactions
   initHeroParticles();
+  initScrollReveal();
+  initCardSpotlight();
 });
