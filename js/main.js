@@ -1545,9 +1545,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 11. Scroll-Triggered Reveal Animations (Fluid Universal Cascade 60fps/120fps)
+  // 11. Scroll-Triggered Reveal Animations (Fluid Desktop Cascade, Completely Disabled on Mobile)
   // ------------------------------------------------------------------------
   function initScrollReveal() {
+    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
+    if (isMobile) {
+      // Mobile: Completely remove all animations, keep elements native and immediately visible
+      return;
+    }
+
     const revealTargets = document.querySelectorAll(
       '.section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
       '.skill-card, .project-card, .cert-card, .exp-timeline-item, .contact-method-card, .contact-form-card, .stat-item'
@@ -1559,19 +1565,15 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.add('reveal-on-scroll');
     });
 
-    // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats)
+    // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats) - Desktop Only
     const gridContainers = document.querySelectorAll(
       '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid'
     );
 
-    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
-
     gridContainers.forEach(grid => {
       const children = grid.querySelectorAll('.reveal-on-scroll');
-      const colCount = isMobile ? 2 : 3;
-      const staggerStep = isMobile ? 0.04 : 0.07;
       children.forEach((child, idx) => {
-        const delay = (idx % colCount) * staggerStep;
+        const delay = (idx % 3) * 0.07;
         child.style.transitionDelay = `${delay}s`;
       });
     });
@@ -1600,18 +1602,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, {
       root: null,
-      rootMargin: '0px 0px 80px 0px', // Trigger 80px before entering screen for zero pop-in!
+      rootMargin: '0px 0px 80px 0px',
       threshold: 0.01
     });
 
     revealTargets.forEach(el => revealObserver.observe(el));
-
-    // Safety fallback: ensure all items are visible after 2s
-    setTimeout(() => {
-      revealTargets.forEach(el => {
-        el.classList.add('revealed', 'reveal-done');
-      });
-    }, 2000);
   }
 
   // ------------------------------------------------------------------------
@@ -1638,9 +1633,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 13. Progressive Section Scroll-Loader (On-Demand Section Readiness)
+  // 13. Progressive Section Scroll-Loader (PC Only, Disabled on Mobile for Instant Static Rendering)
   // ------------------------------------------------------------------------
   function initProgressiveSectionLoading() {
+    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
+    if (isMobile) {
+      // Mobile: Zero progressive delays, sections are completely static and solid
+      return;
+    }
+
     const targetSections = document.querySelectorAll(
       'section#about, section#skills, section#projects, section#certificates, section#experience, section#contact'
     );

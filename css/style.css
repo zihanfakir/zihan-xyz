@@ -311,14 +311,16 @@ body {
   z-index: 1;
 }
 
-/* Progressive Section Scroll-Loading (Lightweight On-Demand Rendering - Zero Layout Shifts) */
-.progressive-section {
-  opacity: 0;
-  transition: opacity 0.35s ease-out;
-}
+/* Progressive Section Scroll-Loading (Desktop PC Only - Zero Mobile Lag) */
+@media (min-width: 769px) {
+  .progressive-section {
+    opacity: 0;
+    transition: opacity 0.35s ease-out;
+  }
 
-.progressive-section.section-loaded {
-  opacity: 1;
+  .progressive-section.section-loaded {
+    opacity: 1;
+  }
 }
 
 /* Typography Helpers */
@@ -2681,11 +2683,10 @@ textarea.form-control {
   .orb-3 { width: 320px; height: 320px; bottom: 5%; left: 0; }
 
   .bg-tech-grid {
-    opacity: 0.80;
-    background-size: 24px 24px;
+    display: none !important;
   }
 
-  /* Mobile Performance: Strip heavy blur & heavy effects from all cards, buttons & badges (Mobile Only) */
+  /* Mobile: Complete Animation & Effect Removal (Zero Lag, Solid Backgrounds, Pure Static Rendering) */
   .btn,
   .btn-secondary,
   .btn-primary,
@@ -2718,9 +2719,13 @@ textarea.form-control {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     filter: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 
-  /* Clean solid / crisp surfaces for mobile cards */
+  /* 100% Solid, Opaque Card Surfaces with Zero Glow and Zero Shadows on Mobile */
   .project-card,
   .cert-card,
   .skill-card,
@@ -2732,8 +2737,12 @@ textarea.form-control {
   .exp-timeline-content,
   .contact-method-card,
   .contact-form-card {
-    background: var(--bg-card-solid) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 
   [data-theme="light"] .project-card,
@@ -2748,40 +2757,94 @@ textarea.form-control {
   [data-theme="light"] .contact-method-card,
   [data-theme="light"] .contact-form-card {
     background: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 
-  /* Clean, crisp mobile buttons without heavy blurs or heavy glow shadows */
-  .btn-secondary {
-    background: var(--bg-card-solid) !important;
-    box-shadow: none !important;
+  /* Strip card hover effects and pseudo-element gradient overlays on mobile */
+  .stat-item::before,
+  .skill-card::before,
+  .project-card::before,
+  .cert-card::before,
+  .dev-dossier-card::before,
+  .about-connect-card::before {
+    display: none !important;
   }
-  [data-theme="light"] .btn-secondary {
-    background: #ffffff !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+
+  .project-img,
+  .cert-preview-img,
+  .project-card:hover .project-img,
+  .cert-card:hover .cert-preview-img,
+  .skill-card:hover .skill-icon-wrapper {
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Solid mobile buttons with zero shadows or animations */
+  .btn-secondary,
+  .social-link,
+  .filter-btn,
+  .ai-chip {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  [data-theme="light"] .btn-secondary,
+  [data-theme="light"] .social-link,
+  [data-theme="light"] .filter-btn,
+  [data-theme="light"] .ai-chip {
+    background: #f1f5f9 !important;
+    color: #111827 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
   .btn-primary {
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
-  }
-  .social-link {
-    background: var(--bg-card-solid) !important;
+    background: var(--primary) !important;
     box-shadow: none !important;
-  }
-  [data-theme="light"] .social-link {
-    background: #ffffff !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
-  }
-  .filter-btn {
-    box-shadow: none !important;
-  }
-  .ai-chip {
-    background: var(--bg-card-solid) !important;
-  }
-  [data-theme="light"] .ai-chip {
-    background: #ffffff !important;
+    border: none !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 
-  /* Disable avatar badge floating animation */
+  /* Solid badges on mobile */
+  .hero-turnaround-badge,
+  .hero-badge,
+  .about-credo-badge,
+  .project-badge-tag,
+  .cert-preview-badge {
+    background: #1f2937 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  [data-theme="light"] .hero-turnaround-badge,
+  [data-theme="light"] .hero-badge,
+  [data-theme="light"] .about-credo-badge,
+  [data-theme="light"] .project-badge-tag,
+  [data-theme="light"] .cert-preview-badge {
+    background: #f1f5f9 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* Solid mobile background: hide ambient glow orbs & decorative animations */
+  .bg-ambient-orb,
+  .hero-spotlight,
   .float-badge {
     display: none !important;
   }
@@ -3054,35 +3117,13 @@ textarea.form-control {
    Desktop Dynamic Micro-Interactions & Scroll Reveals (Alive, High-End Feel)
    ========================================================================== */
 
-/* 1. Scroll-Triggered Reveal Animations (Fluid, Hardware-Accelerated 60fps/120fps) */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: opacity, transform;
-}
-
-.reveal-on-scroll.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-on-scroll.reveal-done {
-  opacity: 1;
-  transform: none;
-  will-change: auto;
-}
-
-/* Mobile: Snappy 12px glide with fast 0.38s response, zero lag, zero stutter */
-@media (max-width: 768px) {
+/* 1. Scroll-Triggered Reveal Animations (Fluid, Hardware-Accelerated 60fps/120fps) - PC Only */
+@media (min-width: 769px) {
   .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     will-change: opacity, transform;
@@ -3097,6 +3138,17 @@ textarea.form-control {
     opacity: 1;
     transform: none;
     will-change: auto;
+  }
+}
+
+/* Mobile: Complete Animation Removal - Pure Static Immediate Rendering */
+@media (max-width: 768px) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
   }
 }
 
