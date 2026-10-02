@@ -1,11 +1,11 @@
 /**
  * ZIHAN FAKIR - PROFESSIONAL PORTFOLIO
- * Main Interactive Logic: Theme Switcher, Typing Effect, Filters, Modal, Form & Scroll
+ * Main Interactive Logic: Theme Switcher, Typewriter, Filters, Modals, Form & AI Assistant
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
-  // Helper Utilities (Safe Storage & HTML Escaping)
+  // Helper Utilities (Safe Storage, HTML Escaping & Toast Notifications)
   // ------------------------------------------------------------------------
   function safeGetStorage(key) {
     try {
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 1. Light & Dark Theme Controller (Default: System Theme + Manual Persistence)
+  // 1. Light & Dark Theme Controller (System Theme Default + Manual Persistence)
   // ------------------------------------------------------------------------
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
   const systemPrefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false, addEventListener: () => {} };
@@ -49,19 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Get active theme: check user's saved choice first, otherwise default to System Theme
   function getEffectiveTheme() {
     const savedTheme = safeGetStorage('zihan-portfolio-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       return savedTheme;
     }
-    // Default to Device / OS System Theme
     return systemPrefersDark.matches ? 'dark' : 'light';
   }
 
   applyTheme(getEffectiveTheme());
 
-  // Automatically react to system theme changes if user hasn't manually chosen one
   if (systemPrefersDark.addEventListener) {
     systemPrefersDark.addEventListener('change', (e) => {
       const savedTheme = safeGetStorage('zihan-portfolio-theme');
@@ -71,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Toggle button event: remembers user's manual choice across reloads
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
       const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -87,9 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   const typedTextEl = document.getElementById('typed-text');
   const roles = [
+    'AI Engineer & GenAI Builder',
     'Full Stack Software Developer',
     'Open Source Innovator',
-    'GenAI & LLM Solutions Builder',
     'AI-Powered Full Stack Engineer',
     'Prompt Engineer & Problem Solver'
   ];
@@ -107,16 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isDeleting) {
       typedTextEl.textContent = currentRole.substring(0, charIndex - 1);
       charIndex--;
-      typingSpeed = 50;
+      typingSpeed = 45;
     } else {
       typedTextEl.textContent = currentRole.substring(0, charIndex + 1);
       charIndex++;
-      typingSpeed = 110;
+      typingSpeed = 95;
     }
 
     if (!isDeleting && charIndex === currentRole.length) {
-      // Pause at full word
-      typingSpeed = 2000;
+      typingSpeed = 2200;
       isDeleting = true;
     } else if (isDeleting && charIndex === 0) {
       isDeleting = false;
@@ -130,11 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
   typeRole();
 
   // ------------------------------------------------------------------------
-  // 3. Mobile Navigation Menu Toggle
+  // 3. Mobile Navigation Menu Toggle & Header Scroll State
   // ------------------------------------------------------------------------
   const mobileToggle = document.getElementById('mobile-toggle');
   const navMenu = document.getElementById('nav-menu');
   const navLinks = document.querySelectorAll('.nav-link');
+  const siteHeader = document.querySelector('.site-header');
 
   if (mobileToggle && navMenu) {
     mobileToggle.addEventListener('click', () => {
@@ -149,9 +145,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close menu when clicking outside
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+        const icon = mobileToggle.querySelector('i');
+        if (icon) icon.className = 'fas fa-bars';
+      });
+    });
+
     document.addEventListener('click', (e) => {
-      if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('open')) {
+      if (navMenu.classList.contains('open') &&
+          !navMenu.contains(e.target) &&
+          !mobileToggle.contains(e.target)) {
         navMenu.classList.remove('open');
         const icon = mobileToggle.querySelector('i');
         if (icon) icon.className = 'fas fa-bars';
@@ -159,92 +164,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ------------------------------------------------------------------------
-  // Clean URL Architecture: Prevent & Strip URL Hashes (#about, #projects)
-  // Keeps address bar strictly clean as https://zihan.xyz/
-  // ------------------------------------------------------------------------
-  function cleanUrlHash() {
-    if (window.location.hash) {
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  // Header elevation shadow on scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      siteHeader?.classList.add('scrolled');
+    } else {
+      siteHeader?.classList.remove('scrolled');
     }
-  }
-
-  // Remove any existing hash on initial page load
-  cleanUrlHash();
-  window.addEventListener('hashchange', cleanUrlHash);
-
-  // Global smooth scrolling for all anchor links without hash in the address bar
-  document.addEventListener('click', (e) => {
-    const anchor = e.target.closest('a[href*="#"]');
-    if (!anchor) return;
-
-    const href = anchor.getAttribute('href');
-    if (!href || href === '#' || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel')) {
-      return;
-    }
-
-    const hashIndex = href.indexOf('#');
-    if (hashIndex === -1) return;
-
-    const targetId = href.substring(hashIndex);
-    if (!targetId || targetId === '#') return;
-
-    try {
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        e.preventDefault();
-
-        // Close mobile drawer if open
-        if (navMenu && navMenu.classList.contains('open')) {
-          navMenu.classList.remove('open');
-          const icon = mobileToggle?.querySelector('i');
-          if (icon) icon.className = 'fas fa-bars';
-        }
-
-        const headerHeight = siteHeader ? siteHeader.offsetHeight : 64;
-        const targetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 8;
-
-        window.scrollTo({
-          top: targetTop,
-          behavior: 'smooth'
-        });
-
-        // Ensure URL stays strictly clean as https://zihan.xyz/
-        cleanUrlHash();
-      }
-    } catch (err) {}
-  });
+  }, { passive: true });
 
   // ------------------------------------------------------------------------
-  // 4. Scroll Header & Active Navigation Highlighting (Throttled via rAF)
+  // 4. Scroll Active Link Highlighting
   // ------------------------------------------------------------------------
   const sections = document.querySelectorAll('section[id]');
-  const siteHeader = document.querySelector('.site-header');
   let scrollTicking = false;
-  
+
   function highlightNavOnScroll() {
-    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const scrollY = window.pageYOffset;
 
-    if (siteHeader) {
-      if (scrollY > 15) {
-        siteHeader.classList.add('scrolled');
-      } else {
-        siteHeader.classList.remove('scrolled');
-      }
-    }
+    sections.forEach(sec => {
+      const sectionHeight = sec.offsetHeight;
+      const sectionTop = sec.offsetTop - 120;
+      const sectionId = sec.getAttribute('id');
 
-    sections.forEach(current => {
-      const sectionHeight = current.offsetHeight;
-      const sectionTop = current.offsetTop - 100;
-      const sectionId = current.getAttribute('id');
-      const targetNavLink = document.querySelector(`.nav-menu a[href*='${sectionId}']`);
-
-      if (targetNavLink) {
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          targetNavLink.classList.add('active');
-        } else {
-          targetNavLink.classList.remove('active');
-        }
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === `#${sectionId}`) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
       }
     });
   }
@@ -260,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // ------------------------------------------------------------------------
-  // 5. Projects Filter (Zero Race-Condition with WeakMap)
+  // 5. Projects Filter
   // ------------------------------------------------------------------------
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
@@ -293,10 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
           cardAnimationTimeouts.set(card, tId);
         } else {
           card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
+          card.style.transform = 'translateY(16px)';
           const tId = setTimeout(() => {
             card.style.display = 'none';
-          }, 250);
+          }, 240);
           cardAnimationTimeouts.set(card, tId);
         }
       });
@@ -306,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 6. Project Details Modal
   // ------------------------------------------------------------------------
-  const modal = document.getElementById('project-modal');
+  const projectModal = document.getElementById('project-modal');
   const modalCloseBtn = document.getElementById('modal-close-btn');
   const modalContentEl = document.getElementById('modal-details-body');
   const viewDetailBtns = document.querySelectorAll('.view-project-details');
@@ -390,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'One-click room generation with access controls'
       ],
       techStack: ['React', 'Socket.io', 'WebRTC', 'Monaco Editor', 'Node.js', 'TailwindCSS'],
-      liveUrl: 'https://zihan.xyz',
+      liveUrl: 'https://zihan.uk',
       codeUrl: 'https://github.com/zihanfakir/dev-collab'
     },
     'proj-6': {
@@ -405,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Vitals tracking with visual trend charts'
       ],
       techStack: ['React Native', 'Expo', 'Node.js', 'Firebase', 'Redux'],
-      liveUrl: 'https://zihan.xyz',
+      liveUrl: 'https://zihan.uk',
       codeUrl: 'https://github.com/zihanfakir/health-sync'
     }
   };
@@ -413,9 +363,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastFocusedTrigger = null;
 
   function openModal() {
-    if (!modal) return;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
+    if (!projectModal) return;
+    projectModal.classList.add('open');
+    projectModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     setTimeout(() => {
       modalCloseBtn?.focus();
@@ -423,9 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function closeModal() {
-    if (!modal) return;
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
+    if (!projectModal) return;
+    projectModal.classList.remove('open');
+    projectModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     if (lastFocusedTrigger && lastFocusedTrigger.focus) {
       lastFocusedTrigger.focus();
@@ -439,25 +389,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const projId = btn.getAttribute('data-project-id');
       const data = projectDetailsDatabase[projId];
 
-      if (data && modal && modalContentEl) {
+      if (data && projectModal && modalContentEl) {
         modalContentEl.innerHTML = `
           <div style="margin-bottom: 20px; padding-right: 44px;">
-            <span class="section-tag">${data.category}</span>
-            <h2 style="font-size: 1.8rem; margin: 8px 0 12px; color: var(--text-main);">${data.title}</h2>
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">${data.description}</p>
+            <span class="section-tag">${escapeHTML(data.category)}</span>
+            <h2 style="font-size: 1.8rem; margin: 8px 0 12px; color: var(--text-main);">${escapeHTML(data.title)}</h2>
+            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">${escapeHTML(data.description)}</p>
           </div>
 
           <div style="margin-bottom: 24px;">
             <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 8px;"></i>Key Features:</h4>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-              ${data.features.map(f => `<li style="display: flex; align-items: flex-start; gap: 10px; color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-arrow-right" style="color: var(--secondary); margin-top: 5px; font-size: 0.8rem;"></i> ${f}</li>`).join('')}
+              ${data.features.map(f => `<li style="display: flex; align-items: flex-start; gap: 10px; color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-arrow-right" style="color: var(--secondary); margin-top: 5px; font-size: 0.8rem;"></i> ${escapeHTML(f)}</li>`).join('')}
             </ul>
           </div>
 
           <div style="margin-bottom: 28px;">
             <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fas fa-layer-group" style="color: var(--primary); margin-right: 8px;"></i>Technologies:</h4>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              ${data.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+              ${data.techStack.map(t => `<span class="tech-tag">${escapeHTML(t)}</span>`).join('')}
             </div>
           </div>
 
@@ -479,28 +429,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (modalCloseBtn && modal) {
+  if (modalCloseBtn && projectModal) {
     modalCloseBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
+    projectModal.addEventListener('click', (e) => {
+      if (e.target === projectModal) closeModal();
     });
   }
 
-  // Escape key closes topmost overlay first
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (modal && modal.classList.contains('open')) {
-        closeModal();
-      } else if (aiChatWindow && aiChatWindow.classList.contains('open')) {
-        aiChatWindow.classList.remove('open');
-      }
-    }
-  });
-
   // ------------------------------------------------------------------------
-  // 7. Skill Bars Animation on Scroll
-  // ------------------------------------------------------------------------
-  // 7. Skill Progress Bars Animation
+  // 7. Skill Progress Bars Animation & Skill Cards Modal
   // ------------------------------------------------------------------------
   const skillProgressFills = document.querySelectorAll('.skill-progress-fill');
   
@@ -522,15 +459,11 @@ document.addEventListener('DOMContentLoaded', () => {
       skillsObserver.observe(skillsSection);
     }
   } else {
-    // Fallback if IntersectionObserver is not supported
     skillProgressFills.forEach(fill => {
       fill.style.width = fill.getAttribute('data-percentage') || '85%';
     });
   }
 
-  // ------------------------------------------------------------------------
-  // 7.1 Interactive Skill Card Details Modal
-  // ------------------------------------------------------------------------
   const skillsData = {
     'html': {
       title: 'HTML5 & Semantic Web',
@@ -598,254 +531,225 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     'genai': {
       title: 'GenAI & LLMs (Gemini, Claude, OpenAI, DeepSeek)',
-      category: 'Artificial Intelligence & Smart Automation',
+      category: 'AI Engineering & Acceleration',
       proficiency: '99%',
-      experience: 'Specialized 10x AI Speed Superpower',
+      experience: '4+ Years AI/Dev Experience',
       icon: 'fas fa-brain',
       iconColor: '#a855f7',
-      summary: 'Unlocking 10x engineering speed by integrating cutting-edge LLMs, building autonomous coding workflows, and deploying intelligent AI assistants into production software with prompt engineering and structured API schemas.',
+      summary: 'Harnessing generative AI models to construct cutting-edge AI chat platforms, autonomous coding workflows, multimodal understanding systems, and achieving 10x developer delivery speed.',
       highlights: [
-        '10x development velocity using AI coding agents and automated refactoring',
-        'Google Gemini (3.6 Flash / 2.5 Pro) API integration with custom system instructions',
-        'Prompt Engineering: Few-shot prompting, chain-of-thought, deterministic JSON outputs',
-        'Multi-model orchestration across Anthropic Claude, OpenAI GPT-4o, and DeepSeek'
+        'Architected Alokpath AI (ai.zihan.xyz) integrating 11 frontier LLMs safely',
+        'Zero-trust serverless proxy design preventing client-side API key leakage',
+        'Real-time token streaming with server-sent events (SSE) & WebSocket protocols',
+        'Advanced prompt engineering (Few-shot, CoT, structured JSON schemas, function calling)'
       ],
-      usedIn: ['Live Portfolio AI Assistant (Gemini 3.6 Flash)', 'Autonomous Dev Workflows', 'Smart Code Generation']
+      usedIn: ['Alokpath AI Flagship Multi-Model Chat Platform', 'Portfolio AI Assistant', 'Automated Code Generation']
     },
     'typescript': {
-      title: 'TypeScript',
-      category: 'Type-Safe Programming',
+      title: 'TypeScript (Strict Types & Scalability)',
+      category: 'Typed Programming',
       proficiency: '92%',
-      experience: '3+ Years Experience',
+      experience: '3+ Years Production Experience',
       icon: 'fas fa-code',
       iconColor: '#3178c6',
-      summary: 'Writing scalable, enterprise-grade, bug-resistant code with TypeScript. Utilizing strict typing, generics, interfaces, union types, and utility types across both frontend and backend systems.',
+      summary: 'Developing enterprise-grade applications with TypeScript. Applying strict type inference, generic interfaces, union types, and robust architectural boundaries to eliminate runtime errors.',
       highlights: [
-        'Strict type checking, type inference, and custom generic utilities',
-        'Interface and type definitions for complex API schemas and state models',
-        'Seamless integration with React, Next.js, Express, and Prisma',
-        'Eliminating runtime null/undefined crashes during compilation'
+        'Comprehensive type declarations, utility types, and strict null safety',
+        'Type-safe REST API integration and database schema typing with Prisma/Zod',
+        'Scalable monorepo and microservices architecture typing',
+        'Seamless integration with React, Express, and modern bundlers'
       ],
-      usedIn: ['Large-scale full stack web applications', 'API contracts and data layers']
+      usedIn: ['Enterprise Full Stack SaaS Applications', 'Production API Services']
     },
     'node': {
-      title: 'Node.js & Express',
-      category: 'Backend & Server Architecture',
+      title: 'Node.js & Express (Backend Systems)',
+      category: 'Backend & Microservices',
       proficiency: '90%',
-      experience: '3+ Years Production Experience',
+      experience: '3.5+ Years Production Experience',
       icon: 'fab fa-node-js',
       iconColor: '#10b981',
-      summary: 'Developing scalable, non-blocking, asynchronous RESTful APIs and backend microservices using Node.js and Express. Managing authentication, middleware pipelines, and third-party integrations.',
+      summary: 'Designing scalable, asynchronous REST APIs, WebSocket real-time systems, and serverless edge handlers with Node.js and Express.',
       highlights: [
-        'RESTful API design, routing, and modular controller architecture',
-        'Authentication & authorization via JWT, bcrypt, and secure sessions',
-        'Event-driven asynchronous I/O and stream processing',
-        'Rate limiting, CORS security, input validation, and centralized error handling'
+        'High-throughput RESTful API architecture with middleware design patterns',
+        'JWT authentication, rate limiting, CORS configuration, and security headers (Helmet)',
+        'Streaming data responses and background worker queues',
+        'Database abstraction layers and microservice communication'
       ],
-      usedIn: ['Alokpo Backend Crawler & Indexer', 'Ecomace Backend Server', 'Microservices API']
+      usedIn: ['Ecomace Backend API Server', 'Alokpo Backend Crawler Indexing Engine']
     },
     'python': {
       title: 'Python & FastAPI',
-      category: 'Backend & Machine Learning Services',
+      category: 'Backend, AI & Scripting',
       proficiency: '86%',
-      experience: '2+ Years Experience',
+      experience: '3+ Years Experience',
       icon: 'fab fa-python',
       iconColor: '#3b82f6',
-      summary: 'Developing blazing-fast asynchronous backend APIs using FastAPI and Python. Implementing data processing scripts, automated web scrapers, and AI tool integrations.',
+      summary: 'Crafting high-speed asynchronous APIs with FastAPI, data manipulation, automation scripts, and integrating machine learning pipelines with Python.',
       highlights: [
-        'FastAPI async routes, Pydantic data validation, and automated Swagger documentation',
-        'Python web scraping, data cleaning, and automated tasks',
-        'AI/ML integration pipelines and LLM wrapper endpoints',
-        'Clean, PEP 8 compliant, modular Python code'
+        'Asynchronous endpoint design with FastAPI and Pydantic validation',
+        'Data processing, web scraping, and automation scripts',
+        'AI/ML integration with PyTorch, Hugging Face, and LangChain',
+        'Clean, PEP 8 compliant, well-documented codebases'
       ],
-      usedIn: ['Web crawler services', 'Data pipelines & automation scripts']
+      usedIn: ['AI Model Microservices', 'Data Automation & Scraping Utilities']
     },
     'postgres': {
       title: 'PostgreSQL & Prisma ORM',
-      category: 'Relational Database Engineering',
+      category: 'Relational Database Architecture',
       proficiency: '88%',
       experience: '3+ Years Experience',
       icon: 'fas fa-database',
       iconColor: '#0284c7',
-      summary: 'Designing resilient relational database schemas, complex SQL queries, index optimization, and data migrations using PostgreSQL and modern ORMs like Prisma.',
+      summary: 'Designing normalized relational databases, writing optimized SQL queries, executing migrations, and modeling complex schemas using Prisma ORM and PostgreSQL.',
       highlights: [
-        'Relational schema design (1:1, 1:N, N:M) with foreign key constraints',
+        'Normalized relational schema design with indexing for high query performance',
         'Prisma ORM schema modeling, type-safe queries, and automated migrations',
-        'Query optimization, indexing strategies, and ACID transaction safety',
-        'Connection pooling and cloud database deployment (Supabase, Neon, AWS RDS)'
+        'Complex joins, transactions, aggregate analysis, and connection pooling',
+        'ACID-compliant enterprise transactional data integrity'
       ],
-      usedIn: ['Ecomace product & user relational storage', 'Production transactional backends']
+      usedIn: ['E-Commerce Data Stores', 'SaaS Production Databases']
     },
     'mongo': {
-      title: 'MongoDB & Redis',
-      category: 'NoSQL & High-Speed In-Memory Cache',
+      title: 'MongoDB & Redis (NoSQL & Caching)',
+      category: 'NoSQL & Memory Stores',
       proficiency: '85%',
       experience: '3+ Years Experience',
       icon: 'fas fa-leaf',
       iconColor: '#10b981',
-      summary: 'Leveraging MongoDB for flexible, document-based NoSQL storage and Redis for sub-millisecond in-memory caching, session management, and rate limiting.',
+      summary: 'Deploying schema-flexible document databases with MongoDB and lightning-fast in-memory caching and session management with Redis.',
       highlights: [
-        'MongoDB document design, schema validation, and aggregation pipelines',
-        'Redis caching strategies (Cache-Aside, Write-Through, TTL expiration)',
-        'Distributed session storage and API rate limiting via Redis keys',
-        'High-throughput data storage for search indexing and crawler payloads'
+        'Flexible document modeling and aggregation pipelines in MongoDB',
+        'High-speed sub-millisecond caching and session stores with Redis',
+        'Pub/Sub real-time messaging workflows',
+        'Database clustering, sharding basics, and replication'
       ],
-      usedIn: ['Alokpo Search Index storage', 'Session & fast memory caching']
+      usedIn: ['Real-Time Chat Data Stores', 'API Rate Limiting & Query Caching']
     },
     'tailwind': {
-      title: 'Tailwind CSS & Modern UI/UX',
-      category: 'Design Systems & Utility Styling',
+      title: 'Tailwind CSS & Modern Design Systems',
+      category: 'Modern UI/UX Engineering',
       proficiency: '96%',
-      experience: '3+ Years Experience',
+      experience: '3.5+ Years Experience',
       icon: 'fab fa-css3-alt',
       iconColor: '#06b6d4',
-      summary: 'Creating high-velocity, consistent, responsive design systems using Tailwind CSS. Translating Figma mockups into interactive, accessible, and polished user interfaces in record time.',
+      summary: 'Constructing modern, consistent, and responsive user interfaces using Tailwind CSS utility patterns and custom design token extensions.',
       highlights: [
-        'Utility-first styling with zero CSS bloat and purge optimization',
-        'Custom Tailwind design tokens, typography scales, and color palettes',
-        'Responsive breakpoints, dark mode variants, and pseudo-class states',
-        'Component UI libraries integration (Shadcn/UI, Radix, TailwindUI)'
+        'Rapid UI prototyping with utility-first approach and custom configuration',
+        'Design systems with coherent spacing, typography, and color tokens',
+        'Seamless dark mode implementation and responsive mobile breakpoints',
+        'Zero runtime CSS overhead and optimized production bundle purging'
       ],
-      usedIn: ['Ecomace Modern Storefront', 'Portfolio Design System', 'Landing Pages']
+      usedIn: ['Ecomace Production Storefront', 'Modern Client Portals']
     },
     'docker': {
       title: 'Docker & Cloud DevOps',
-      category: 'Containerization & Deployment',
+      category: 'DevOps & Infrastructure',
       proficiency: '82%',
-      experience: '2+ Years Experience',
+      experience: '2.5+ Years Experience',
       icon: 'fab fa-docker',
       iconColor: '#2563eb',
-      summary: 'Containerizing full-stack web applications for predictable, reproducible environments from local development to cloud production. Setting up automated CI/CD deployment pipelines.',
+      summary: 'Containerizing applications with Docker, managing multi-container setups with Docker Compose, and setting up automated CI/CD deployment pipelines.',
       highlights: [
-        'Multi-stage Dockerfile builds for minimal, secure production container images',
-        'Docker Compose for multi-container development (Frontend, Backend, DB, Redis)',
-        'Automated CI/CD pipelines via GitHub Actions',
-        'Cloud deployments on Vercel, Render, Railway, and AWS EC2'
+        'Multi-stage Dockerfile builds for minimal, secure production image sizes',
+        'Docker Compose orchestration for local development and microservice testing',
+        'GitHub Actions automated testing, building, and deployment workflows',
+        'Vercel, Netlify, Cloudflare, and cloud VPS deployments'
       ],
-      usedIn: ['Ecomace deployment workflows', 'Containerized development microservices']
+      usedIn: ['Full Stack Containerized Microservices', 'Automated GitHub Actions CI/CD']
     }
   };
 
   const skillCards = document.querySelectorAll('.skill-card');
   skillCards.forEach(card => {
-    function triggerSkillModal() {
-      lastFocusedTrigger = card;
+    card.addEventListener('click', () => {
       const skillId = card.getAttribute('data-skill-id');
       const data = skillsData[skillId];
-      if (data && modal && modalContentEl) {
+      if (data && projectModal && modalContentEl) {
+        lastFocusedTrigger = card;
         modalContentEl.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-right: 44px;">
-            <div style="width: 56px; height: 56px; border-radius: 14px; background: rgba(139, 92, 246, 0.12); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: ${data.iconColor}; flex-shrink: 0;">
-              <i class="${data.icon}"></i>
-            </div>
-            <div>
-              <span class="section-tag" style="margin-bottom: 4px; display: inline-block;">${data.category}</span>
-              <h2 style="font-size: 1.6rem; margin: 4px 0 2px; color: var(--text-main);">${data.title}</h2>
-              <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-main);">
-                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: ${data.iconColor}; margin-right: 6px;"></span>
-                Proficiency: ${data.proficiency} • ${data.experience}
+          <div style="margin-bottom: 20px; padding-right: 44px;">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+              <div style="width: 50px; height: 50px; border-radius: 14px; background: var(--bg-body-secondary); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: ${data.iconColor};">
+                <i class="${data.icon}"></i>
+              </div>
+              <div>
+                <span class="section-tag">${escapeHTML(data.category)}</span>
+                <h2 style="font-size: 1.6rem; margin: 4px 0 0; color: var(--text-main);">${escapeHTML(data.title)}</h2>
               </div>
             </div>
-          </div>
-
-          <div style="margin-bottom: 20px;">
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">${data.summary}</p>
+            <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+              <span class="tech-tag" style="color: var(--primary); border-color: var(--primary);"><i class="fas fa-chart-line"></i> Proficiency: ${data.proficiency}</span>
+              <span class="tech-tag"><i class="fas fa-calendar-check"></i> ${escapeHTML(data.experience)}</span>
+            </div>
+            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.02rem;">${escapeHTML(data.summary)}</p>
           </div>
 
           <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);">
-              <i class="fas fa-check-circle" style="color: var(--primary); margin-right: 8px;"></i>Core Competencies & Capabilities:
-            </h4>
+            <h4 style="font-size: 1.05rem; margin-bottom: 12px; color: var(--text-main);"><i class="fas fa-star" style="color: var(--accent-amber); margin-right: 8px;"></i>Core Capabilities:</h4>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-              ${data.highlights.map(h => `<li style="display: flex; align-items: flex-start; gap: 10px; color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-arrow-right" style="color: var(--secondary); margin-top: 5px; font-size: 0.8rem;"></i> ${h}</li>`).join('')}
+              ${data.highlights.map(h => `<li style="display: flex; align-items: flex-start; gap: 10px; color: var(--text-secondary); font-size: 0.92rem;"><i class="fas fa-check" style="color: var(--accent-emerald); margin-top: 5px; font-size: 0.8rem;"></i> ${escapeHTML(h)}</li>`).join('')}
             </ul>
           </div>
 
           <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);">
-              <i class="fas fa-laptop-code" style="color: var(--primary); margin-right: 8px;"></i>Applied In Real Projects:
-            </h4>
+            <h4 style="font-size: 1.05rem; margin-bottom: 12px; color: var(--text-main);"><i class="fas fa-laptop-code" style="color: var(--secondary); margin-right: 8px;"></i>Applied in Projects:</h4>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              ${data.usedIn.map(u => `<span class="tech-tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.25);">${u}</span>`).join('')}
+              ${data.usedIn.map(u => `<span class="tech-tag" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.3); color: var(--text-main);">${escapeHTML(u)}</span>`).join('')}
             </div>
           </div>
 
-          <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px;">
-            <a href="#projects" class="btn btn-primary btn-sm modal-action-btn">
-              <i class="fas fa-folder-open"></i> View Projects
-            </a>
-            <a href="#contact" class="btn btn-secondary btn-sm modal-action-btn">
-              <i class="fas fa-paper-plane"></i> Discuss This Tech
-            </a>
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modal-close-btn').click();">
+              Close Details
+            </button>
           </div>
         `;
-
-        modalContentEl.querySelectorAll('.modal-action-btn').forEach(actionBtn => {
-          actionBtn.addEventListener('click', closeModal);
-        });
-
         openModal();
       }
-    }
+    });
 
-    card.addEventListener('click', triggerSkillModal);
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        triggerSkillModal();
+        card.click();
       }
     });
   });
 
   // ------------------------------------------------------------------------
-  // 8. Contact Form Handling: Direct Email (mailto) & WhatsApp Integration
+  // 8. Contact Form Submissions (Email mailto & WhatsApp)
   // ------------------------------------------------------------------------
   const contactForm = document.getElementById('contact-form');
-  const whatsappBtn = document.getElementById('contact-whatsapp-btn');
+  const contactEmailBtn = document.getElementById('contact-email-btn');
+  const contactWhatsAppBtn = document.getElementById('contact-whatsapp-btn');
 
-  function getFormData() {
-    const name = document.getElementById('form-name')?.value.trim() || '';
-    const email = document.getElementById('form-email')?.value.trim() || '';
-    const subject = document.getElementById('form-subject')?.value.trim() || '';
-    const message = document.getElementById('form-message')?.value.trim() || '';
-    return { name, email, subject, message };
-  }
-
-  // Handle Send via Email (mailto to x@zihan.uk)
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const { name, email, subject, message } = getFormData();
+      const name = document.getElementById('form-name')?.value.trim();
+      const email = document.getElementById('form-email')?.value.trim();
+      const subject = document.getElementById('form-subject')?.value.trim() || 'Project Inquiry via Portfolio';
+      const message = document.getElementById('form-message')?.value.trim();
 
       if (!name || !email || !message) {
-        showToast('Please fill out all required fields.', 'error');
+        showToast('Please fill out all required fields (*)', 'error');
         return;
       }
 
-      const emailSubject = encodeURIComponent(subject ? `[Portfolio Inquiry] ${subject}` : `[Portfolio Inquiry] Message from ${name}`);
-      const emailBody = encodeURIComponent(
-        `Hi Zihan,\n\n` +
-        `Name: ${name}\n` +
-        `Email: ${email}\n` +
-        `Subject: ${subject || 'General Inquiry'}\n\n` +
-        `Message:\n${message}\n\n` +
-        `---\nSent from zihan.xyz portfolio`
-      );
+      const bodyContent = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+      const mailtoUrl = `mailto:x@zihan.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
 
-      const mailtoUrl = `mailto:x@zihan.uk?subject=${emailSubject}&body=${emailBody}`;
-
-      showToast(`Opening your email app to send to x@zihan.uk...`, 'info');
-      
-      setTimeout(() => {
-        window.location.href = mailtoUrl;
-      }, 400);
+      showToast('Opening default email client...', 'info');
+      window.location.href = mailtoUrl;
     });
   }
 
-  // Handle Send via WhatsApp (+880 1402-963123)
-  if (whatsappBtn) {
-    whatsappBtn.addEventListener('click', () => {
-      const { name, email, subject, message } = getFormData();
+  if (contactWhatsAppBtn) {
+    contactWhatsAppBtn.addEventListener('click', () => {
+      const name = document.getElementById('form-name')?.value.trim();
+      const email = document.getElementById('form-email')?.value.trim();
+      const subject = document.getElementById('form-subject')?.value.trim();
+      const message = document.getElementById('form-message')?.value.trim();
 
       if (!name || !message) {
         showToast('Please enter at least your Name and Message to chat on WhatsApp.', 'error');
@@ -861,9 +765,7 @@ document.addEventListener('DOMContentLoaded', () => {
       );
 
       const waUrl = `https://wa.me/8801402963123?text=${waText}`;
-
-      showToast(`Opening WhatsApp chat with +880 1402-963123...`, 'success');
-      
+      showToast('Opening WhatsApp chat with +880 1402-963123...', 'success');
       window.open(waUrl, '_blank');
     });
   }
@@ -879,7 +781,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       backToTopBtn?.classList.remove('visible');
     }
-  });
+  }, { passive: true });
 
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
@@ -891,12 +793,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 10. Toast Notification System (XSS-Safe & Debounced)
+  // 10. Toast Notification System
   // ------------------------------------------------------------------------
   let lastToastTime = 0;
   function showToast(message, type = 'info') {
     const now = Date.now();
-    if (now - lastToastTime < 500) return;
+    if (now - lastToastTime < 450) return;
     lastToastTime = now;
 
     let toastContainer = document.getElementById('toast-container');
@@ -932,11 +834,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 400);
-    }, 3800);
+    }, 3600);
   }
 
   // ------------------------------------------------------------------------
-  // 10.1 Certificate Database & Interactive Modal Viewer
+  // 11. Certificate Database & Interactive Modal Viewer
   // ------------------------------------------------------------------------
   const certDatabase = {
     'cert-1': {
@@ -1093,15 +995,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (detailsEl) {
       detailsEl.innerHTML = `
-        <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; margin-bottom: 8px;">${data.desc}</p>
+        <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; margin-bottom: 8px;">${escapeHTML(data.desc)}</p>
         <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted);">
-          <span><strong>Date:</strong> ${data.date}</span>
-          <span><strong>${data.idLabel}:</strong> <code style="font-family: var(--font-mono); color: var(--primary);">${data.id}</code></span>
+          <span><strong>Date:</strong> ${escapeHTML(data.date)}</span>
+          <span><strong>${escapeHTML(data.idLabel)}:</strong> <code style="font-family: var(--font-mono); color: var(--primary);">${escapeHTML(data.id)}</code></span>
         </div>
       `;
     }
     if (issuerInfoEl) {
-      issuerInfoEl.innerHTML = `<i class="fas fa-building" style="color: var(--secondary);"></i> ${data.issuer}`;
+      issuerInfoEl.innerHTML = `<i class="fas fa-building" style="color: var(--secondary);"></i> ${escapeHTML(data.issuer)}`;
     }
     if (downloadLink) {
       downloadLink.href = data.pdf;
@@ -1134,7 +1036,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Close cert modal on backdrop click or Escape
   const certModalEl = document.getElementById('cert-modal');
   if (certModalEl) {
     certModalEl.addEventListener('click', (e) => {
@@ -1143,14 +1044,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeCertModal();
-    }
-  });
 
   // ------------------------------------------------------------------------
-  // 11. Interactive AI Portfolio Assistant
+  // 12. Interactive AI Assistant Chat
   // ------------------------------------------------------------------------
   const aiChatBtn = document.getElementById('ai-chat-btn');
   const aiChatWindow = document.getElementById('ai-chat-window');
@@ -1190,7 +1086,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Expose globally for inline onclick fallback
     window.toggleAIChatGlobal = toggleAIChat;
 
     aiChatBtn.addEventListener('click', toggleAIChat);
@@ -1212,13 +1107,8 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAIChat();
     }, { passive: false });
 
-    aiChatWindow.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    aiChatWindow.addEventListener('touchend', (e) => {
-      e.stopPropagation();
-    }, { passive: true });
+    aiChatWindow.addEventListener('click', (e) => e.stopPropagation());
+    aiChatWindow.addEventListener('touchend', (e) => e.stopPropagation(), { passive: true });
 
     document.addEventListener('click', (e) => {
       if (Date.now() - lastActionTime < 350) return;
@@ -1242,55 +1132,10 @@ document.addEventListener('DOMContentLoaded', () => {
       aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
     }
 
-    const GEMINI_API_KEY = window.GEMINI_API_KEY || localStorage.getItem('gemini_api_key') || '';
-    const GEMINI_API_URL = GEMINI_API_KEY
-      ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`
-      : '';
-
-    const AI_SYSTEM_INSTRUCTION = `You are the official Portfolio AI Assistant on Zihan Fakir's website (zihan.xyz).
-Your goal is to represent Zihan Fakir with high intelligence, professionalism, and warmth, answering questions from recruiters, clients, and developers.
-
-Profile of Zihan Fakir:
-- Full Name: Zihan Fakir (also widely known as zihanfakir, zihan, or ZF)
-- Official Primary Domain: https://zihan.uk (Mirror: https://zihan.xyz)
-- Monogram / Initials: ZF
-- Primary Email: x@zihan.uk (Backup: zihanfakir@gmail.com)
-- Phone & WhatsApp: +880 1402-963123 (01402963123)
-- Universal Social Username: @zihanfakir across all networks (GitHub: https://github.com/zihanfakir , Facebook: https://facebook.com/zihanfakir , Instagram: https://instagram.com/zihanfakir , Telegram: https://t.me/zihanfakir , LinkedIn: https://linkedin.com/in/zihanfakir , Twitter/X: https://x.com/zihanfakir)
-- Core Superpower: Builds and ships production-grade software 10x faster than traditional developers using advanced AI workflows, prompt engineering, and autonomous coding agents without compromising code architecture or security.
-- Technical Skills: GenAI & LLMs (Gemini, Claude, OpenAI, DeepSeek - 99%), HTML5 (98%), CSS3 (96%), JavaScript ES6+ (95%), React & Next.js (95%), TypeScript (92%), Node.js & Express (90%), Python & FastAPI (86%), PostgreSQL & Prisma (88%), MongoDB & Redis (85%), Tailwind CSS (96%), Docker (82%).
-- Real Production Projects:
-  1. Alokpath AI (আলোকপথ AI): Zihan's flagship multi-model generative AI platform powered by 11 frontier models (Gemini, Claude, GPT-4o, DeepSeek, Llama). Features zero client-side API key exposure (100% secure serverless proxy), real-time token streaming, multimodal document/image analysis, and full Bengali UI. (Live: https://ai.zihan.xyz | Code: https://github.com/zihanfakir/ai.zihan.xyz)
-  2. Ecomace: Modern full-stack eCommerce engine with decoupled React client and Node/Express backend. Features render-as-you-fetch data streaming, persistent multi-item cart, 170+ commits, deployed on Vercel. (Live: https://ecomace.vercel.app/ | Code: https://github.com/zihanfakir/Ecomace)
-  3. Alokpo: Custom web search engine & crawler backend. Modern search UI communicating with crawler indexing APIs. (Live: https://zihanfakir.github.io/alokpo-search/ | Frontend: https://github.com/zihanfakir/alokpo-search | Backend: https://github.com/zihanfakir/alokpo-backend)
-  4. বয়স ক্যালকুলেটর (Age Calculator 26.0): Real-time ticking chronological age calculator with lifetime stats (heartbeats, breaths, next birthday countdown). (Live: https://zihanfakir.github.io/Age-Calculator-by-Zihan-26.0/ | Code: https://github.com/zihanfakir/Age-Calculator-by-Zihan-26.0)
-- Curriculum Vitae (CV / Resume): Available for download at "Zihan Fakir CV.pdf". Covers Zihan's Full Stack (MERN), Android (Kotlin), AI development, application security auditing, and top projects.
-- Verified Honors & Certifications (12 Credentials): Amazon Web Services (AWS - Automating with AI/ML for Small Business Owners), Google Cloud (Create Image Captioning Models), Microsoft (Business Analytics with Excel), Semrush Academy (AI Search Operating System, Become an AI-Powered Marketer, Digital Marketing), UniAthena (Master ChatGPT & Generative AI), HP Foundation / HP LIFE (AI for Beginners, Strategic Planning, Critical Thinking, Business Email), UNDP / ICPSD (ESG Standards & Institutional Governance).
-
-Guidelines:
-- If the visitor speaks Bengali (Bangla), reply in polite and friendly Bengali. If they speak English, reply in English.
-- Keep answers concise, clear, and engaging (1 to 3 short paragraphs or bullet points).
-- Do NOT use raw emojis in your responses. Always use clean professional text formatting.
-- Format text nicely with HTML tags like <strong>, <br>, or clickable links <a href="..." target="_blank">.`;
-
-    function formatMarkdown(text) {
-      if (!text) return '';
-      const escaped = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-      return escaped
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/(https?:\/\/[^\s<]+[^\s<.,!?:;()])/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">$1</a>')
-        .replace(/\n\n/g, '<br><br>')
-        .replace(/\n/g, '<br>');
-    }
-
     function generateLocalAIResponse(query) {
       const q = query.toLowerCase().trim();
 
-      if (q.includes('alokpath') || q.includes('আলোকপথ') || q.includes('chatbot') || q.includes('chat bot') || q.includes('ai bot') || q.includes('ai.zihan.xyz')) {
+      if (q.includes('alokpath') || q.includes('আলোকপথ') || q.includes('chatbot') || q.includes('ai bot') || q.includes('ai.zihan.xyz')) {
         return `<i class="fas fa-brain" style="color:var(--primary);margin-right:6px;"></i> <strong>About আলোকপথ AI (Alokpath AI):</strong><br>
         Zihan Fakir's flagship generative AI chat platform powered by <strong>11 frontier AI models</strong> (Gemini, Claude, GPT-4o, DeepSeek, Llama). Features zero client-side API key exposure (100% secure serverless proxy), real-time token streaming, multimodal image and file recognition, and an intuitive Bengali user interface.<br>
         <i class="fas fa-external-link-alt" style="margin-right:4px;"></i> <a href="https://ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">Try Live at ai.zihan.xyz</a> • <i class="fab fa-github" style="margin-right:4px;"></i> <a href="https://github.com/zihanfakir/ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);text-decoration:underline;">GitHub Repository</a>`;
@@ -1349,7 +1194,7 @@ Guidelines:
         return `<i class="fas fa-envelope-open-text" style="color:var(--accent-emerald);margin-right:6px;"></i> <strong>Contact Zihan Fakir:</strong><br>
         • <strong>Email:</strong> <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a><br>
         • <strong>Phone & WhatsApp:</strong> <a href="tel:+8801402963123" style="color:var(--primary);">+880 1402-963123</a><br>
-        • <strong>Domain:</strong> <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.xyz</a><br>
+        • <strong>Domain:</strong> <a href="https://zihan.uk" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.uk</a><br>
         • <strong>All Usernames:</strong> <strong style="color:var(--text-main);">@zihanfakir</strong> (GitHub, Facebook, Instagram, Telegram, LinkedIn, X)`;
       }
 
@@ -1373,7 +1218,7 @@ Guidelines:
         <i class="fas fa-arrow-down" style="margin-right:4px;"></i> Explore interactive previews &amp; credentials in the <strong><a href="#certificates" style="color:var(--secondary);text-decoration:underline;">Certifications Section</a></strong>!`;
       }
 
-      return `Thanks for asking! Zihan Fakir is a Full Stack Engineer & AI Builder. You can check out his projects (<a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
+      return `Thanks for asking! Zihan Fakir is an AI Engineer & Full Software Developer. You can check out his projects (<a href="https://ai.zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpath AI</a>, <a href="https://ecomace.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Ecomace</a>, <a href="https://zihanfakir.github.io/alokpo-search/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Alokpo</a>), his 10x AI speed, or contact him directly via <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a> or WhatsApp (<a href="https://wa.me/8801402963123" target="_blank" rel="noopener noreferrer" style="color:var(--accent-emerald);">+880 1402-963123</a>).`;
     }
 
     let isAIResponding = false;
@@ -1385,7 +1230,6 @@ Guidelines:
       isAIResponding = true;
       appendMessage(query, 'user', false);
 
-      // Show animated typing indicator
       const indicator = document.createElement('div');
       indicator.className = 'ai-msg ai-msg-bot typing-indicator';
       indicator.innerHTML = '<span></span><span></span><span></span>';
@@ -1393,148 +1237,49 @@ Guidelines:
       aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
 
       try {
-        if (!GEMINI_API_KEY || !GEMINI_API_URL) {
-          await new Promise(resolve => setTimeout(resolve, 350));
-          indicator.remove();
-          const localReply = generateLocalAIResponse(query);
-          appendMessage(localReply, 'bot', true);
-          isAIResponding = false;
-          return;
-        }
-
-        const response = await fetch(GEMINI_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            system_instruction: {
-              parts: [{ text: AI_SYSTEM_INSTRUCTION }]
-            },
-            contents: [
-              {
-                role: 'user',
-                parts: [{ text: query }]
-              }
-            ]
-          })
-        });
-
+        await new Promise(resolve => setTimeout(resolve, 300));
         indicator.remove();
-
-        if (response.ok) {
-          const data = await response.json();
-          const candidate = data.candidates?.[0];
-          const textPart = candidate?.content?.parts?.find(p => p.text && !p.thought);
-          const rawText = textPart?.text || candidate?.content?.parts?.[0]?.text;
-
-          if (rawText) {
-            appendMessage(formatMarkdown(rawText), 'bot', true);
-            isAIResponding = false;
-            return;
-          }
-        }
-
-        // Fallback to local intelligent response if API response format is unexpected
         const localReply = generateLocalAIResponse(query);
         appendMessage(localReply, 'bot', true);
       } catch (err) {
-        console.warn('Gemini API fetch error, using local fallback:', err);
         indicator.remove();
-        const fallbackReply = generateLocalAIResponse(query);
-        appendMessage(fallbackReply, 'bot', true);
+        appendMessage(`Thanks for asking! You can reach out directly to Zihan at <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a>.`, 'bot', true);
       } finally {
         isAIResponding = false;
       }
     }
 
-    aiChatForm?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!aiChatInput) return;
-      const text = aiChatInput.value;
-      aiChatInput.value = '';
-      handleUserQuery(text);
-    });
+    if (aiChatForm) {
+      aiChatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = aiChatInput?.value.trim();
+        if (text) {
+          aiChatInput.value = '';
+          handleUserQuery(text);
+        }
+      });
+    }
 
     aiChips.forEach(chip => {
       chip.addEventListener('click', () => {
-        const queryType = chip.getAttribute('data-query');
-        let queryText = 'Tell me about your projects';
-        if (queryType === 'ai') queryText = 'What are your AI skills and how fast do you build?';
-        if (queryType === 'certificates') queryText = 'Show me your verified certificates';
-        if (queryType === 'contact') queryText = 'How can I contact Zihan Fakir?';
-        if (queryType === 'ecomace') queryText = 'Tell me about Ecomace project';
-        handleUserQuery(queryText);
+        const query = chip.getAttribute('data-query');
+        if (query) {
+          handleUserQuery(query);
+        }
       });
     });
   }
 
-  // ------------------------------------------------------------------------
-  // 12. Full Website Content & Text Copy Protection (Refined & Anti-Duplicate)
-  // ------------------------------------------------------------------------
-  function isInputField(element) {
-    if (!element) return false;
-    const tag = element.tagName;
-    return tag === 'INPUT' || tag === 'TEXTAREA' || element.isContentEditable;
-  }
-
-  function isPermittedSelection(target) {
-    if (!target) return false;
-    if (isInputField(target)) return true;
-    if (target.closest && (target.closest('.contact-info-card') || target.closest('.social-link') || target.closest('a') || target.closest('.ai-msg-bot'))) {
-      return true;
-    }
-    return false;
-  }
-
-  // Intercept Copy event
-  document.addEventListener('copy', (e) => {
-    if (!isPermittedSelection(document.activeElement || e.target)) {
-      e.preventDefault();
-      showToast('Text copying is disabled on this website.', 'error');
-    }
-  });
-
-  // Intercept Cut event
-  document.addEventListener('cut', (e) => {
-    if (!isInputField(document.activeElement || e.target)) {
-      e.preventDefault();
-    }
-  });
-
-  // Intercept Right Click Context Menu (permit on interactive links)
-  document.addEventListener('contextmenu', (e) => {
-    if (!isInputField(e.target) && !e.target.closest('a') && !e.target.closest('button')) {
-      e.preventDefault();
-      showToast('Right-click is disabled to protect content.', 'info');
-    }
-  });
-
-  // Intercept Keyboard Copy Shortcuts (Ctrl+C, Cmd+C) without duplicate toast
+  // Escape key closes topmost overlay
   document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
-      if (!isPermittedSelection(document.activeElement)) {
-        e.preventDefault();
-        showToast('Text copying is disabled on this website.', 'error');
+    if (e.key === 'Escape') {
+      if (projectModal && projectModal.classList.contains('open')) {
+        closeModal();
+      } else if (certModalEl && certModalEl.classList.contains('open')) {
+        closeCertModal();
+      } else if (aiChatWindow && aiChatWindow.classList.contains('open')) {
+        aiChatWindow.classList.remove('open');
       }
     }
   });
-
-  // Prevent Dragging Images and Text
-  document.addEventListener('dragstart', (e) => {
-    if (!isInputField(e.target)) {
-      e.preventDefault();
-    }
-  });
-
-  // ------------------------------------------------------------------------
-  // 13. Dynamic Current Year for Copyright
-  // ------------------------------------------------------------------------
-  const currentYearEl = document.getElementById('current-year');
-  if (currentYearEl) {
-    currentYearEl.textContent = new Date().getFullYear();
-  }
-
-  // Expose toast function for debugging/testing
-  window.showToast = showToast;
 });
