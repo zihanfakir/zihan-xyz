@@ -233,15 +233,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1.25px, transparent 1.25px);
+  background-size: 28px 28px;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.7;
+  opacity: 0.95;
 }
 
 [data-theme="light"] .bg-tech-grid {
-  background-image: radial-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(15, 23, 42, 0.12) 1.25px, transparent 1.25px);
 }
 
 @keyframes floatOrb {
@@ -1039,32 +1039,63 @@ p {
 }
 
 /* --------------------------------------------------------------------------
-   8. About Me Bento Showcase
+   8. About Me Bento Showcase (Premium Upgrade)
    -------------------------------------------------------------------------- */
+.about-section-glow {
+  position: absolute;
+  top: 15%;
+  right: -80px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 36px;
   align-items: start;
+  position: relative;
+  z-index: 1;
+}
+
+.about-credo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: var(--border-radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
 }
 
 .about-text h3 {
-  font-size: 1.55rem;
+  font-size: 1.65rem;
   margin-bottom: 18px;
   color: var(--text-main);
   line-height: 1.35;
+  letter-spacing: -0.02em;
 }
 
 .about-text p {
   font-size: 1.02rem;
   line-height: 1.8;
   margin-bottom: 18px;
+  color: var(--text-secondary);
 }
 
 .about-features {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: 16px;
   margin-top: 28px;
 }
 
@@ -1073,20 +1104,30 @@ p {
   gap: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  padding: 18px;
+  padding: 20px 18px;
   border-radius: var(--border-radius-md);
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .about-feature-item:hover {
-  border-color: var(--border-hover);
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
   box-shadow: var(--shadow-sm);
 }
 
-.feature-icon {
-  font-size: 1.35rem;
-  margin-top: 2px;
+.feature-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
   flex-shrink: 0;
+  background: var(--bg-body-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .feature-title {
@@ -1097,8 +1138,8 @@ p {
 }
 
 .feature-desc {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.84rem;
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
@@ -1106,6 +1147,142 @@ p {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* Developer Dossier / System Spec Card */
+.dev-dossier-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition-fast);
+}
+
+.dev-dossier-card:hover {
+  border-color: var(--border-hover);
+}
+
+.dossier-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.22);
+  border-bottom: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+[data-theme="light"] .dossier-topbar {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.dossier-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dossier-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dossier-dot.red { background: #ef4444; }
+.dossier-dot.yellow { background: #f59e0b; }
+.dossier-dot.green { background: #10b981; }
+
+.dossier-title {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.dossier-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--accent-emerald);
+}
+
+.dossier-status-ping {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
+}
+
+.dossier-body {
+  padding: 22px 24px;
+}
+
+.dossier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dossier-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.92rem;
+}
+
+.dossier-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dossier-label {
+  color: var(--text-muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dossier-label i {
+  color: var(--primary);
+  font-size: 0.9rem;
+  width: 16px;
+}
+
+.dossier-value {
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+}
+
+/* About Action / Connect Card */
+.about-connect-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.about-connect-card:hover {
+  border-color: var(--border-hover);
 }
 
 /* --------------------------------------------------------------------------
@@ -2396,7 +2573,8 @@ textarea.form-control {
   .orb-3 { width: 320px; height: 320px; bottom: 5%; left: 0; }
 
   .bg-tech-grid {
-    opacity: 0.35;
+    opacity: 0.80;
+    background-size: 24px 24px;
   }
 
   /* Turn off expensive multi-pass backdrop-filters during mobile scroll */
@@ -2404,6 +2582,8 @@ textarea.form-control {
   .cert-card,
   .skill-card,
   .about-feature-item,
+  .dev-dossier-card,
+  .about-connect-card,
   .glass-card,
   .exp-timeline-content,
   .contact-method-card,
