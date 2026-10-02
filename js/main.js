@@ -1282,4 +1282,104 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  // ------------------------------------------------------------------------
+  // 10. Hero Background Interactive Particle Constellation Animation
+  // ------------------------------------------------------------------------
+  function initHeroParticles() {
+    const canvas = document.getElementById('hero-particles-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let width = 0, height = 0;
+    let particles = [];
+    let animationFrameId = null;
+    let isVisible = true;
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 20 : 42;
+
+    function resize() {
+      const hero = document.getElementById('home');
+      if (!hero) return;
+      width = canvas.width = hero.offsetWidth;
+      height = canvas.height = hero.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * (width || window.innerWidth);
+        this.y = Math.random() * (height || 600);
+        this.vx = (Math.random() - 0.5) * 0.45;
+        this.vy = (Math.random() - 0.5) * 0.45;
+        this.radius = Math.random() * 1.5 + 0.8;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(99, 102, 241, 0.45)';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function render() {
+      if (!isVisible) return;
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(99, 102, 241, ${0.16 * (1 - dist / 110)})`;
+            ctx.lineWidth = 0.8;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      animationFrameId = requestAnimationFrame(render);
+    }
+
+    // Performance optimization: Pause loop when hero is off-screen
+    const heroEl = document.getElementById('home');
+    if (heroEl && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animationFrameId) {
+            animationFrameId = requestAnimationFrame(render);
+          } else if (!isVisible && animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+          }
+        });
+      }, { threshold: 0.05 });
+      observer.observe(heroEl);
+    }
+
+    animationFrameId = requestAnimationFrame(render);
+  }
+
+  // Initialize hero particles
+  initHeroParticles();
 });
