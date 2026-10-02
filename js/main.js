@@ -891,6 +891,86 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
+  // 10b. Full Website Copy & Source Protection System
+  // ------------------------------------------------------------------------
+  // 1. Intercept Copy event
+  document.addEventListener('copy', (e) => {
+    const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+    if (!isInput) {
+      e.preventDefault();
+      if (e.clipboardData) {
+        e.clipboardData.clearData();
+      }
+      showToast('Content copying is disabled on this portfolio.', 'warning');
+      return false;
+    }
+  });
+
+  // 2. Intercept Cut event
+  document.addEventListener('cut', (e) => {
+    const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+    if (!isInput) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // 3. Intercept Selection Start event (drag to highlight text)
+  document.addEventListener('selectstart', (e) => {
+    const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+    if (!isInput) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // 4. Intercept Context Menu (Right Click)
+  document.addEventListener('contextmenu', (e) => {
+    const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+    if (!isInput) {
+      e.preventDefault();
+      showToast('Right-click & copying is disabled.', 'warning');
+      return false;
+    }
+  });
+
+  // 5. Intercept Copy, Select All & Save Keyboard Shortcuts
+  document.addEventListener('keydown', (e) => {
+    const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+    if (!isInput) {
+      // Ctrl+C / Cmd+C (Copy)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+        e.preventDefault();
+        showToast('Content copying is disabled on this portfolio.', 'warning');
+        return false;
+      }
+      // Ctrl+A / Cmd+A (Select All)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+U / Cmd+U (View Source)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+S / Cmd+S (Save Page)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        return false;
+      }
+    }
+  });
+
+  // 6. Prevent image dragging
+  document.addEventListener('dragstart', (e) => {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // ------------------------------------------------------------------------
   // 11. Certificate Database & Interactive Modal Viewer
   // ------------------------------------------------------------------------
   const certDatabase = {
