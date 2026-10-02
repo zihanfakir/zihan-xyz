@@ -1536,8 +1536,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize Hero Particles and Desktop Dynamic Interactions
+  // ------------------------------------------------------------------------
+  // 13. Progressive Section Scroll-Loader (On-Demand Section Loading with Light Animation)
+  // ------------------------------------------------------------------------
+  function initProgressiveSectionLoading() {
+    const targetSections = document.querySelectorAll(
+      'section#about, section#skills, section#projects, section#certificates, section#experience, section#contact'
+    );
+    if (!targetSections.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      targetSections.forEach(sec => sec.classList.add('section-loaded'));
+      return;
+    }
+
+    targetSections.forEach(sec => {
+      sec.classList.add('progressive-section');
+    });
+
+    const progressiveObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section-loaded');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '280px 0px 80px 0px',
+      threshold: 0.02
+    });
+
+    targetSections.forEach(sec => progressiveObserver.observe(sec));
+
+    // Failsafe timeout ensures full visibility
+    setTimeout(() => {
+      targetSections.forEach(sec => sec.classList.add('section-loaded'));
+    }, 2500);
+  }
+
+  // Initialize Hero Particles, Desktop Micro-Interactions, and Progressive Loader
   initHeroParticles();
   initScrollReveal();
   initCardSpotlight();
+  initProgressiveSectionLoading();
 });
