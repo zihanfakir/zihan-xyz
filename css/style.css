@@ -20,6 +20,12 @@
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
+  /* Safe Area Inset Tokens (iOS Dynamic Island, Notch & Android Gesture Bars) */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+
   /* Color Palette - Dark Theme (Default: Deep Cosmic Slate & OLED) */
   --bg-body: #07090e;
   --bg-body-secondary: #0d121f;
@@ -216,9 +222,15 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   transition: background-color var(--transition-normal), color var(--transition-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body.nav-menu-open {
+  overflow: hidden !important;
+  touch-action: none;
 }
 
 /* Background Ambient Orbs & Modern Grid */
@@ -2531,41 +2543,82 @@ textarea.form-control {
   }
 }
 
+/* ==========================================================================
+   Extreme Mobile-First Architecture & Low-End Optimization Suite
+   Strictly isolated to <= 768px. Zero impact on Desktop PC.
+   ========================================================================== */
+
 @media (max-width: 768px) {
-  /* 1. Header & Decluttered Mobile Topbar */
+  /* --- 1. Global Touch Hygiene, Viewport & Zero Horizontal Overflow --- */
+  html,
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    position: relative;
+    min-height: 100dvh;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+
+  /* Prevent iOS Safari Automatic Zooming on Input Focus */
+  input,
+  textarea,
+  select,
+  .form-control,
+  .ai-chat-input {
+    font-size: 16px !important;
+  }
+
+  /* Minimum 44x44px Touch Targets for WCAG & Mobile Usability */
+  .nav-link,
+  .nav-mobile-cta,
+  .theme-toggle-btn,
+  .mobile-toggle,
+  .social-link,
+  .filter-btn,
+  .btn,
+  .back-to-top,
+  .modal-close,
+  .cert-modal-close,
+  .ai-assistant-btn {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- 2. Site Header & Fast Native Navigation Drawer --- */
   .site-header {
-    top: 10px;
+    top: max(8px, var(--sat, 8px));
     padding: 0 12px;
   }
 
   .site-header .nav-container {
     height: 52px;
-    padding: 6px 12px 6px 16px;
-    background: rgba(11, 15, 25, 0.40) !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
+    padding: 6px 12px 6px 14px;
+    background: #0b0f19 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
   }
 
   [data-theme="light"] .site-header .nav-container {
-    background: rgba(255, 255, 255, 0.50) !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
-    border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  }
-
-  .site-header.scrolled .nav-container {
-    background: rgba(11, 15, 25, 0.65) !important;
-    backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
-  }
-
-  [data-theme="light"] .site-header.scrolled .nav-container {
-    background: rgba(255, 255, 255, 0.75) !important;
-    backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
   }
 
   .logo {
@@ -2586,65 +2639,72 @@ textarea.form-control {
     gap: 8px;
   }
 
-  /* Hide desktop "Let's Talk" button in mobile topbar to eliminate clutter ("hijibiji") */
+  /* Declutter topbar: Hide desktop CTA in header */
   .nav-desktop-cta {
     display: none !important;
   }
 
   .theme-toggle-btn,
   .mobile-toggle {
-    width: 38px;
-    height: 38px;
-    font-size: 0.95rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+    border-radius: var(--border-radius-sm);
   }
 
   .mobile-toggle {
     display: flex;
   }
 
-  /* 2. Sleek Mobile Navigation Drawer */
+  /* Lightweight, Non-Laggy Mobile Drawer */
   .nav-menu {
     position: fixed;
-    top: 68px;
+    top: calc(52px + max(8px, var(--sat, 8px)) + 8px);
     left: 12px;
     right: 12px;
-    background: var(--bg-card-solid);
-    border: 1px solid var(--border-color);
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     padding: 16px;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-8px) scale(0.98);
-    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
     z-index: 1001;
-    max-height: calc(100vh - 84px);
+    max-height: calc(100dvh - 84px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  [data-theme="light"] .nav-menu {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
   }
 
   .nav-menu.open {
     opacity: 1;
     pointer-events: all;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 
   .nav-link {
     width: 100%;
-    text-align: left;
     padding: 12px 16px;
-    font-size: 0.98rem;
+    font-size: 1rem;
     font-weight: 600;
     border-radius: var(--border-radius-sm);
     color: var(--text-secondary);
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    transition: background var(--transition-fast), color var(--transition-fast);
+    background: transparent;
   }
 
-  .nav-link:hover,
+  .nav-link:active,
   .nav-link.active {
     background: var(--primary-light);
     color: var(--primary);
@@ -2654,7 +2714,7 @@ textarea.form-control {
     display: block;
     width: 100%;
     margin-top: 10px;
-    padding-top: 10px;
+    padding-top: 12px;
     border-top: 1px solid var(--border-color);
   }
 
@@ -2670,33 +2730,16 @@ textarea.form-control {
     border-radius: var(--border-radius-full);
   }
 
-  /* 3. Mobile Performance Boost: Eliminate constant GPU compositing loops */
-  .bg-ambient-orb {
-    filter: blur(45px) !important;
-    animation: none !important;
-    transform: none !important;
-    opacity: 0.20 !important;
-  }
-
-  .orb-1 { width: 320px; height: 320px; top: -50px; left: -50px; }
-  .orb-2 { width: 340px; height: 340px; top: 40%; right: -80px; }
-  .orb-3 { width: 320px; height: 320px; bottom: 5%; left: 0; }
-
-  .bg-tech-grid {
+  /* --- 3. Kill Expensive GPU Blurs, Ambient Orbs & Heavy Filters --- */
+  .bg-ambient-orb,
+  .hero-spotlight,
+  .bg-tech-grid,
+  .float-badge,
+  .hero-particles-canvas {
     display: none !important;
   }
 
-  /* Mobile: Complete Animation & Effect Removal (Zero Lag, Solid Backgrounds, Pure Static Rendering) */
-  .btn,
-  .btn-secondary,
-  .btn-primary,
-  .btn-outline-glow,
-  .social-link,
-  .filter-btn,
-  .ai-chip,
-  .ai-assistant-btn,
-  .theme-toggle-btn,
-  .mobile-toggle,
+  /* --- 4. 100% Solid Card & Modal Surfaces (Zero Glassmorphism / Blur on Mobile) --- */
   .project-card,
   .cert-card,
   .skill-card,
@@ -2705,44 +2748,23 @@ textarea.form-control {
   .about-connect-card,
   .glass-card,
   .stat-item,
-  .exp-timeline-content,
-  .contact-method-card,
-  .contact-form-card,
-  .hero-turnaround-badge,
-  .hero-badge,
-  .about-credo-badge,
-  .project-badge-tag,
-  .cert-preview-badge,
+  .timeline-card,
+  .contact-item-card,
+  .contact-form-box,
   .modal-window,
   .cert-modal-window,
-  .ai-chat-window {
+  .ai-chat-window,
+  .ai-chat-header,
+  .ai-chat-footer {
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     filter: none !important;
     box-shadow: none !important;
+    transform: none !important;
     animation: none !important;
     transition: none !important;
-    transform: none !important;
-  }
-
-  /* 100% Solid, Opaque Card Surfaces with Zero Glow and Zero Shadows on Mobile */
-  .project-card,
-  .cert-card,
-  .skill-card,
-  .about-feature-item,
-  .dev-dossier-card,
-  .about-connect-card,
-  .glass-card,
-  .stat-item,
-  .exp-timeline-content,
-  .contact-method-card,
-  .contact-form-card {
-    background: #111827 !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: none !important;
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
   }
 
   [data-theme="light"] .project-card,
@@ -2753,27 +2775,33 @@ textarea.form-control {
   [data-theme="light"] .about-connect-card,
   [data-theme="light"] .glass-card,
   [data-theme="light"] .stat-item,
-  [data-theme="light"] .exp-timeline-content,
-  [data-theme="light"] .contact-method-card,
-  [data-theme="light"] .contact-form-card {
+  [data-theme="light"] .timeline-card,
+  [data-theme="light"] .contact-item-card,
+  [data-theme="light"] .contact-form-box,
+  [data-theme="light"] .modal-window,
+  [data-theme="light"] .cert-modal-window,
+  [data-theme="light"] .ai-chat-window,
+  [data-theme="light"] .ai-chat-header,
+  [data-theme="light"] .ai-chat-footer {
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: none !important;
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
   }
 
-  /* Strip card hover effects and pseudo-element gradient overlays on mobile */
+  /* Kill pseudo-element gradient overlays on mobile */
   .stat-item::before,
   .skill-card::before,
   .project-card::before,
   .cert-card::before,
   .dev-dossier-card::before,
-  .about-connect-card::before {
+  .about-connect-card::before,
+  .timeline-card::before,
+  .contact-item-card::before,
+  .contact-form-box::before {
     display: none !important;
   }
 
+  /* Strip card hover image transforms on touch screens */
   .project-img,
   .cert-preview-img,
   .project-card:hover .project-img,
@@ -2784,7 +2812,28 @@ textarea.form-control {
     opacity: 1 !important;
   }
 
-  /* Solid mobile buttons with zero shadows or animations */
+  /* --- 5. Static Solid Buttons, Badges & Zero Hover Micro-Physics --- */
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline-glow,
+  .social-link,
+  .filter-btn,
+  .ai-chip,
+  .hero-turnaround-badge,
+  .hero-badge,
+  .about-credo-badge,
+  .project-badge-tag,
+  .cert-preview-badge {
+    transform: none !important;
+    scale: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
   .btn-secondary,
   .social-link,
   .filter-btn,
@@ -2792,11 +2841,8 @@ textarea.form-control {
     background: #1f2937 !important;
     color: #f3f4f6 !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: none !important;
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
   }
+
   [data-theme="light"] .btn-secondary,
   [data-theme="light"] .social-link,
   [data-theme="light"] .filter-btn,
@@ -2804,35 +2850,30 @@ textarea.form-control {
     background: #f1f5f9 !important;
     color: #111827 !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: none !important;
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-  }
-  .btn-primary {
-    background: var(--primary) !important;
-    box-shadow: none !important;
-    border: none !important;
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
   }
 
-  /* Solid badges on mobile */
+  .btn-primary {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+  }
+
+  .btn:active,
+  .social-link:active,
+  .filter-btn:active {
+    opacity: 0.82;
+  }
+
   .hero-turnaround-badge,
   .hero-badge,
   .about-credo-badge,
   .project-badge-tag,
   .cert-preview-badge {
     background: #1f2937 !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    color: var(--text-secondary) !important;
   }
+
   [data-theme="light"] .hero-turnaround-badge,
   [data-theme="light"] .hero-badge,
   [data-theme="light"] .about-credo-badge,
@@ -2840,123 +2881,103 @@ textarea.form-control {
   [data-theme="light"] .cert-preview-badge {
     background: #f1f5f9 !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: var(--text-secondary) !important;
   }
 
-  /* Solid mobile background: hide ambient glow orbs & decorative animations */
-  .bg-ambient-orb,
-  .hero-spotlight,
-  .float-badge {
-    display: none !important;
-  }
-
-  /* 4. Horizontal Scrollable Category Filter Pills for Projects */
-  .projects-filter {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 4px 6px 12px 4px;
-    margin-bottom: 24px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    gap: 8px;
-  }
-  .projects-filter::-webkit-scrollbar {
-    display: none;
-  }
-  .filter-btn {
-    white-space: nowrap;
-    flex-shrink: 0;
-    padding: 7px 16px;
-    font-size: 0.84rem;
-  }
-
-  /* 5. Hero & Content Section Polish */
+  /* --- 6. Section Layouts & Touch-Optimized Content Rhythm --- */
+  /* Hero Section */
   .hero-section {
-    padding-top: calc(var(--header-height) + 24px);
-    padding-bottom: 40px;
+    padding-top: calc(52px + max(8px, var(--sat, 8px)) + 24px);
+    padding-bottom: 36px;
   }
+
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 24px;
     text-align: center;
   }
+
   .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   .hero-greeting {
     justify-content: center;
   }
+
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
+    line-height: 1.2;
+    margin-bottom: 8px;
   }
+
   .hero-subtitle {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
   }
+
   .hero-bio {
-    max-width: 95%;
+    max-width: 100%;
     margin: 0 auto 20px;
+    font-size: 0.95rem;
+    line-height: 1.55;
   }
+
   .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    width: 100%;
     gap: 10px;
+    width: 100%;
   }
+
   .hero-actions .btn {
-    flex: 1 1 auto;
-    min-width: 130px;
+    flex: 1 1 140px;
+    min-height: 44px;
     justify-content: center;
   }
+
   .hero-visual {
     order: -1;
   }
+
   .avatar-wrapper {
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     margin: 0 auto;
   }
+
   .avatar-container {
-    width: 190px;
-    height: 190px;
+    width: 180px;
+    height: 180px;
     border-radius: 50% !important;
-    border: 3px solid rgba(99, 102, 241, 0.5) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 30px var(--primary-glow) !important;
+    border: 3px solid var(--primary) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
     transform: none !important;
   }
 
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-  }
-  .stats-grid .stat-item:last-child {
-    grid-column: span 2;
-  }
-  .stat-item {
-    padding: 16px 12px !important;
-  }
-  .stat-number {
-    font-size: 1.85rem !important;
-  }
-  .stat-label {
-    font-size: 0.78rem !important;
+  .hero-socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 14px;
   }
 
-  .hero-spotlight {
-    width: 320px;
-    height: 320px;
-    top: -40px;
-    filter: blur(40px);
+  .social-link {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
   }
 
-  .hero-particles-canvas {
-    opacity: 0.55;
-  }
-
+  /* Marquee Section */
   .marquee-section {
-    padding: 16px 0 20px;
+    padding: 14px 0 18px;
   }
 
   .marquee-item {
@@ -2969,46 +2990,191 @@ textarea.form-control {
     font-size: 0.95rem;
   }
 
+  .marquee-track {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .stats-grid .stat-item:last-child {
+    grid-column: span 2;
+  }
+
+  .stat-item {
+    padding: 16px 12px !important;
+  }
+
+  .stat-number {
+    font-size: 1.85rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.78rem !important;
+  }
+
+  /* Skills Grid */
   .skills-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
   }
+
   .skill-card {
     padding: 14px 12px !important;
   }
+
   .skill-icon {
     width: 32px !important;
     height: 32px !important;
     font-size: 1.05rem !important;
   }
+
   .skill-title {
     font-size: 0.88rem !important;
   }
+
   .skill-subtitle {
     font-size: 0.72rem !important;
   }
+
   .skill-percentage-badge {
     font-size: 0.75rem !important;
     padding: 2px 6px !important;
   }
 
-  .form-grid-2, .about-features {
-    grid-template-columns: 1fr;
-    gap: 10px;
+  /* Category Filter Pills (Horizontal Touch Swiping) */
+  .projects-filter {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 8px;
+    padding: 4px 4px 12px 4px;
+    margin-bottom: 20px;
   }
 
-  .badge-text-full, .turnaround-text-full { display: none; }
-  .badge-text-short, .turnaround-text-short { display: inline; }
+  .projects-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  /* Projects & Certificate Grids */
+  .projects-grid,
+  .cert-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  /* Experience & Education Timeline */
+  .timeline-item {
+    padding-left: 44px;
+    margin-bottom: 24px;
+  }
+
+  .timeline-dot {
+    left: 8px;
+    width: 18px;
+    height: 18px;
+    top: 14px;
+  }
+
+  .timeline-container::before {
+    left: 16px;
+    top: 8px;
+    bottom: 8px;
+  }
+
+  .timeline-card {
+    padding: 18px 16px;
+  }
+
+  .timeline-role {
+    font-size: 1.1rem;
+  }
+
+  .timeline-company {
+    font-size: 0.88rem;
+  }
+
+  /* Contact Section */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contact-item-card {
+    padding: 16px;
+  }
+
+  .contact-form-box {
+    padding: 20px 16px;
+  }
+
+  .form-grid-2,
+  .about-features {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Safe Area Aware Floating Elements */
+  .ai-assistant-btn {
+    bottom: max(16px, var(--sab, 16px));
+    right: max(14px, var(--sar, 14px));
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  .back-to-top {
+    bottom: max(16px, var(--sab, 16px));
+    left: max(14px, var(--sal, 14px));
+    width: 44px;
+    height: 44px;
+  }
+
+  .ai-chat-window {
+    right: 10px;
+    left: 10px;
+    bottom: calc(max(16px, var(--sab, 16px)) + 52px);
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 100px);
+    border-radius: var(--border-radius-lg);
+  }
+
+  .badge-text-full,
+  .turnaround-text-full {
+    display: none;
+  }
+
+  .badge-text-short,
+  .turnaround-text-short {
+    display: inline;
+  }
 }
 
+/* --- 7. Extra Mobile Narrow Devices (<= 480px) --- */
 @media (max-width: 480px) {
   .hero-section {
-    padding-top: calc(var(--header-height) + 16px);
-    padding-bottom: 32px;
+    padding-top: calc(52px + max(8px, var(--sat, 8px)) + 16px);
+    padding-bottom: 28px;
   }
 
   .hero-title {
-    font-size: 2.1rem;
+    font-size: 1.95rem;
     line-height: 1.2;
     margin-bottom: 8px;
   }
@@ -3019,87 +3185,69 @@ textarea.form-control {
   }
 
   .hero-bio {
-    font-size: 0.92rem;
-    line-height: 1.55;
+    font-size: 0.9rem;
+    line-height: 1.5;
     margin-bottom: 18px;
-    max-width: 100%;
   }
 
   .hero-actions {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 12px !important;
+    gap: 10px !important;
     width: 100% !important;
-    max-width: 380px !important;
-    margin: 0 auto 22px auto !important;
+    max-width: 360px !important;
+    margin: 0 auto 20px auto !important;
   }
 
   .hero-actions .btn:first-child {
     grid-column: span 2 !important;
-    padding: 13px 20px !important;
-    font-size: 0.95rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    padding: 12px 18px !important;
+    font-size: 0.92rem !important;
   }
 
   .hero-actions .btn:not(:first-child) {
-    padding: 11px 12px !important;
-    font-size: 0.86rem !important;
+    padding: 10px 12px !important;
+    font-size: 0.84rem !important;
     min-width: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
     white-space: nowrap !important;
   }
 
   .hero-socials {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 10px !important;
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    margin: 0 auto 26px auto !important;
+    gap: 8px !important;
+    margin: 0 auto 20px auto !important;
   }
 
   .social-link {
-    width: 40px !important;
-    height: 40px !important;
+    width: 44px !important;
+    height: 44px !important;
     font-size: 1.05rem !important;
-    flex-shrink: 0 !important;
-  }
-
-  .projects-grid, .cert-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .ai-assistant-btn {
-    bottom: 16px;
-    right: 14px;
-    padding: 10px 16px;
-    font-size: 0.85rem;
-  }
-
-  .back-to-top {
-    bottom: 16px;
-    left: 14px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .ai-chat-window {
-    right: 10px;
-    bottom: 70px;
-    width: calc(100vw - 20px);
-    height: calc(100vh - 90px);
   }
 }
 
+/* --- 8. Small Screen / Low-End Devices (<= 360px) --- */
 @media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.75rem !important;
+  }
+
   .skills-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stats-grid .stat-item:last-child {
+    grid-column: span 1 !important;
+  }
+
+  .hero-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-actions .btn:first-child {
+    grid-column: span 1 !important;
   }
 }
 
@@ -3355,46 +3503,30 @@ textarea.form-control {
   }
 }
 
-/* 4. Mobile Lag-Free Hardware Performance Optimizations */
-@media (max-width: 768px) {
-  /* Fast touch interaction - remove 300ms tap delay */
-  * {
-    -webkit-tap-highlight-color: transparent;
+/* ==========================================================================
+   Reduced Motion Accessibility (prefers-reduced-motion: reduce)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  a, button, input, select, textarea {
-    touch-action: manipulation;
-  }
-
-  /* Turn off all button hover transforms and scaling on mobile/touch screens for 100% responsiveness */
-  .btn,
-  .btn:hover,
-  .btn-primary,
-  .btn-primary:hover,
-  .btn-secondary,
-  .btn-secondary:hover,
-  .btn-outline-glow,
-  .btn-outline-glow:hover,
-  .social-link,
-  .social-link:hover,
-  .filter-btn,
-  .filter-btn:hover {
+  .reveal-on-scroll {
+    opacity: 1 !important;
     transform: none !important;
-    scale: none !important;
+    transition: none !important;
   }
-  .btn:active,
-  .social-link:active,
-  .filter-btn:active {
-    opacity: 0.85;
+  .card-spotlight::before {
+    display: none !important;
   }
-
-  /* Pause background orb animations on mobile to conserve battery and CPU */
-  .bg-ambient-orb {
+  .marquee-track {
     animation: none !important;
   }
-
-  /* Force hardware acceleration layer on marquee */
-  .marquee-track {
-    will-change: transform;
-    transform: translateZ(0);
+  .bg-ambient-orb {
+    animation: none !important;
   }
 }

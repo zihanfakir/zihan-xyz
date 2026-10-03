@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileToggle.addEventListener('click', () => {
       const isOpen = navMenu.classList.toggle('open');
       mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      document.body.classList.toggle('nav-menu-open', isOpen);
       const icon = mobileToggle.querySelector('i');
       if (icon) {
         icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
@@ -196,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeNav = () => {
       navMenu.classList.remove('open');
+      document.body.classList.remove('nav-menu-open');
       mobileToggle.setAttribute('aria-expanded', 'false');
       const icon = mobileToggle.querySelector('i');
       if (icon) icon.className = 'fas fa-bars';
@@ -503,8 +505,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. Skill Progress Bars Animation & Skill Cards Modal
   // ------------------------------------------------------------------------
   const skillProgressFills = document.querySelectorAll('.skill-progress-fill');
+  const isMobileScreen = window.innerWidth <= 768 || ('ontouchstart' in window);
   
-  if (window.IntersectionObserver) {
+  if (isMobileScreen) {
+    // Mobile: immediately fill progress bars with zero animation or observer overhead
+    skillProgressFills.forEach(fill => {
+      fill.style.width = fill.getAttribute('data-percentage') || '85%';
+    });
+  } else if (window.IntersectionObserver) {
     const skillsObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1422,6 +1430,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 10. Hero Background Interactive Particle Constellation Animation
   // ------------------------------------------------------------------------
   function initHeroParticles() {
+    // Extreme Mobile Optimization: Never initialize canvas particles loop on mobile/touch screens
+    if (window.innerWidth <= 768 || ('ontouchstart' in window)) return;
+
     const canvas = document.getElementById('hero-particles-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -1432,8 +1443,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let particles = [];
     let animationFrameId = null;
     let isVisible = true;
-    const isMobile = window.innerWidth <= 768;
-    const particleCount = isMobile ? 20 : 42;
+    const particleCount = 42;
 
     function resize() {
       const hero = document.getElementById('home');
@@ -1613,6 +1623,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 12. Interactive Card Cursor Spotlight (Aceternity-style Mouse Physics, PC Only)
   // ------------------------------------------------------------------------
   function initCardSpotlight() {
+    if (window.innerWidth <= 768) return;
     const isPointerFine = window.matchMedia('(pointer: fine)').matches && !('ontouchstart' in window);
     if (!isPointerFine) return;
 
