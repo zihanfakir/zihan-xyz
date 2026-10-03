@@ -469,7 +469,7 @@ p {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-full) !important;
   padding: 8px 18px 8px 24px;
   box-shadow: var(--shadow-md);
   transition: all var(--transition-normal);
@@ -478,6 +478,7 @@ p {
 .site-header.scrolled .nav-container {
   box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.2);
   border-color: rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius-full) !important;
 }
 
 /* Logo */
@@ -499,8 +500,8 @@ p {
   font-size: 1.1rem;
   font-weight: 700;
   background: var(--primary-light);
-  padding: 3px 8px;
-  border-radius: var(--border-radius-xs);
+  padding: 3px 10px;
+  border-radius: var(--border-radius-full) !important;
   border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
@@ -527,7 +528,7 @@ p {
   font-weight: 600;
   color: var(--text-secondary);
   padding: 8px 14px;
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-full) !important;
   transition: all var(--transition-fast);
   text-decoration: none;
   position: relative;
@@ -559,7 +560,7 @@ p {
 .theme-toggle-btn {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -589,7 +590,7 @@ p {
   display: none;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -2607,7 +2608,8 @@ textarea.form-control {
 
   .site-header .nav-container {
     height: 52px;
-    padding: 6px 12px 6px 14px;
+    padding: 6px 14px 6px 16px;
+    border-radius: var(--border-radius-full) !important;
     background: #0b0f19 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -2616,6 +2618,7 @@ textarea.form-control {
   }
 
   [data-theme="light"] .site-header .nav-container {
+    border-radius: var(--border-radius-full) !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
@@ -2628,7 +2631,8 @@ textarea.form-control {
 
   .logo-code-prefix {
     font-size: 0.92rem;
-    padding: 2px 6px;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-full) !important;
   }
 
   .logo-brand-name {
@@ -2649,7 +2653,7 @@ textarea.form-control {
     width: 44px;
     height: 44px;
     font-size: 1rem;
-    border-radius: var(--border-radius-sm);
+    border-radius: 50% !important;
   }
 
   .mobile-toggle {
@@ -2664,7 +2668,7 @@ textarea.form-control {
     right: 12px;
     background: #111827 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-xl) !important;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -2685,6 +2689,7 @@ textarea.form-control {
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
+    border-radius: var(--border-radius-xl) !important;
   }
 
   .nav-menu.open {
@@ -2695,10 +2700,10 @@ textarea.form-control {
 
   .nav-link {
     width: 100%;
-    padding: 12px 16px;
+    padding: 12px 18px;
     font-size: 1rem;
     font-weight: 600;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-full) !important;
     color: var(--text-secondary);
     justify-content: space-between;
     background: transparent;
@@ -2727,7 +2732,7 @@ textarea.form-control {
     font-size: 0.95rem;
     font-weight: 700;
     padding: 12px 18px;
-    border-radius: var(--border-radius-full);
+    border-radius: var(--border-radius-full) !important;
   }
 
   /* --- 3. Kill Expensive GPU Blurs, Ambient Orbs & Heavy Filters --- */
