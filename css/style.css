@@ -2857,31 +2857,37 @@ textarea.form-control {
   transform: translateY(-3px);
 }
 
-/* Toast Notifications */
+/* Toast Notifications (Bottom-Left Deck: niche bam dike) */
 .toast-container {
   position: fixed;
-  top: 24px;
-  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  top: auto;
+  right: auto;
   z-index: 10000;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 10px;
+  pointer-events: none;
+  max-width: 380px;
 }
 
 .toast {
+  pointer-events: auto;
   background: var(--bg-card-solid);
   border: 1px solid var(--border-color);
   color: var(--text-main);
   padding: 12px 20px;
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 10px;
   opacity: 0;
-  transform: translateX(30px);
-  transition: all var(--transition-normal);
+  transform: translateX(-35px);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .toast.show {
@@ -2892,6 +2898,16 @@ textarea.form-control {
 .toast.success { border-left: 4px solid var(--accent-emerald); }
 .toast.error { border-left: 4px solid #ef4444; }
 .toast.info { border-left: 4px solid var(--primary); }
+.toast.warning { border-left: 4px solid #f59e0b; }
+
+@media (max-width: 768px) {
+  .toast-container {
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    left: 16px;
+    right: auto;
+    max-width: calc(100vw - 32px);
+  }
+}
 
 /* --------------------------------------------------------------------------
    16b. Multi-Page Architecture Components (Page Heroes, Banners & Resume)
@@ -3565,32 +3581,70 @@ textarea.form-control {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  /* Resume Paper: Always Crisp White Executive Document on Both Dark and Light Themes */
+  /* Resume Paper: Theme-Aware Mobile Layout (Dark in Dark Mode, Light in Light Mode) */
   .resume-paper {
-    background: #ffffff !important;
-    color: #0f172a !important;
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
-    border-radius: var(--border-radius-lg) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
-    padding: 28px 18px !important;
+    padding: 24px 18px !important;
     margin: 0 auto !important;
     width: 100% !important;
+    background: var(--bg-card) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
   }
 
   .resume-paper h2,
-  .resume-paper h3,
-  .resume-paper .resume-name,
-  .resume-paper .resume-section-title,
-  .resume-paper .resume-role {
-    color: #0f172a !important;
+  .resume-paper .resume-name {
+    color: var(--text-main) !important;
   }
 
-  .resume-paper p,
+  .resume-paper .resume-role,
+  .resume-paper .resume-section-heading {
+    color: var(--primary) !important;
+  }
+
+  .resume-paper .resume-entry-title {
+    color: var(--text-main) !important;
+  }
+
+  .resume-paper .resume-entry-org {
+    color: var(--secondary) !important;
+  }
+
   .resume-paper .resume-contact-bar,
   .resume-paper .resume-entry-desc,
   .resume-paper .resume-summary-text,
   .resume-paper .resume-entry-list li {
+    color: var(--text-secondary) !important;
+  }
+
+  .resume-paper strong {
+    color: var(--text-main) !important;
+  }
+
+  [data-theme="light"] .resume-paper {
+    background: #ffffff !important;
     color: #334155 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  [data-theme="light"] .resume-paper h2,
+  [data-theme="light"] .resume-paper .resume-name,
+  [data-theme="light"] .resume-paper .resume-entry-title {
+    color: #0f172a !important;
+  }
+
+  [data-theme="light"] .resume-paper p,
+  [data-theme="light"] .resume-paper .resume-contact-bar,
+  [data-theme="light"] .resume-paper .resume-entry-desc,
+  [data-theme="light"] .resume-paper .resume-summary-text,
+  [data-theme="light"] .resume-paper .resume-entry-list li {
+    color: #334155 !important;
+  }
+
+  [data-theme="light"] .resume-paper strong {
+    color: #0f172a !important;
   }
 
   .page-hero {
@@ -3607,9 +3661,7 @@ textarea.form-control {
     font-size: 0.95rem !important;
   }
 
-  .resume-paper {
-    padding: 20px 16px !important;
-  }
+
 
   .resume-toolbar {
     padding: 14px 16px !important;
