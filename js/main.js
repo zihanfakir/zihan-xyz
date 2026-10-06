@@ -90,18 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function applyTheme(theme) {
     if (theme === 'light') {
-      document.body.classList.add('light-theme');
-      document.body.classList.remove('dark-theme');
       document.documentElement.setAttribute('data-theme', 'light');
     } else {
-      document.body.classList.remove('light-theme');
-      document.body.classList.add('dark-theme');
       document.documentElement.setAttribute('data-theme', 'dark');
     }
   }
 
   function getEffectiveTheme() {
-    const savedTheme = safeGetStorage('zihan-portfolio-theme');
+    const savedTheme = safeGetStorage('zihan-portfolio-theme') || safeGetStorage('site_theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       return savedTheme;
     }
@@ -112,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (systemPrefersDark.addEventListener) {
     systemPrefersDark.addEventListener('change', (e) => {
-      const savedTheme = safeGetStorage('zihan-portfolio-theme');
+      const savedTheme = safeGetStorage('zihan-portfolio-theme') || safeGetStorage('site_theme');
       if (!savedTheme) {
         applyTheme(e.matches ? 'dark' : 'light');
       }
@@ -125,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const newTheme = activeTheme === 'light' ? 'dark' : 'light';
       applyTheme(newTheme);
       safeSetStorage('zihan-portfolio-theme', newTheme);
+      safeSetStorage('site_theme', newTheme);
       showToast(`Switched to ${newTheme.toUpperCase()} mode`, 'info');
     });
   }
@@ -1265,7 +1262,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.toggleAIChatGlobal = toggleAIChat;
 
     aiChatBtn.addEventListener('click', toggleAIChat);
-    aiChatBtn.addEventListener('touchend', toggleAIChat, { passive: false });
 
     aiChatClose?.addEventListener('click', (e) => {
       if (e) {
@@ -1275,16 +1271,7 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAIChat();
     });
 
-    aiChatClose?.addEventListener('touchend', (e) => {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      closeAIChat();
-    }, { passive: false });
-
     aiChatWindow.addEventListener('click', (e) => e.stopPropagation());
-    aiChatWindow.addEventListener('touchend', (e) => e.stopPropagation(), { passive: true });
 
     document.addEventListener('click', (e) => {
       if (Date.now() - lastActionTime < 350) return;
