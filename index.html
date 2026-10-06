@@ -3,25 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <!-- Clean Domain & Fresh URL Controller (Strictly https://zihan.uk) -->
+  <!-- Strict Root Domain Controller (Strictly https://zihan.uk - No /about, No subpaths) -->
   <script>
     (function() {
       try {
         var h = window.location.hostname.toLowerCase();
-        var p = window.location.pathname;
         if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
-          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
-          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
-          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
-          window.location.replace('https://zihan.uk' + (cleanPath || '/') + window.location.search + window.location.hash);
+          window.location.replace('https://zihan.uk/');
           return;
         }
-        if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
-          if (p.slice(-11) === '/index.html') {
-            window.history.replaceState(null, '', (p.slice(0, -10) || '/') + window.location.search + window.location.hash);
-          } else if (p.slice(-5) === '.html') {
-            window.history.replaceState(null, '', p.slice(0, -5) + window.location.search + window.location.hash);
+        var saved = sessionStorage.getItem('portfolio_page');
+        if (saved && saved !== 'index.html') {
+          var navEntries = window.performance && window.performance.getEntriesByType ? window.performance.getEntriesByType('navigation') : [];
+          var isReload = navEntries.length > 0 ? navEntries[0].type === 'reload' : (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+          if (isReload) {
+            window.location.replace(saved);
+            return;
           }
+        }
+        sessionStorage.setItem('portfolio_page', 'index.html');
+        if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
+          window.history.replaceState(null, '', '/');
         }
       } catch (e) {}
     })();

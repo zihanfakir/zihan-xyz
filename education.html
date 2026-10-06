@@ -3,33 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <!-- Clean Domain & Fresh URL Controller (Strictly https://zihan.uk) -->
+  <!-- Strict Root Domain Controller (Strictly https://zihan.uk - No /education, No subpaths) -->
   <script>
     (function() {
       try {
         var h = window.location.hostname.toLowerCase();
-        var p = window.location.pathname;
         if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
-          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
-          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
-          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
-          window.location.replace('https://zihan.uk' + (cleanPath || '/') + window.location.search + window.location.hash);
+          window.location.replace('https://zihan.uk/education.html');
           return;
         }
+        sessionStorage.setItem('portfolio_page', 'education.html');
         if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
-          if (p.slice(-11) === '/index.html') {
-            window.history.replaceState(null, '', (p.slice(0, -10) || '/') + window.location.search + window.location.hash);
-          } else if (p.slice(-5) === '.html') {
-            window.history.replaceState(null, '', p.slice(0, -5) + window.location.search + window.location.hash);
-          }
+          window.history.replaceState(null, '', '/');
         }
       } catch (e) {}
     })();
   </script>
 
-
   <title>Education &amp; Academic Background丨Zihan Fakir - AI Engineer</title>
-  <link rel="canonical" href="https://zihan.uk/education">
+  <link rel="canonical" href="https://zihan.uk/">
   <meta name="description" content="Academic background, degree credentials, computer science coursework, and computational foundation of Zihan Fakir (@zihanfakir) - AI Engineer and Full-Stack Developer.">
   <meta name="keywords" content="Zihan Fakir Education, Computer Science Degree, B.Sc CSE, Software Engineering Academic, AI Credentials, University Education, zihanfakir">
   <meta name="author" content="Zihan Fakir">
@@ -37,7 +29,7 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://zihan.uk/education">
+  <meta property="og:url" content="https://zihan.uk/">
   <meta property="og:title" content="Education &amp; Academic Background丨Zihan Fakir">
   <meta property="og:description" content="Academic background, degree credentials, computer science coursework, and computational foundation of Zihan Fakir.">
   <meta property="og:image" content="assets/social-preview.jpg">

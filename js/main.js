@@ -20,15 +20,9 @@
       return;
     }
 
-    // Clean URL: strip .html extension in address bar
+    // Strict Clean Root Domain: Address bar strictly displays https://zihan.uk (no subpaths or extensions)
     if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
-      if (p.endsWith('/index.html')) {
-        const cleanPath = p.slice(0, -10) || '/';
-        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
-      } else if (p.endsWith('.html')) {
-        const cleanPath = p.slice(0, -5);
-        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
-      }
+      window.history.replaceState(null, '', '/');
     }
   } catch (err) {}
 })();
@@ -1726,14 +1720,29 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Dynamic canonical link update to match active origin
+    // Dynamic canonical link update to strictly match root origin
     const canonicalTag = document.querySelector('link[rel="canonical"]');
     if (canonicalTag) {
-      let cleanPath = window.location.pathname;
-      if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10) || '/';
-      else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
-      canonicalTag.setAttribute('href', `https://${activeDomain}${cleanPath || '/'}`);
+      canonicalTag.setAttribute('href', `https://${activeDomain}/`);
     }
+
+    // Navigation state persistence for clean root URL UX
+    document.querySelectorAll('a[href="index.html"], a[href="/"], .logo, a.logo-link').forEach(el => {
+      el.addEventListener('click', () => {
+        try { sessionStorage.setItem('portfolio_page', 'index.html'); } catch (e) {}
+      });
+    });
+
+    document.querySelectorAll('a[href$=".html"]').forEach(el => {
+      el.addEventListener('click', () => {
+        try {
+          const href = el.getAttribute('href');
+          if (href && !href.startsWith('http')) {
+            sessionStorage.setItem('portfolio_page', href);
+          }
+        } catch (e) {}
+      });
+    });
   }
 
   // Initialize Active Domain Sync, Hero Particles, and Micro-Interactions
