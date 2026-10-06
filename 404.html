@@ -16,12 +16,14 @@
         var validRoutes = ['about', 'projects', 'skills', 'certificates', 'education', 'resume', 'contact'];
         var targetFile = validRoutes.indexOf(cleanSegment) !== -1 ? ('/' + cleanSegment + '.html') : '/';
         
-        var isLocal = h === 'localhost' || h === '127.0.0.1' || h.startsWith('192.168.');
-        var targetDomain = isLocal ? '' : 'https://zihan.uk';
+        if (h.indexOf('github.io') !== -1) {
+          window.location.replace('https://zihan.uk' + targetFile + window.location.search + window.location.hash);
+          return;
+        }
         
-        window.location.replace(targetDomain + targetFile + window.location.search + window.location.hash);
+        window.location.replace(targetFile + window.location.search + window.location.hash);
       } catch(e) {
-        window.location.replace('https://zihan.uk/');
+        window.location.replace('/');
       }
     })();
   </script>

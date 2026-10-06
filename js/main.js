@@ -4,15 +4,15 @@
  */
 
 // ============================================================================
-// Clean Domain & Fresh URL Core (Strictly https://zihan.uk)
+// Clean Domain & Fresh URL Core
 // ============================================================================
 (function enforceCleanDomain() {
   try {
     const h = window.location.hostname.toLowerCase();
     const p = window.location.pathname;
     
-    // Redirect non-primary hosts to https://zihan.uk (preserving localhost/dev)
-    if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
+    // Redirect GitHub Pages URL to primary custom domain
+    if (h.includes('github.io')) {
       let cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
       if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10);
       else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
@@ -20,9 +20,15 @@
       return;
     }
 
-    // Strict Clean Root Domain: Address bar strictly displays https://zihan.uk (no subpaths or extensions)
+    // Clean URL: strip .html extension in address bar
     if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
-      window.history.replaceState(null, '', '/');
+      if (p.endsWith('/index.html') || p === '/index.html') {
+        const cleanPath = p.replace(/\/index\.html$/, '') || '/';
+        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+      } else if (p.endsWith('.html')) {
+        const cleanPath = p.slice(0, -5);
+        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+      }
     }
   } catch (err) {}
 })();
@@ -270,17 +276,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 4. Multi-Page Navigation Active Link Handler
   // ------------------------------------------------------------------------
-  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  let rawSegment = window.location.pathname.split('/').pop().toLowerCase();
+  if (!rawSegment || rawSegment === 'index.html' || rawSegment === 'index') {
+    rawSegment = 'index.html';
+  } else if (!rawSegment.endsWith('.html')) {
+    rawSegment = rawSegment + '.html';
+  }
   
   navLinks.forEach(link => {
     const href = link.getAttribute('href');
     if (!href) return;
-    const linkPath = href.split('#')[0].split('/').pop();
+    const linkPath = href.split('#')[0].split('/').pop().toLowerCase();
     
     // Check if this link corresponds to the current page
-    const isCurrentPage = (linkPath === currentPath) || 
-      (currentPath === '' && (linkPath === 'index.html' || linkPath === '')) ||
-      (currentPath === 'index.html' && (linkPath === 'index.html' || linkPath === './'));
+    const isCurrentPage = (linkPath === rawSegment) || 
+      (rawSegment === 'index.html' && (linkPath === 'index.html' || linkPath === ''));
     
     if (!href.startsWith('#')) {
       if (isCurrentPage) {
@@ -1707,10 +1717,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 13. Dynamic Active Domain Synchronization (Strictly zihan.uk)
+  // 13. Dynamic Active Domain Synchronization
   // ------------------------------------------------------------------------
   function initDomainSync() {
-    const activeDomain = 'zihan.uk';
+    const isXyz = window.location.hostname.toLowerCase().includes('zihan.xyz');
+    const activeDomain = isXyz ? 'zihan.xyz' : 'zihan.uk';
 
     // Update active domain indicators in footer, dossier, links
     document.querySelectorAll('.active-domain-text, .footer-active-domain').forEach(el => {
@@ -1720,29 +1731,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Dynamic canonical link update to strictly match root origin
+    // Dynamic canonical link update to match active origin and clean page path
     const canonicalTag = document.querySelector('link[rel="canonical"]');
     if (canonicalTag) {
-      canonicalTag.setAttribute('href', `https://${activeDomain}/`);
+      let cleanPath = window.location.pathname;
+      if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10) || '/';
+      else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
+      canonicalTag.setAttribute('href', `https://${activeDomain}${cleanPath || '/'}`);
     }
-
-    // Navigation state persistence for clean root URL UX
-    document.querySelectorAll('a[href="index.html"], a[href="/"], .logo, a.logo-link').forEach(el => {
-      el.addEventListener('click', () => {
-        try { sessionStorage.setItem('portfolio_page', 'index.html'); } catch (e) {}
-      });
-    });
-
-    document.querySelectorAll('a[href$=".html"]').forEach(el => {
-      el.addEventListener('click', () => {
-        try {
-          const href = el.getAttribute('href');
-          if (href && !href.startsWith('http')) {
-            sessionStorage.setItem('portfolio_page', href);
-          }
-        } catch (e) {}
-      });
-    });
   }
 
   // Initialize Active Domain Sync, Hero Particles, and Micro-Interactions

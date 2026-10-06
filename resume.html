@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <!-- Strict Root Domain Controller (Strictly https://zihan.uk - No /resume, No subpaths) -->
+  <!-- Clean Domain & Fresh URL Controller (Clean https://zihan.uk/resume) -->
   <script>
     (function() {
       try {
         var h = window.location.hostname.toLowerCase();
-        if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
-          window.location.replace('https://zihan.uk/resume.html');
+        var p = window.location.pathname;
+        if (h.indexOf('github.io') !== -1) {
+          window.location.replace('https://zihan.uk/resume');
           return;
         }
-        sessionStorage.setItem('portfolio_page', 'resume.html');
         if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
-          window.history.replaceState(null, '', '/');
+          if (p.endsWith('.html')) {
+            var cleanPath = p.replace(/\.html$/, '');
+            window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+          }
         }
       } catch (e) {}
     })();
   </script>
 
   <title>Resume &amp; Curriculum Vitae丨Zihan Fakir - AI Engineer &amp; Full-Stack Developer</title>
-  <link rel="canonical" href="https://zihan.uk/">
+  <link rel="canonical" href="https://zihan.uk/resume">
   <meta name="description" content="Official Curriculum Vitae and Resume of Zihan Fakir (@zihanfakir) - AI Engineer & Full-Stack Software Architect. Review work history, technical skills, education, and download PDF.">
   <meta name="keywords" content="Zihan Fakir Resume, Zihan Fakir CV, AI Engineer CV, Full Stack Developer Resume, Software Engineer Resume, Download CV, zihanfakir">
   <meta name="author" content="Zihan Fakir">
@@ -29,14 +32,14 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="profile">
-  <meta property="og:url" content="https://zihan.uk/">
+  <meta property="og:url" content="https://zihan.uk/resume">
   <meta property="og:title" content="Resume &amp; Curriculum Vitae丨Zihan Fakir">
   <meta property="og:description" content="Official Curriculum Vitae and Resume of Zihan Fakir - AI Engineer & Full-Stack Developer.">
   <meta property="og:image" content="assets/social-preview.jpg">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://zihan.uk/">
+  <meta property="twitter:url" content="https://zihan.uk/resume">
   <meta property="twitter:title" content="Resume &amp; Curriculum Vitae丨Zihan Fakir">
   <meta property="twitter:description" content="Official Curriculum Vitae and Resume of Zihan Fakir - AI Engineer & Full-Stack Developer.">
   <meta property="twitter:image" content="assets/social-preview.jpg">

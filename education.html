@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <!-- Strict Root Domain Controller (Strictly https://zihan.uk - No /education, No subpaths) -->
+  <!-- Clean Domain & Fresh URL Controller (Clean https://zihan.uk/education) -->
   <script>
     (function() {
       try {
         var h = window.location.hostname.toLowerCase();
-        if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
-          window.location.replace('https://zihan.uk/education.html');
+        var p = window.location.pathname;
+        if (h.indexOf('github.io') !== -1) {
+          window.location.replace('https://zihan.uk/education');
           return;
         }
-        sessionStorage.setItem('portfolio_page', 'education.html');
         if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
-          window.history.replaceState(null, '', '/');
+          if (p.endsWith('.html')) {
+            var cleanPath = p.replace(/\.html$/, '');
+            window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+          }
         }
       } catch (e) {}
     })();
   </script>
 
   <title>Education &amp; Academic Background丨Zihan Fakir - AI Engineer</title>
-  <link rel="canonical" href="https://zihan.uk/">
+  <link rel="canonical" href="https://zihan.uk/education">
   <meta name="description" content="Academic background, degree credentials, computer science coursework, and computational foundation of Zihan Fakir (@zihanfakir) - AI Engineer and Full-Stack Developer.">
   <meta name="keywords" content="Zihan Fakir Education, Computer Science Degree, B.Sc CSE, Software Engineering Academic, AI Credentials, University Education, zihanfakir">
   <meta name="author" content="Zihan Fakir">
@@ -29,7 +32,7 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://zihan.uk/">
+  <meta property="og:url" content="https://zihan.uk/education">
   <meta property="og:title" content="Education &amp; Academic Background丨Zihan Fakir">
   <meta property="og:description" content="Academic background, degree credentials, computer science coursework, and computational foundation of Zihan Fakir.">
   <meta property="og:image" content="assets/social-preview.jpg">

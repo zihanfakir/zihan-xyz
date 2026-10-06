@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <!-- Strict Root Domain Controller (Strictly https://zihan.uk - No /projects, No subpaths) -->
+  <!-- Clean Domain & Fresh URL Controller (Clean https://zihan.uk/projects) -->
   <script>
     (function() {
       try {
         var h = window.location.hostname.toLowerCase();
-        if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
-          window.location.replace('https://zihan.uk/projects.html');
+        var p = window.location.pathname;
+        if (h.indexOf('github.io') !== -1) {
+          window.location.replace('https://zihan.uk/projects');
           return;
         }
-        sessionStorage.setItem('portfolio_page', 'projects.html');
         if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
-          window.history.replaceState(null, '', '/');
+          if (p.endsWith('.html')) {
+            var cleanPath = p.replace(/\.html$/, '');
+            window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+          }
         }
       } catch (e) {}
     })();
   </script>
 
   <title>Projects &amp; Production Systems丨Zihan Fakir</title>
-  <link rel="canonical" href="https://zihan.uk/">
+  <link rel="canonical" href="https://zihan.uk/projects">
   <meta name="description" content="Explore real-world software, generative AI applications, and full-stack web platforms engineered by Zihan Fakir (@zihanfakir) - featuring Alora AI, Ecomace, and Alokpo.">
   <meta name="keywords" content="Zihan Fakir Projects, Alora AI, Ecomace, Alokpo, Full Stack Projects, GenAI Applications, Web Development Portfolio, zihanfakir">
   <meta name="author" content="Zihan Fakir">
@@ -29,14 +32,14 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://zihan.uk/">
+  <meta property="og:url" content="https://zihan.uk/projects">
   <meta property="og:title" content="Projects &amp; Production Systems丨Zihan Fakir">
   <meta property="og:description" content="Explore real-world software, generative AI applications, and full-stack web platforms engineered by Zihan Fakir.">
   <meta property="og:image" content="assets/social-preview.jpg">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://zihan.uk/">
+  <meta property="twitter:url" content="https://zihan.uk/projects">
   <meta property="twitter:title" content="Projects &amp; Production Systems丨Zihan Fakir">
   <meta property="twitter:description" content="Explore real-world software, generative AI applications, and full-stack web platforms engineered by Zihan Fakir.">
   <meta property="twitter:image" content="assets/social-preview.jpg">
