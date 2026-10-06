@@ -3,7 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
+  <!-- Clean Domain & Fresh URL Controller (Strictly https://zihan.uk) -->
+  <script>
+    (function() {
+      try {
+        var h = window.location.hostname.toLowerCase();
+        var p = window.location.pathname;
+        if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
+          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
+          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
+          window.location.replace('https://zihan.uk' + (cleanPath || '/') + window.location.search + window.location.hash);
+          return;
+        }
+        if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
+          if (p.slice(-11) === '/index.html') {
+            window.history.replaceState(null, '', (p.slice(0, -10) || '/') + window.location.search + window.location.hash);
+          } else if (p.slice(-5) === '.html') {
+            window.history.replaceState(null, '', p.slice(0, -5) + window.location.search + window.location.hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
 
   <title>Verified Certifications &amp; Honors丨Zihan Fakir</title>
   <link rel="canonical" href="https://zihan.uk/certificates">

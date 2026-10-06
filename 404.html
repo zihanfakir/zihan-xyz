@@ -7,20 +7,24 @@
   <script>
     (function() {
       try {
+        var h = window.location.hostname.toLowerCase();
         var p = window.location.pathname;
-        var cleanSegment = p.replace(/^\/+/, '').replace(/\/+$/, '').toLowerCase();
+        var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+        var cleanSegment = cleanPath.replace(/^\/+/, '').replace(/\/+$/, '').toLowerCase();
+        if (cleanSegment.slice(-5) === '.html') cleanSegment = cleanSegment.slice(0, -5);
+        
         var validRoutes = ['about', 'projects', 'skills', 'certificates', 'education', 'resume', 'contact'];
-        if (validRoutes.indexOf(cleanSegment) !== -1) {
-          window.location.replace('/' + cleanSegment + '.html' + window.location.search + window.location.hash);
-        } else {
-          window.location.replace('/' + window.location.search + window.location.hash);
-        }
+        var targetFile = validRoutes.indexOf(cleanSegment) !== -1 ? ('/' + cleanSegment + '.html') : '/';
+        
+        var isLocal = h === 'localhost' || h === '127.0.0.1' || h.startsWith('192.168.');
+        var targetDomain = isLocal ? '' : 'https://zihan.uk';
+        
+        window.location.replace(targetDomain + targetFile + window.location.search + window.location.hash);
       } catch(e) {
-        window.location.replace('/');
+        window.location.replace('https://zihan.uk/');
       }
     })();
   </script>
-  <meta http-equiv="refresh" content="0; url=/">
   <style>
     body {
       background: #090d16;
@@ -51,7 +55,7 @@
   <div>
     <div class="spinner"></div>
     <p style="font-size: 1.05rem; color: #f8fafc; font-weight: 600; margin: 0 0 6px;">Loading Zihan Fakir Portfolio...</p>
-    <p style="font-size: 0.88rem; margin: 0;">Routing to verified custom domain (zihan.xyz / zihan.uk)...</p>
+    <p style="font-size: 0.88rem; margin: 0;">Routing to verified domain (zihan.uk)...</p>
   </div>
 </body>
 </html>

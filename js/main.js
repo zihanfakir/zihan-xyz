@@ -4,8 +4,34 @@
  */
 
 // ============================================================================
-// Domain & Navigation Core (Strictly zihan.uk & zihan.xyz)
+// Clean Domain & Fresh URL Core (Strictly https://zihan.uk)
 // ============================================================================
+(function enforceCleanDomain() {
+  try {
+    const h = window.location.hostname.toLowerCase();
+    const p = window.location.pathname;
+    
+    // Redirect non-primary hosts to https://zihan.uk (preserving localhost/dev)
+    if (h && h !== 'zihan.uk' && h !== 'localhost' && h !== '127.0.0.1' && !h.startsWith('192.168.')) {
+      let cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+      if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10);
+      else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
+      window.location.replace('https://zihan.uk' + (cleanPath || '/') + window.location.search + window.location.hash);
+      return;
+    }
+
+    // Clean URL: strip .html extension in address bar
+    if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
+      if (p.endsWith('/index.html')) {
+        const cleanPath = p.slice(0, -10) || '/';
+        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+      } else if (p.endsWith('.html')) {
+        const cleanPath = p.slice(0, -5);
+        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+      }
+    }
+  } catch (err) {}
+})();
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1687,13 +1713,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 13. Dynamic Active Domain Synchronization (Strictly zihan.uk & zihan.xyz)
+  // 13. Dynamic Active Domain Synchronization (Strictly zihan.uk)
   // ------------------------------------------------------------------------
   function initDomainSync() {
-    const host = window.location.hostname.toLowerCase();
-    const isUk = host === 'zihan.uk' || host.endsWith('.uk');
-    const isXyz = host === 'zihan.xyz' || host.endsWith('.xyz');
-    const activeDomain = isUk ? 'zihan.uk' : (isXyz ? 'zihan.xyz' : 'zihan.xyz');
+    const activeDomain = 'zihan.uk';
 
     // Update active domain indicators in footer, dossier, links
     document.querySelectorAll('.active-domain-text, .footer-active-domain').forEach(el => {
@@ -1704,13 +1727,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Dynamic canonical link update to match active origin
-    if (window.location.protocol.startsWith('http') && (isUk || isXyz)) {
-      const canonicalTag = document.querySelector('link[rel="canonical"]');
+    const canonicalTag = document.querySelector('link[rel="canonical"]');
+    if (canonicalTag) {
       let cleanPath = window.location.pathname;
       if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10) || '/';
-      if (canonicalTag) {
-        canonicalTag.setAttribute('href', `${window.location.origin}${cleanPath || '/'}`);
-      }
+      else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
+      canonicalTag.setAttribute('href', `https://${activeDomain}${cleanPath || '/'}`);
     }
   }
 
