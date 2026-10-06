@@ -3472,6 +3472,9 @@ textarea.form-control {
   .back-to-top,
   .modal-close,
   .cert-modal-close,
+  .modal-close-btn,
+  .ai-header-close,
+  .ai-chat-send,
   .ai-assistant-btn {
     min-height: 44px;
     min-width: 44px;
@@ -3480,6 +3483,36 @@ textarea.form-control {
     justify-content: center;
   }
 
+  /* --- 2. Universal Mobile GPU Blur Stripping (Guaranteed 60fps on Low-End Hardware) --- */
+  *, *::before, *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Container Spacing on Mobile */
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Section Padding Optimization (Eliminates Huge 90px Desktop Gaps) */
+  .section {
+    padding: 48px 0 !important;
+  }
+
+  .section-header {
+    margin-bottom: 28px !important;
+  }
+
+  .section-title {
+    font-size: 1.85rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .section-tag {
+    font-size: 0.8rem !important;
+    padding: 5px 14px !important;
+  }
 
   /* --- 3. Kill Expensive GPU Blurs, Ambient Orbs & Heavy Filters --- */
   .bg-ambient-orb,
@@ -3490,7 +3523,7 @@ textarea.form-control {
     display: none !important;
   }
 
-  /* --- 4. Premium Elevated Mobile Surfaces (Optimized Performance, Full Visual Depth) --- */
+  /* --- 4. Premium Elevated Mobile Surfaces (Optimized Single Minimal Shadow, No Lag) --- */
   .project-card,
   .cert-card,
   .skill-card,
@@ -3509,7 +3542,7 @@ textarea.form-control {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
   }
 
   [data-theme="light"] .project-card,
@@ -3529,7 +3562,7 @@ textarea.form-control {
   [data-theme="light"] .resume-toolbar {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   /* Resume Paper: Always Crisp White Executive Document on Both Dark and Light Themes */
@@ -3949,7 +3982,7 @@ textarea.form-control {
     gap: 12px;
   }
 
-  /* Safe Area Aware Floating Elements */
+  /* Safe Area Aware Floating Elements & Modals on Mobile */
   .ai-assistant-btn {
     bottom: max(16px, var(--sab, 16px));
     right: max(14px, var(--sar, 14px));
@@ -3965,13 +3998,87 @@ textarea.form-control {
     height: 44px;
   }
 
+  /* Modals on Mobile: Full-Width Responsive Dialogs with No Blurring */
+  .modal-overlay {
+    background: rgba(8, 12, 22, 0.94) !important;
+    padding: 12px !important;
+  }
+
+  [data-theme="light"] .modal-overlay {
+    background: rgba(15, 23, 42, 0.78) !important;
+  }
+
+  .modal-window,
+  .cert-modal-window {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 24px 16px 20px 16px !important;
+    max-height: calc(100dvh - 32px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+    border-radius: var(--border-radius-lg) !important;
+  }
+
+  .modal-close-btn {
+    top: 10px !important;
+    right: 10px !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+  }
+
   .ai-chat-window {
-    right: 10px;
-    left: 10px;
-    bottom: calc(max(16px, var(--sab, 16px)) + 52px);
-    width: calc(100vw - 20px);
-    max-height: calc(100dvh - 100px);
-    border-radius: var(--border-radius-lg);
+    right: 8px !important;
+    left: 8px !important;
+    bottom: calc(max(14px, var(--sab, 14px)) + 54px) !important;
+    width: calc(100vw - 16px) !important;
+    max-height: calc(100dvh - 84px) !important;
+    background: var(--bg-card-solid) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  [data-theme="light"] .ai-chat-window {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  .ai-header-close {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+  }
+
+  /* Centered, Clean Mobile Footer */
+  .site-footer {
+    padding: 40px 0 24px !important;
+  }
+
+  .footer-content {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 20px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .footer-links {
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 10px !important;
+    padding-top: 18px !important;
   }
 
   .badge-text-full,
@@ -3987,6 +4094,37 @@ textarea.form-control {
 
 /* --- 7. Extra Mobile Narrow Devices (<= 480px) --- */
 @media (max-width: 480px) {
+  .container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .section {
+    padding: 36px 0 !important;
+  }
+
+  .section-header {
+    margin-bottom: 22px !important;
+  }
+
+  .section-title {
+    font-size: 1.65rem !important;
+  }
+
+  .section-tag {
+    font-size: 0.76rem !important;
+    padding: 4px 12px !important;
+  }
+
+  .page-hero {
+    padding-top: calc(52px + max(8px, var(--sat, 8px)) + 16px) !important;
+    padding-bottom: 20px !important;
+  }
+
+  .page-hero .page-hero-title {
+    font-size: 1.85rem !important;
+  }
+
   .hero-section {
     padding-top: calc(52px + max(8px, var(--sat, 8px)) + 16px);
     padding-bottom: 28px;
@@ -4045,8 +4183,21 @@ textarea.form-control {
 
 /* --- 8. Small Screen / Low-End Devices (<= 360px) --- */
 @media (max-width: 360px) {
+  .container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .section {
+    padding: 30px 0 !important;
+  }
+
+  .section-title {
+    font-size: 1.45rem !important;
+  }
+
   .hero-title {
-    font-size: 1.75rem !important;
+    font-size: 1.7rem !important;
   }
 
   .skills-grid {
@@ -4067,6 +4218,11 @@ textarea.form-control {
 
   .hero-actions .btn:first-child {
     grid-column: span 1 !important;
+  }
+
+  .btn {
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
   }
 }
 

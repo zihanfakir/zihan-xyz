@@ -1741,9 +1741,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // ------------------------------------------------------------------------
+  // 14. Viewport & Visibility Aware Marquee Optimization (Zero Idle CPU Drain)
+  // ------------------------------------------------------------------------
+  function initMarqueeOptimization() {
+    const marqueeSections = document.querySelectorAll('.marquee-section');
+    if (!marqueeSections.length) return;
+
+    if ('IntersectionObserver' in window) {
+      const marqueeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const tracks = entry.target.querySelectorAll('.marquee-track');
+          tracks.forEach(track => {
+            track.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+          });
+        });
+      }, {
+        root: null,
+        threshold: 0.05
+      });
+
+      marqueeSections.forEach(section => marqueeObserver.observe(section));
+    }
+
+    // Pause on page tab hidden
+    document.addEventListener('visibilitychange', () => {
+      const isVisible = document.visibilityState === 'visible';
+      document.querySelectorAll('.marquee-track').forEach(track => {
+        if (!isVisible) {
+          track.style.animationPlayState = 'paused';
+        }
+      });
+    }, { passive: true });
+  }
+
   // Initialize Active Domain Sync, Hero Particles, and Micro-Interactions
   initDomainSync();
   initHeroParticles();
   initScrollReveal();
   initCardSpotlight();
+  initMarqueeOptimization();
 });
+
