@@ -246,15 +246,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // ------------------------------------------------------------------------
-  // 4. Scroll Active Link Highlighting (Zero-Jank IntersectionObserver)
+  // 4. Multi-Page Navigation Active Link Handler
   // ------------------------------------------------------------------------
-  const sections = document.querySelectorAll('section[id]');
-  if ('IntersectionObserver' in window && sections.length > 0) {
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+    const linkPath = href.split('#')[0].split('/').pop();
+    
+    // Check if this link corresponds to the current page
+    const isCurrentPage = (linkPath === currentPath) || 
+      (currentPath === '' && (linkPath === 'index.html' || linkPath === '')) ||
+      (currentPath === 'index.html' && (linkPath === 'index.html' || linkPath === './'));
+    
+    if (!href.startsWith('#')) {
+      if (isCurrentPage) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    }
+  });
+
+  // Only run in-page section observer for hash links on the current page
+  const hashNavLinks = Array.from(navLinks).filter(l => (l.getAttribute('href') || '').startsWith('#'));
+  const inPageSections = document.querySelectorAll('section[id]');
+  if (hashNavLinks.length > 0 && inPageSections.length > 0 && 'IntersectionObserver' in window) {
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const sectionId = entry.target.getAttribute('id');
-          navLinks.forEach(link => {
+          hashNavLinks.forEach(link => {
             if (link.getAttribute('href') === `#${sectionId}`) {
               link.classList.add('active');
             } else {
@@ -269,52 +292,60 @@ document.addEventListener('DOMContentLoaded', () => {
       threshold: 0
     });
 
-    sections.forEach(sec => sectionObserver.observe(sec));
+    inPageSections.forEach(sec => sectionObserver.observe(sec));
   }
 
   // ------------------------------------------------------------------------
-  // 5. Projects Filter
+  // 5. Projects & Certificates Category Filter
   // ------------------------------------------------------------------------
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
-  const cardAnimationTimeouts = new WeakMap();
+  function setupCategoryFilter(filterContainerSelector, itemSelector) {
+    const filterContainer = document.querySelector(filterContainerSelector);
+    if (!filterContainer) return;
+    const btns = filterContainer.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll(itemSelector);
+    if (!btns.length || !items.length) return;
+    const animationTimeouts = new WeakMap();
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
 
-      const filterValue = btn.getAttribute('data-filter');
+        const filterValue = btn.getAttribute('data-filter');
 
-      projectCards.forEach(card => {
-        const category = card.getAttribute('data-category');
+        items.forEach(item => {
+          const category = item.getAttribute('data-category');
 
-        if (cardAnimationTimeouts.has(card)) {
-          clearTimeout(cardAnimationTimeouts.get(card));
-        }
+          if (animationTimeouts.has(item)) {
+            clearTimeout(animationTimeouts.get(item));
+          }
 
-        if (filterValue === 'all' || category === filterValue || (category && category.split(' ').includes(filterValue))) {
-          card.style.display = 'flex';
-          const tId = setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, 20);
-          cardAnimationTimeouts.set(card, tId);
-        } else {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(16px)';
-          const tId = setTimeout(() => {
-            card.style.display = 'none';
-          }, 240);
-          cardAnimationTimeouts.set(card, tId);
-        }
+          if (filterValue === 'all' || category === filterValue || (category && category.split(' ').includes(filterValue))) {
+            item.style.display = 'flex';
+            const tId = setTimeout(() => {
+              item.style.opacity = '1';
+              item.style.transform = 'translateY(0)';
+            }, 20);
+            animationTimeouts.set(item, tId);
+          } else {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(16px)';
+            const tId = setTimeout(() => {
+              item.style.display = 'none';
+            }, 240);
+            animationTimeouts.set(item, tId);
+          }
+        });
       });
     });
-  });
+  }
+
+  setupCategoryFilter('.projects-filter', '.project-card');
+  setupCategoryFilter('.certificates-filter', '.cert-card');
 
   // ------------------------------------------------------------------------
   // 6. Project Details Modal
