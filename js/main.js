@@ -250,16 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Dynamic Scroll Reading Progress Indicator
-  let scrollProgressBar = document.getElementById('scroll-progress-bar');
-  if (!scrollProgressBar) {
-    scrollProgressBar = document.createElement('div');
-    scrollProgressBar.id = 'scroll-progress-bar';
-    scrollProgressBar.className = 'scroll-progress-bar';
-    scrollProgressBar.setAttribute('aria-hidden', 'true');
-    document.body.prepend(scrollProgressBar);
-  }
-
   // Unified High-Performance Passive Scroll Handler (rAF Debounced)
   let isScrolling = false;
   window.addEventListener('scroll', () => {
@@ -277,11 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             backToTopBtn.classList.remove('visible');
           }
-        }
-        if (scrollProgressBar) {
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = docHeight > 0 ? (y / docHeight) * 100 : 0;
-          scrollProgressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
         }
         isScrolling = false;
       });

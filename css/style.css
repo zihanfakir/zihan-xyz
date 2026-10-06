@@ -4245,19 +4245,6 @@ textarea.form-control {
    Responsive Scroll Reveals & Dynamic Micro-Interactions (Fluid 60fps/120fps)
    ========================================================================== */
 
-/* 0. Top Reading Scroll Progress Bar */
-.scroll-progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  background: var(--gradient-primary);
-  z-index: 99999;
-  pointer-events: none;
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
-  transition: width 0.05s ease-out;
-}
 
 /* 1. Scroll-Triggered Reveal Animations - Desktop */
 @media (min-width: 769px) {
@@ -4535,28 +4522,6 @@ textarea.form-control {
     transition: box-shadow 0.3s ease;
   }
 
-  /* 7. Desktop Nav Link Underline Slide-In (Desktop Viewports >= 1025px only) */
-  @media (min-width: 1025px) {
-    .nav-menu .nav-link {
-      position: relative;
-    }
-    .nav-menu .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      border-radius: 2px;
-      transition: width 0.25s ease, left 0.25s ease;
-    }
-    .nav-menu .nav-link:hover::after,
-    .nav-menu .nav-link.active::after {
-      width: 60%;
-      left: 20%;
-    }
-  }
 
   /* 8. Accessible Focus-Visible States (WCAG AA Compliant) */
   a:focus-visible,
@@ -4604,14 +4569,8 @@ textarea.form-control {
     transform: none !important;
     transition: none !important;
   }
-  .scroll-progress-bar {
-    display: none !important;
-  }
   .card-spotlight::before {
     display: none !important;
-  }
-  .nav-link::after {
-    transition: none !important;
   }
   .gateway-card:hover {
     transform: none !important;
