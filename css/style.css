@@ -3359,6 +3359,11 @@ textarea.form-control {
     color: var(--primary);
   }
 
+  /* Completely disable horizontal underline pseudo-elements inside mobile/tablet drawer */
+  .nav-menu .nav-link::after {
+    display: none !important;
+  }
+
   .nav-mobile-cta-wrapper {
     display: block;
     width: 100%;
@@ -4530,25 +4535,27 @@ textarea.form-control {
     transition: box-shadow 0.3s ease;
   }
 
-  /* 7. Desktop Nav Link Underline Slide-In */
-  .nav-link {
-    position: relative;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--primary);
-    border-radius: 2px;
-    transition: width 0.25s ease, left 0.25s ease;
-  }
-  .nav-link:hover::after,
-  .nav-link.active::after {
-    width: 60%;
-    left: 20%;
+  /* 7. Desktop Nav Link Underline Slide-In (Desktop Viewports >= 1025px only) */
+  @media (min-width: 1025px) {
+    .nav-menu .nav-link {
+      position: relative;
+    }
+    .nav-menu .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 0.25s ease, left 0.25s ease;
+    }
+    .nav-menu .nav-link:hover::after,
+    .nav-menu .nav-link.active::after {
+      width: 60%;
+      left: 20%;
+    }
   }
 
   /* 8. Accessible Focus-Visible States (WCAG AA Compliant) */

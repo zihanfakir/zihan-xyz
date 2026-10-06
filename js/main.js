@@ -213,7 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const backToTopBtn = document.getElementById('back-to-top');
 
   if (mobileToggle && navMenu) {
-    mobileToggle.addEventListener('click', () => {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isOpen = navMenu.classList.toggle('open');
       mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       document.body.classList.toggle('nav-menu-open', isOpen);
