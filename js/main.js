@@ -4,41 +4,9 @@
  */
 
 // ============================================================================
-// Clean Domain & Clean URL Router (Strictly zihan.uk & zihan.xyz - No github.io)
+// Domain & Navigation Core (Strictly zihan.uk & zihan.xyz)
 // ============================================================================
-(function enforceCleanDomainAndUrl() {
-  try {
-    const host = window.location.hostname.toLowerCase();
-    const path = window.location.pathname;
 
-    // 1. Instant Auto-Redirect: Never allow *.github.io - redirect to custom domain
-    if (host.includes('github.io')) {
-      const isUk = host.includes('uk') || path.includes('zihan-uk');
-      const targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
-      let cleanPath = path.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
-      if (cleanPath.endsWith('/index.html')) {
-        cleanPath = cleanPath.slice(0, -10);
-      } else if (cleanPath.endsWith('.html')) {
-        cleanPath = cleanPath.slice(0, -5);
-      }
-      window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
-      return;
-    }
-
-    // 2. Clean URL: seamlessly strip .html extension in browser address bar (HTTP/HTTPS only)
-    if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
-      if (path.endsWith('/index.html')) {
-        const cleanPath = path.slice(0, -10) || '/';
-        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
-      } else if (path.endsWith('.html')) {
-        const cleanPath = path.slice(0, -5);
-        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
-      }
-    }
-  } catch (err) {
-    console.warn('Clean domain routing:', err);
-  }
-})();
 
 document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
@@ -1612,41 +1580,53 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 11. Scroll-Triggered Reveal Animations (Responsive Cascade on Every Page)
+  // 11. Scroll-Triggered Reveal Animations (Zero Blank Void, Instant Fold Reveal)
   // ------------------------------------------------------------------------
   function initScrollReveal() {
     const isMobile = window.innerWidth <= 768;
 
-    const revealTargets = document.querySelectorAll(
-      '.page-hero, .section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
+    // Leaf elements only — NEVER target .page-hero, .hero-section, or .resume-paper
+    const allTargets = document.querySelectorAll(
+      '.section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
       '.skill-card, .skill-category-card, .about-visual-card, .gateway-card, .glass-card, ' +
       '.project-card, .projects-filter, .project-callout, .cert-card, .certificates-filter, ' +
-      '.timeline-item, .timeline-card, .resume-toolbar, .resume-paper, .resume-section, ' +
-      '.contact-item-card, .contact-form-box, .stat-item, .section-view-all-cta'
+      '.timeline-item, .contact-item-card, .contact-form-box, .stat-item, .section-view-all-cta'
     );
 
-    if (!revealTargets.length) return;
+    if (!allTargets.length) return;
 
-    revealTargets.forEach(el => {
-      el.classList.add('reveal-on-scroll');
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const belowFoldTargets = [];
+
+    // Instant-reveal elements in initial viewport (Zero flicker, zero blank hero)
+    allTargets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < windowHeight + 40) {
+        el.classList.add('revealed', 'reveal-done');
+      } else {
+        el.classList.add('reveal-on-scroll');
+        belowFoldTargets.push(el);
+      }
     });
 
-    // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats, Timelines)
+    if (!belowFoldTargets.length) return;
+
+    // Apply staggered delays inside grid containers for below-fold items
     const gridContainers = document.querySelectorAll(
       '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid, ' +
       '.gateway-grid, .contact-info-cards, .timeline-container'
     );
 
     gridContainers.forEach(grid => {
-      const children = grid.querySelectorAll('.reveal-on-scroll');
+      const children = grid.querySelectorAll('.reveal-on-scroll:not(.revealed)');
       children.forEach((child, idx) => {
-        const delay = isMobile ? (idx % 2) * 0.03 : (idx % 4) * 0.06;
+        const delay = isMobile ? (idx % 2) * 0.04 : (idx % 4) * 0.07;
         child.style.transitionDelay = `${delay}s`;
       });
     });
 
     if (!('IntersectionObserver' in window)) {
-      revealTargets.forEach(el => {
+      belowFoldTargets.forEach(el => {
         el.classList.add('revealed', 'reveal-done');
       });
       return;
@@ -1664,21 +1644,21 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             el.classList.add('reveal-done');
             el.style.transitionDelay = '';
-          }, (delaySec * 1000) + (isMobile ? 380 : 520));
+          }, (delaySec * 1000) + (isMobile ? 320 : 450));
         }
       });
     }, {
       root: null,
-      rootMargin: isMobile ? '0px 0px 40px 0px' : '0px 0px 80px 0px',
-      threshold: 0.02
+      rootMargin: '0px 0px 100px 0px',
+      threshold: 0.01
     });
 
-    revealTargets.forEach(el => revealObserver.observe(el));
+    belowFoldTargets.forEach(el => revealObserver.observe(el));
 
     // Universal failsafe: ensure all content becomes visible without delay
     setTimeout(() => {
-      revealTargets.forEach(el => el.classList.add('revealed', 'reveal-done'));
-    }, 1500);
+      allTargets.forEach(el => el.classList.add('revealed', 'reveal-done'));
+    }, 1200);
   }
 
   // ------------------------------------------------------------------------
@@ -1707,52 +1687,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 13. Progressive Section Scroll-Loader (PC Only, Disabled on Mobile for Instant Static Rendering)
-  // ------------------------------------------------------------------------
-  function initProgressiveSectionLoading() {
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      // Mobile: Zero progressive delays, sections are completely static and solid
-      return;
-    }
-
-    const targetSections = document.querySelectorAll(
-      'section#about, section#skills, section#projects, section#certificates, section#experience, section#contact'
-    );
-    if (!targetSections.length) return;
-
-    if (!('IntersectionObserver' in window)) {
-      targetSections.forEach(sec => sec.classList.add('section-loaded'));
-      return;
-    }
-
-    targetSections.forEach(sec => {
-      sec.classList.add('progressive-section');
-    });
-
-    const progressiveObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('section-loaded');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      root: null,
-      rootMargin: '300px 0px 100px 0px',
-      threshold: 0.01
-    });
-
-    targetSections.forEach(sec => progressiveObserver.observe(sec));
-
-    // Failsafe timeout ensures full visibility
-    setTimeout(() => {
-      targetSections.forEach(sec => sec.classList.add('section-loaded'));
-    }, 2500);
-  }
-
-  // ------------------------------------------------------------------------
-  // 14. Dynamic Active Domain Synchronization (Strictly zihan.uk & zihan.xyz)
+  // 13. Dynamic Active Domain Synchronization (Strictly zihan.uk & zihan.xyz)
   // ------------------------------------------------------------------------
   function initDomainSync() {
     const host = window.location.hostname.toLowerCase();
@@ -1773,17 +1708,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const canonicalTag = document.querySelector('link[rel="canonical"]');
       let cleanPath = window.location.pathname;
       if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10) || '/';
-      else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
       if (canonicalTag) {
         canonicalTag.setAttribute('href', `${window.location.origin}${cleanPath || '/'}`);
       }
     }
   }
 
-  // Initialize Active Domain Sync, Hero Particles, Micro-Interactions, and Progressive Loader
+  // Initialize Active Domain Sync, Hero Particles, and Micro-Interactions
   initDomainSync();
   initHeroParticles();
   initScrollReveal();
   initCardSpotlight();
-  initProgressiveSectionLoading();
 });

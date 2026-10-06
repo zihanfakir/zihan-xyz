@@ -7,21 +7,7 @@
   <script>
     (function() {
       try {
-        var h = window.location.hostname.toLowerCase();
         var p = window.location.pathname;
-        
-        // 1. Auto-Redirect from *.github.io to verified custom domain (zihan.xyz or zihan.uk)
-        if (h.indexOf('github.io') !== -1) {
-          var isUk = h.indexOf('uk') !== -1 || p.indexOf('zihan-uk') !== -1;
-          var targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
-          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
-          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
-          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
-          window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
-          return;
-        }
-
-        // 2. Client-side route resolver for clean URLs on static GitHub Pages
         var cleanSegment = p.replace(/^\/+/, '').replace(/\/+$/, '').toLowerCase();
         var validRoutes = ['about', 'projects', 'skills', 'certificates', 'education', 'resume', 'contact'];
         if (validRoutes.indexOf(cleanSegment) !== -1) {

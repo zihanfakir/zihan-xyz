@@ -410,18 +410,6 @@ body.nav-menu-open {
   z-index: 1;
 }
 
-/* Progressive Section Scroll-Loading (Desktop PC Only - Zero Mobile Lag) */
-@media (min-width: 769px) {
-  .progressive-section {
-    opacity: 0;
-    transition: opacity 0.35s ease-out;
-  }
-
-  .progressive-section.section-loaded {
-    opacity: 1;
-  }
-}
-
 /* Typography Helpers */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-main);
@@ -3256,6 +3244,141 @@ textarea.form-control {
    17. Responsive Breakpoints
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  /* --- Responsive Floating Header & Navigation Drawer (Tablets & Mobile) --- */
+  .site-header {
+    top: max(8px, var(--sat, 8px));
+    padding: 0 12px;
+  }
+
+  .site-header .nav-container {
+    height: 52px;
+    padding: 6px 14px 6px 16px;
+    border-radius: var(--border-radius-full) !important;
+    background: #0b0f19 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  [data-theme="light"] .site-header .nav-container {
+    border-radius: var(--border-radius-full) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .logo {
+    font-size: 1.15rem;
+    gap: 6px;
+  }
+
+  .logo-code-prefix {
+    font-size: 0.92rem;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-full) !important;
+  }
+
+  .logo-brand-name {
+    font-size: 1.08rem;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+
+  /* Declutter topbar: Hide desktop CTA in header */
+  .nav-desktop-cta {
+    display: none !important;
+  }
+
+  .theme-toggle-btn,
+  .mobile-toggle {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+    border-radius: 50% !important;
+  }
+
+  .mobile-toggle {
+    display: flex !important;
+  }
+
+  /* Lightweight, Non-Laggy Mobile Drawer */
+  .nav-menu {
+    position: fixed;
+    top: calc(52px + max(8px, var(--sat, 8px)) + 8px);
+    left: 12px;
+    right: 12px;
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--border-radius-xl) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 16px;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1001;
+    max-height: calc(100dvh - 84px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  [data-theme="light"] .nav-menu {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
+    border-radius: var(--border-radius-xl) !important;
+  }
+
+  .nav-menu.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius-full) !important;
+    color: var(--text-secondary);
+    justify-content: space-between;
+    background: transparent;
+  }
+
+  .nav-link:active,
+  .nav-link.active {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .nav-mobile-cta-wrapper {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav-mobile-cta {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 12px 18px;
+    border-radius: var(--border-radius-full) !important;
+  }
+
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
@@ -3357,140 +3480,6 @@ textarea.form-control {
     justify-content: center;
   }
 
-  /* --- 2. Site Header & Fast Native Navigation Drawer --- */
-  .site-header {
-    top: max(8px, var(--sat, 8px));
-    padding: 0 12px;
-  }
-
-  .site-header .nav-container {
-    height: 52px;
-    padding: 6px 14px 6px 16px;
-    border-radius: var(--border-radius-full) !important;
-    background: #0b0f19 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
-  }
-
-  [data-theme="light"] .site-header .nav-container {
-    border-radius: var(--border-radius-full) !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
-  }
-
-  .logo {
-    font-size: 1.15rem;
-    gap: 6px;
-  }
-
-  .logo-code-prefix {
-    font-size: 0.92rem;
-    padding: 2px 8px;
-    border-radius: var(--border-radius-full) !important;
-  }
-
-  .logo-brand-name {
-    font-size: 1.08rem;
-  }
-
-  .nav-actions {
-    gap: 8px;
-  }
-
-  /* Declutter topbar: Hide desktop CTA in header */
-  .nav-desktop-cta {
-    display: none !important;
-  }
-
-  .theme-toggle-btn,
-  .mobile-toggle {
-    width: 44px;
-    height: 44px;
-    font-size: 1rem;
-    border-radius: 50% !important;
-  }
-
-  .mobile-toggle {
-    display: flex;
-  }
-
-  /* Lightweight, Non-Laggy Mobile Drawer */
-  .nav-menu {
-    position: fixed;
-    top: calc(52px + max(8px, var(--sat, 8px)) + 8px);
-    left: 12px;
-    right: 12px;
-    background: #111827 !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: var(--border-radius-xl) !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 16px;
-    flex-direction: column;
-    gap: 6px;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 1001;
-    max-height: calc(100dvh - 84px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  [data-theme="light"] .nav-menu {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
-    border-radius: var(--border-radius-xl) !important;
-  }
-
-  .nav-menu.open {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
-  }
-
-  .nav-link {
-    width: 100%;
-    padding: 12px 18px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: var(--border-radius-full) !important;
-    color: var(--text-secondary);
-    justify-content: space-between;
-    background: transparent;
-  }
-
-  .nav-link:active,
-  .nav-link.active {
-    background: var(--primary-light);
-    color: var(--primary);
-  }
-
-  .nav-mobile-cta-wrapper {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-color);
-  }
-
-  .nav-mobile-cta {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    padding: 12px 18px;
-    border-radius: var(--border-radius-full) !important;
-  }
 
   /* --- 3. Kill Expensive GPU Blurs, Ambient Orbs & Heavy Filters --- */
   .bg-ambient-orb,
@@ -3501,7 +3490,7 @@ textarea.form-control {
     display: none !important;
   }
 
-  /* --- 4. 100% Solid Card & Modal Surfaces (Zero Glassmorphism / Blur on Mobile) --- */
+  /* --- 4. Premium Elevated Mobile Surfaces (Optimized Performance, Full Visual Depth) --- */
   .project-card,
   .cert-card,
   .skill-card,
@@ -3516,22 +3505,11 @@ textarea.form-control {
   .contact-item-card,
   .contact-form-box,
   .gateway-card,
-  .resume-paper,
-  .resume-toolbar,
-  .modal-window,
-  .cert-modal-window,
-  .ai-chat-window,
-  .ai-chat-header,
-  .ai-chat-footer {
-    background: #111827 !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    filter: none !important;
-    box-shadow: none !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
+  .resume-toolbar {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
   }
 
   [data-theme="light"] .project-card,
@@ -3548,16 +3526,38 @@ textarea.form-control {
   [data-theme="light"] .contact-item-card,
   [data-theme="light"] .contact-form-box,
   [data-theme="light"] .gateway-card,
-  [data-theme="light"] .resume-paper,
-  [data-theme="light"] .resume-toolbar,
-  [data-theme="light"] .modal-window,
-  [data-theme="light"] .cert-modal-window,
-  [data-theme="light"] .ai-chat-window,
-  [data-theme="light"] .ai-chat-header,
-  [data-theme="light"] .ai-chat-footer {
+  [data-theme="light"] .resume-toolbar {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Resume Paper: Always Crisp White Executive Document on Both Dark and Light Themes */
+  .resume-paper {
     background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
+    padding: 28px 18px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+
+  .resume-paper h2,
+  .resume-paper h3,
+  .resume-paper .resume-name,
+  .resume-paper .resume-section-title,
+  .resume-paper .resume-role {
+    color: #0f172a !important;
+  }
+
+  .resume-paper p,
+  .resume-paper .resume-contact-bar,
+  .resume-paper .resume-entry-desc,
+  .resume-paper .resume-summary-text,
+  .resume-paper .resume-entry-list li {
+    color: #334155 !important;
   }
 
   .page-hero {
@@ -3608,56 +3608,75 @@ textarea.form-control {
     opacity: 1 !important;
   }
 
-  /* --- 5. Static Solid Buttons, Badges & Zero Hover Micro-Physics --- */
+  /* --- 5. Touch-Optimized Tactile Buttons, Pills & Badges --- */
   .btn,
   .btn-primary,
   .btn-secondary,
   .btn-outline-glow,
   .social-link,
   .filter-btn,
-  .ai-chip,
-  .hero-turnaround-badge,
-  .hero-badge,
-  .about-credo-badge,
-  .project-badge-tag,
-  .cert-preview-badge {
-    transform: none !important;
-    scale: none !important;
-    box-shadow: none !important;
-    animation: none !important;
-    transition: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  .btn-secondary,
-  .social-link,
-  .filter-btn,
   .ai-chip {
-    background: #1f2937 !important;
-    color: #f3f4f6 !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  }
-
-  [data-theme="light"] .btn-secondary,
-  [data-theme="light"] .social-link,
-  [data-theme="light"] .filter-btn,
-  [data-theme="light"] .ai-chip {
-    background: #f1f5f9 !important;
-    color: #111827 !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  }
-
-  .btn-primary {
-    background: var(--primary) !important;
-    color: #ffffff !important;
-    border: none !important;
+    transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease !important;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn:active,
   .social-link:active,
-  .filter-btn:active {
-    opacity: 0.82;
+  .filter-btn:active,
+  .ai-chip:active {
+    transform: scale(0.96) !important;
+    opacity: 0.9 !important;
+  }
+
+  .btn-primary {
+    background: var(--gradient-primary) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+    border-radius: var(--border-radius-full) !important;
+  }
+
+  .btn-secondary {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius-full) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  [data-theme="light"] .btn-secondary {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .social-link {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  [data-theme="light"] .social-link {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .filter-btn {
+    background: var(--bg-card) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius-full) !important;
+  }
+
+  .filter-btn.active {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
   }
 
   .hero-turnaround-badge,
@@ -3665,19 +3684,9 @@ textarea.form-control {
   .about-credo-badge,
   .project-badge-tag,
   .cert-preview-badge {
-    background: #1f2937 !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: var(--text-secondary) !important;
-  }
-
-  [data-theme="light"] .hero-turnaround-badge,
-  [data-theme="light"] .hero-badge,
-  [data-theme="light"] .about-credo-badge,
-  [data-theme="light"] .project-badge-tag,
-  [data-theme="light"] .cert-preview-badge {
-    background: #f1f5f9 !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    color: var(--text-secondary) !important;
+    border-radius: var(--border-radius-full) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   /* --- 6. Section Layouts & Touch-Optimized Content Rhythm --- */
@@ -3802,46 +3811,55 @@ textarea.form-control {
   }
 
   .stat-item {
-    padding: 16px 12px !important;
+    padding: 20px 14px !important;
+    border-radius: var(--border-radius-md) !important;
   }
 
   .stat-number {
-    font-size: 1.85rem !important;
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
   }
 
   .stat-label {
-    font-size: 0.78rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
   }
 
   /* Skills Grid */
   .skills-grid {
     grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    gap: 16px !important;
   }
 
   .skill-card,
   .skill-category-card {
-    padding: 18px 16px !important;
+    padding: 20px 18px !important;
+    border-radius: var(--border-radius-lg) !important;
     cursor: default;
   }
 
   .skill-icon {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 1.05rem !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.3rem !important;
+    border-radius: 12px !important;
   }
 
   .skill-title {
-    font-size: 0.88rem !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
   }
 
   .skill-subtitle {
-    font-size: 0.72rem !important;
+    font-size: 0.84rem !important;
+    color: var(--text-muted) !important;
   }
 
   .skill-percentage-badge {
-    font-size: 0.75rem !important;
-    padding: 2px 6px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
   }
 
   /* Category Filter Pills (Horizontal Touch Swiping) */
