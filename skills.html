@@ -127,10 +127,10 @@
     <section class="section" style="padding-top: 10px;">
       <div class="container">
         <!-- Skills Grid -->
-        <div class="skills-grid">
+        <div class="skills-grid reveal-on-scroll">
           <!-- Skill Card 1: Frontend Engineering -->
-          <div class="skill-card">
-            <div class="skill-card-top">
+          <div class="skill-card card-spotlight">
+            <div class="skill-card card-spotlight-top">
               <div class="skill-icon-wrapper">
                 <i class="fas fa-desktop skill-icon" style="color: #6366f1;" aria-hidden="true"></i>
               </div>
@@ -154,8 +154,8 @@
           </div>
 
           <!-- Skill Card 2: Backend & Distributed Systems -->
-          <div class="skill-card">
-            <div class="skill-card-top">
+          <div class="skill-card card-spotlight">
+            <div class="skill-card card-spotlight-top">
               <div class="skill-icon-wrapper">
                 <i class="fas fa-server skill-icon" style="color: #06b6d4;" aria-hidden="true"></i>
               </div>
@@ -179,8 +179,8 @@
           </div>
 
           <!-- Skill Card 3: AI / Machine Learning & LLMs -->
-          <div class="skill-card">
-            <div class="skill-card-top">
+          <div class="skill-card card-spotlight">
+            <div class="skill-card card-spotlight-top">
               <div class="skill-icon-wrapper">
                 <i class="fas fa-brain skill-icon" style="color: #a855f7;" aria-hidden="true"></i>
               </div>
@@ -204,8 +204,8 @@
           </div>
 
           <!-- Skill Card 4: Databases & Storage Architecture -->
-          <div class="skill-card">
-            <div class="skill-card-top">
+          <div class="skill-card card-spotlight">
+            <div class="skill-card card-spotlight-top">
               <div class="skill-icon-wrapper">
                 <i class="fas fa-database skill-icon" style="color: #10b981;" aria-hidden="true"></i>
               </div>
@@ -229,8 +229,8 @@
           </div>
 
           <!-- Skill Card 5: DevOps & Cloud Infrastructure -->
-          <div class="skill-card">
-            <div class="skill-card-top">
+          <div class="skill-card card-spotlight">
+            <div class="skill-card card-spotlight-top">
               <div class="skill-icon-wrapper">
                 <i class="fas fa-cloud skill-icon" style="color: #f59e0b;" aria-hidden="true"></i>
               </div>
@@ -254,8 +254,8 @@
           </div>
 
           <!-- Skill Card 6: Architecture, Security & Best Practices -->
-          <div class="skill-card">
-            <div class="skill-card-top">
+          <div class="skill-card card-spotlight">
+            <div class="skill-card card-spotlight-top">
               <div class="skill-icon-wrapper">
                 <i class="fas fa-shield-alt skill-icon" style="color: #ec4899;" aria-hidden="true"></i>
               </div>
@@ -280,14 +280,14 @@
 
         <!-- Engineering Standards Section -->
         <div style="margin-top: 60px;">
-          <div class="section-header" style="text-align: center; margin-bottom: 30px;">
+          <div class="section-header reveal-on-scroll" style="text-align: center; margin-bottom: 30px;">
             <span class="section-tag"><i class="fas fa-cogs" aria-hidden="true"></i> Engineering Discipline</span>
             <h2 class="section-title">How I Apply These Technologies</h2>
             <p class="section-desc">Principles that guide my daily architectural decisions and codebase hygiene.</p>
           </div>
 
           <div class="gateway-grid">
-            <div class="gateway-card">
+            <div class="gateway-card card-spotlight">
               <div>
                 <div class="gateway-icon-box"><i class="fas fa-code" aria-hidden="true"></i></div>
                 <h3 class="gateway-title">Type Safety &amp; Clean Code</h3>
@@ -295,7 +295,7 @@
               </div>
             </div>
 
-            <div class="gateway-card">
+            <div class="gateway-card card-spotlight">
               <div>
                 <div class="gateway-icon-box"><i class="fas fa-robot" aria-hidden="true"></i></div>
                 <h3 class="gateway-title">AI Automation Pipelines</h3>
@@ -303,7 +303,7 @@
               </div>
             </div>
 
-            <div class="gateway-card">
+            <div class="gateway-card card-spotlight">
               <div>
                 <div class="gateway-icon-box"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></div>
                 <h3 class="gateway-title">Performance-First Mindset</h3>
@@ -432,7 +432,7 @@
   </div>
 
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="toast-container"></div>
+  <div id="toast-container" class="toast-container" role="alert" aria-live="polite"></div>
 
   <!-- Lenis Smooth Scrolling Engine -->
   <script src="js/lenis.min.js"></script>

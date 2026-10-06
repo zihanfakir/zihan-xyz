@@ -130,7 +130,7 @@
           <!-- Left Column: Contact Cards -->
           <div class="contact-info-cards">
             <!-- Email Card -->
-            <div class="contact-item-card">
+            <div class="contact-item-card card-spotlight">
               <div class="contact-card-icon">
                 <i class="fas fa-envelope"></i>
               </div>
@@ -144,7 +144,7 @@
             </div>
 
             <!-- Phone / WhatsApp Card -->
-            <div class="contact-item-card">
+            <div class="contact-item-card card-spotlight">
               <div class="contact-card-icon">
                 <i class="fab fa-whatsapp"></i>
               </div>
@@ -160,7 +160,7 @@
             </div>
 
             <!-- Location & Availability Card -->
-            <div class="contact-item-card">
+            <div class="contact-item-card card-spotlight">
               <div class="contact-card-icon">
                 <i class="fas fa-globe"></i>
               </div>
@@ -174,7 +174,7 @@
             </div>
 
             <!-- SLA / Turnaround Card -->
-            <div class="contact-item-card">
+            <div class="contact-item-card card-spotlight">
               <div class="contact-card-icon">
                 <i class="fas fa-clock"></i>
               </div>
@@ -232,7 +232,7 @@
 
                 <div class="form-group">
                   <label for="form-email" class="form-label">Email Address *</label>
-                  <input type="email" id="form-email" name="email" class="form-control" placeholder="e.g. john@enterprise.com" autocomplete="email" required>
+                  <input type="email" inputmode="email" id="form-email" name="email" class="form-control" placeholder="e.g. john@enterprise.com" autocomplete="email" required>
                 </div>
               </div>
 
@@ -263,7 +263,7 @@
     <!-- Collaboration FAQ Section -->
     <section class="section" style="background-color: var(--bg-body-secondary);">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header reveal-on-scroll">
           <span class="section-tag"><i class="fas fa-question-circle"></i> Working Together</span>
           <h2 class="section-title">Frequently Asked Questions</h2>
           <p class="section-desc">Key details about how I partner with startups, product companies, and enterprise teams.</p>
@@ -310,7 +310,7 @@
         <!-- Cross-Page Gateways -->
         <div style="margin-top: 50px;">
           <div class="gateway-grid">
-            <a href="projects.html" class="gateway-card">
+            <a href="projects.html" class="gateway-card card-spotlight">
               <div class="gateway-icon-box">
                 <i class="fas fa-laptop-code"></i>
               </div>
@@ -322,7 +322,7 @@
               </div>
             </a>
 
-            <a href="resume.html" class="gateway-card">
+            <a href="resume.html" class="gateway-card card-spotlight">
               <div class="gateway-icon-box">
                 <i class="fas fa-file-invoice"></i>
               </div>
@@ -334,7 +334,7 @@
               </div>
             </a>
 
-            <a href="about.html" class="gateway-card">
+            <a href="about.html" class="gateway-card card-spotlight">
               <div class="gateway-icon-box">
                 <i class="fas fa-user-astronaut"></i>
               </div>
@@ -455,7 +455,7 @@
   </div>
 
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="toast-container"></div>
+  <div id="toast-container" class="toast-container" role="alert" aria-live="polite" role="alert" aria-live="polite"></div>
 
   <!-- Lenis Smooth Scrolling Engine -->
   <script src="js/lenis.min.js"></script>
