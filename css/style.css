@@ -30,8 +30,8 @@
   /* Color Palette - Dark Theme (Default: Deep Cosmic Slate & OLED) */
   --bg-body: #07090e;
   --bg-body-secondary: #0d121f;
-  --bg-card: rgba(15, 23, 42, 0.72);
-  --bg-card-hover: rgba(26, 36, 61, 0.85);
+  --bg-card: #0d121f;
+  --bg-card-hover: #141c2e;
   --bg-card-solid: #111827;
   --bg-card-elevated: rgba(30, 41, 59, 0.7);
   --bg-header: rgba(7, 9, 14, 0.75);
@@ -779,7 +779,6 @@ p {
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 24px;
-  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm);
 }
 
@@ -975,8 +974,6 @@ p {
 .float-badge {
   position: absolute;
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   padding: 10px 18px;
   border-radius: var(--border-radius-full);
@@ -1051,7 +1048,6 @@ p {
 
 .stat-item {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
   padding: 24px 20px;
@@ -1162,8 +1158,6 @@ p {
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
@@ -1223,8 +1217,6 @@ p {
 /* Glass Card Base */
 .glass-card {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: 30px;
@@ -1318,8 +1310,6 @@ p {
   padding: 20px 18px;
   border-radius: var(--border-radius-md);
   transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 
 .about-feature-item:hover {
@@ -1363,8 +1353,6 @@ p {
 /* Developer Dossier / System Spec Card */
 .dev-dossier-card {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   overflow: hidden;
@@ -1478,8 +1466,6 @@ p {
 /* About Action / Connect Card */
 .about-connect-card {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: 22px 26px;
@@ -1506,8 +1492,6 @@ p {
 
 .about-visual-card {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: 32px 24px;
@@ -1588,7 +1572,6 @@ p {
 
 .skill-card {
   background: var(--bg-card);
-  backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
   padding: 22px;
@@ -1759,8 +1742,6 @@ p {
 /* Skill Category Cards / Computational Engineering Pillars (Home & Education Pages) */
 .skill-category-card {
   background: var(--bg-card);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: 24px 22px;
@@ -1878,7 +1859,6 @@ p {
 
 .project-card {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   overflow: hidden;
@@ -1917,7 +1897,6 @@ p {
   top: 14px;
   left: 14px;
   background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   padding: 5px 12px;
@@ -2046,7 +2025,6 @@ p {
 
 .timeline-card {
   background: var(--bg-card);
-  backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
   padding: 24px;
@@ -2104,8 +2082,6 @@ p {
 .cert-card {
   position: relative;
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   overflow: hidden;
@@ -2125,8 +2101,6 @@ p {
   top: 12px !important;
   left: 12px !important;
   background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   padding: 4px 12px;
@@ -2188,8 +2162,6 @@ p {
 
 .cert-preview-badge {
   background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   padding: 6px 14px;
@@ -2358,7 +2330,6 @@ p {
   align-items: center;
   gap: 16px;
   background: var(--bg-card);
-  backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   padding: 20px 22px;
   border-radius: var(--border-radius-md);
@@ -2407,7 +2378,6 @@ p {
 
 .contact-form-box {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: 34px;
@@ -2994,8 +2964,6 @@ textarea.form-control {
 
 .gateway-card {
   background: var(--bg-card);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   padding: 24px;
@@ -3750,8 +3718,6 @@ textarea.form-control {
   .project-badge-tag,
   .cert-preview-badge {
     border-radius: var(--border-radius-full) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
 
   /* --- 6. Section Layouts & Touch-Optimized Content Rhythm --- */

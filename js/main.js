@@ -36,55 +36,26 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
-  // 0. Lenis Ultra-Smooth Inertia Scroll (Desktop Only, Native 120Hz/60Hz on Mobile)
+  // 0. Hardware-Accelerated Native Smooth Anchor Navigation (0ms Input Latency)
   // ------------------------------------------------------------------------
-  const isMobileDevice = window.innerWidth <= 768;
-  let lenis = null;
-
-  if (!isMobileDevice && typeof Lenis !== 'undefined') {
-    try {
-      lenis = new Lenis({
-        duration: 1.15,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        smoothTouch: false,
-        touchMultiplier: 1,
-        wheelMultiplier: 1.0,
-        infinite: false,
-      });
-
-      function raf(time) {
-        if (lenis) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href');
+      if (targetId && targetId !== '#') {
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          const headerEl = document.querySelector('.site-header');
+          const headerOffset = headerEl ? headerEl.offsetHeight + 18 : 80;
+          const targetY = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: targetY,
+            behavior: 'smooth'
+          });
         }
       }
-      requestAnimationFrame(raf);
-
-      // Smooth anchor navigation with header offset compensation
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-          const targetId = anchor.getAttribute('href');
-          if (targetId && targetId !== '#') {
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-              e.preventDefault();
-              const headerEl = document.querySelector('.site-header');
-              const headerOffset = headerEl ? headerEl.offsetHeight + 18 : 80;
-              lenis.scrollTo(targetElement, {
-                offset: -headerOffset,
-                duration: 1.15
-              });
-            }
-          }
-        });
-      });
-    } catch (err) {
-      console.warn('Lenis smooth scroll initialization skipped:', err);
-    }
-  }
+    });
+  });
 
   // ------------------------------------------------------------------------
   // Helper Utilities (Safe Storage, HTML Escaping & Toast Notifications)
@@ -622,7 +593,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openModal() {
     if (!projectModal) return;
-    if (lenis) lenis.stop();
     projectModal.classList.add('open');
     projectModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -636,7 +606,6 @@ document.addEventListener('DOMContentLoaded', () => {
     projectModal.classList.remove('open');
     projectModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    if (lenis) lenis.start();
     if (lastFocusedTrigger && lastFocusedTrigger.focus) {
       lastFocusedTrigger.focus();
     }
@@ -1346,7 +1315,6 @@ document.addEventListener('DOMContentLoaded', () => {
       downloadLink.setAttribute('download', data.downloadName);
     }
     if (certModal) {
-      if (lenis) lenis.stop();
       certModal.classList.add('open');
       certModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1359,7 +1327,6 @@ document.addEventListener('DOMContentLoaded', () => {
       certModal.classList.remove('open');
       certModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      if (lenis) lenis.start();
     }
   };
 
@@ -1628,7 +1595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let particles = [];
     let animationFrameId = null;
     let isVisible = true;
-    const particleCount = 42;
+    const particleCount = 20;
 
     function resize() {
       const hero = document.getElementById('home');
@@ -1683,19 +1650,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function render() {
       if (!isVisible) return;
+      if (isScrolling) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
       ctx.clearRect(0, 0, width, height);
       for (let i = 0; i < particles.length; i++) {
         particles[i].update();
         particles[i].draw();
 
-        // Interactive cursor connection on PC
+        // Interactive cursor connection on PC (squared dist optimization)
         if (mouse.x > 0) {
           const mdx = particles[i].x - mouse.x;
           const mdy = particles[i].y - mouse.y;
-          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-          if (mDist < 130) {
+          const mDistSq = mdx * mdx + mdy * mdy;
+          if (mDistSq < 16900) {
+            const mDist = Math.sqrt(mDistSq);
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${0.28 * (1 - mDist / 130)})`;
+            ctx.strokeStyle = `rgba(99, 102, 241, ${0.25 * (1 - mDist / 130)})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -1706,10 +1678,11 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
+          const distSq = dx * dx + dy * dy;
+          if (distSq < 10000) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${0.16 * (1 - dist / 110)})`;
+            ctx.strokeStyle = `rgba(99, 102, 241, ${0.15 * (1 - dist / 100)})`;
             ctx.lineWidth = 0.8;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -1924,12 +1897,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spotlightCards.forEach(card => {
       card.classList.add('card-spotlight');
+      let rect = null;
+      let rafPending = false;
+
+      card.addEventListener('mouseenter', () => {
+        rect = card.getBoundingClientRect();
+      }, { passive: true });
+
       card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
+        if (!rect) rect = card.getBoundingClientRect();
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(() => {
+          if (rect) {
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+          }
+          rafPending = false;
+        });
+      }, { passive: true });
+
+      card.addEventListener('mouseleave', () => {
+        rect = null;
+        rafPending = false;
       }, { passive: true });
     });
   }
