@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   // 0. Lenis Ultra-Smooth Inertia Scroll (Desktop Only, Native 120Hz/60Hz on Mobile)
   // ------------------------------------------------------------------------
-  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth <= 768;
+  const isMobileDevice = window.innerWidth <= 768;
   let lenis = null;
 
-  if (!isTouchDevice && typeof Lenis !== 'undefined') {
+  if (!isMobileDevice && typeof Lenis !== 'undefined') {
     try {
       lenis = new Lenis({
         duration: 1.15,
@@ -263,8 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!href.startsWith('#')) {
       if (isCurrentPage) {
         link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
       } else {
         link.classList.remove('active');
+        link.removeAttribute('aria-current');
       }
     }
   });
@@ -536,7 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. Skill Progress Bars Animation & Skill Cards Modal
   // ------------------------------------------------------------------------
   const skillProgressFills = document.querySelectorAll('.skill-progress-fill');
-  const isMobileScreen = window.innerWidth <= 768 || ('ontouchstart' in window);
+  const isMobileScreen = window.innerWidth <= 768;
   
   if (isMobileScreen) {
     // Mobile: immediately fill progress bars with zero animation or observer overhead
@@ -556,9 +558,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, { threshold: 0.15 });
 
-    const skillsSection = document.getElementById('skills');
-    if (skillsSection) {
-      skillsObserver.observe(skillsSection);
+    const skillsContainer = document.querySelector('.skills-grid') || document.getElementById('skills');
+    if (skillsContainer) {
+      skillsObserver.observe(skillsContainer);
     }
   } else {
     skillProgressFills.forEach(fill => {
@@ -1461,8 +1463,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 10. Hero Background Interactive Particle Constellation Animation
   // ------------------------------------------------------------------------
   function initHeroParticles() {
-    // Extreme Mobile Optimization: Never initialize canvas particles loop on mobile/touch screens
-    if (window.innerWidth <= 768 || ('ontouchstart' in window)) return;
+    // Extreme Mobile Optimization: Never initialize canvas particles loop on mobile screens
+    if (window.innerWidth <= 768) return;
 
     const canvas = document.getElementById('hero-particles-canvas');
     if (!canvas) return;
@@ -1515,7 +1517,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let mouse = { x: -1000, y: -1000 };
     const heroEl = document.getElementById('home');
-    if (!isMobile && heroEl) {
+    if (heroEl) {
       heroEl.addEventListener('mousemove', (e) => {
         const rect = heroEl.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
@@ -1535,7 +1537,7 @@ document.addEventListener('DOMContentLoaded', () => {
         particles[i].draw();
 
         // Interactive cursor connection on PC
-        if (!isMobile && mouse.x > 0) {
+        if (mouse.x > 0) {
           const mdx = particles[i].x - mouse.x;
           const mdy = particles[i].y - mouse.y;
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -1589,7 +1591,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 11. Scroll-Triggered Reveal Animations (Fluid Desktop Cascade, Completely Disabled on Mobile)
   // ------------------------------------------------------------------------
   function initScrollReveal() {
-    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
+    const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       // Mobile: Completely remove all animations, keep elements native and immediately visible
       return;
@@ -1661,7 +1663,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   function initCardSpotlight() {
     if (window.innerWidth <= 768) return;
-    const isPointerFine = window.matchMedia('(pointer: fine)').matches && !('ontouchstart' in window);
+    const isPointerFine = window.matchMedia('(pointer: fine)').matches;
     if (!isPointerFine) return;
 
     const spotlightCards = document.querySelectorAll(
@@ -1685,7 +1687,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 13. Progressive Section Scroll-Loader (PC Only, Disabled on Mobile for Instant Static Rendering)
   // ------------------------------------------------------------------------
   function initProgressiveSectionLoading() {
-    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
+    const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       // Mobile: Zero progressive delays, sections are completely static and solid
       return;
