@@ -249,6 +249,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Dynamic Scroll Reading Progress Indicator
+  let scrollProgressBar = document.getElementById('scroll-progress-bar');
+  if (!scrollProgressBar) {
+    scrollProgressBar = document.createElement('div');
+    scrollProgressBar.id = 'scroll-progress-bar';
+    scrollProgressBar.className = 'scroll-progress-bar';
+    scrollProgressBar.setAttribute('aria-hidden', 'true');
+    document.body.prepend(scrollProgressBar);
+  }
+
   // Unified High-Performance Passive Scroll Handler (rAF Debounced)
   let isScrolling = false;
   window.addEventListener('scroll', () => {
@@ -266,6 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             backToTopBtn.classList.remove('visible');
           }
+        }
+        if (scrollProgressBar) {
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (y / docHeight) * 100 : 0;
+          scrollProgressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
         }
         isScrolling = false;
       });
@@ -1610,7 +1625,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 11. Scroll-Triggered Reveal Animations (Zero Blank Void, Instant Fold Reveal)
+  // 11. Scroll-Triggered Reveal Animations (Fluid Cascading Waterfall Entrance)
   // ------------------------------------------------------------------------
   function initScrollReveal() {
     const isMobile = window.innerWidth <= 768;
@@ -1631,7 +1646,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Instant-reveal elements in initial viewport (Zero flicker, zero blank hero)
     allTargets.forEach(el => {
       const rect = el.getBoundingClientRect();
-      if (rect.top < windowHeight + 40) {
+      if (rect.top < windowHeight * 0.85) {
         el.classList.add('revealed', 'reveal-done');
       } else {
         el.classList.add('reveal-on-scroll');
@@ -1648,9 +1663,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     gridContainers.forEach(grid => {
-      const children = grid.querySelectorAll('.reveal-on-scroll:not(.revealed)');
+      const children = grid.querySelectorAll('.reveal-on-scroll');
       children.forEach((child, idx) => {
-        const delay = isMobile ? (idx % 2) * 0.04 : (idx % 4) * 0.07;
+        const delay = isMobile ? (idx % 2) * 0.05 : (idx % 4) * 0.08;
         child.style.transitionDelay = `${delay}s`;
       });
     });
@@ -1674,21 +1689,109 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             el.classList.add('reveal-done');
             el.style.transitionDelay = '';
-          }, (delaySec * 1000) + (isMobile ? 320 : 450));
+          }, (delaySec * 1000) + (isMobile ? 360 : 500));
         }
       });
     }, {
       root: null,
-      rootMargin: '0px 0px 100px 0px',
-      threshold: 0.01
+      rootMargin: '0px 0px -30px 0px',
+      threshold: 0.08
     });
 
     belowFoldTargets.forEach(el => revealObserver.observe(el));
+  }
 
-    // Universal failsafe: ensure all content becomes visible without delay
-    setTimeout(() => {
-      allTargets.forEach(el => el.classList.add('revealed', 'reveal-done'));
-    }, 1200);
+  // ------------------------------------------------------------------------
+  // 11b. Scroll-Triggered Stat Counter Animation (0 -> Target Count Up)
+  // ------------------------------------------------------------------------
+  function initCounterAnimation() {
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const statNumbers = document.querySelectorAll('.stat-number');
+    if (!statNumbers.length) return;
+
+    if (!('IntersectionObserver' in window)) return;
+
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const originalText = el.textContent.trim();
+          const match = originalText.match(/^([0-9.]+)(.*)$/);
+          if (match) {
+            const target = parseFloat(match[1]);
+            const suffix = match[2] || '';
+            const isFloat = match[1].includes('.');
+            const duration = 1400;
+            const startTime = performance.now();
+
+            function updateCounter(now) {
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const ease = 1 - Math.pow(1 - progress, 3);
+              const current = target * ease;
+              el.textContent = (isFloat ? current.toFixed(1) : Math.floor(current)) + suffix;
+              if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+              } else {
+                el.textContent = originalText;
+              }
+            }
+            requestAnimationFrame(updateCounter);
+          }
+          observer.unobserve(el);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -30px 0px',
+      threshold: 0.1
+    });
+
+    statNumbers.forEach(num => counterObserver.observe(num));
+  }
+
+  // ------------------------------------------------------------------------
+  // 11c. Scroll-Triggered Skill Progress Fill Animation
+  // ------------------------------------------------------------------------
+  function initSkillProgressAnimation() {
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const progressFills = document.querySelectorAll('.skill-progress-fill');
+    if (!progressFills.length) return;
+
+    progressFills.forEach(fill => {
+      const targetWidth = fill.getAttribute('data-percentage') || fill.style.width || '0%';
+      fill.setAttribute('data-target-width', targetWidth);
+      fill.style.width = '0%';
+      fill.style.transition = 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      progressFills.forEach(fill => {
+        fill.style.width = fill.getAttribute('data-target-width');
+      });
+      return;
+    }
+
+    const skillObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fill = entry.target;
+          const targetWidth = fill.getAttribute('data-target-width');
+          if (targetWidth) {
+            fill.style.width = targetWidth;
+          }
+          observer.unobserve(fill);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -30px 0px',
+      threshold: 0.1
+    });
+
+    progressFills.forEach(fill => skillObserver.observe(fill));
   }
 
   // ------------------------------------------------------------------------
@@ -1779,6 +1882,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initDomainSync();
   initHeroParticles();
   initScrollReveal();
+  initCounterAnimation();
+  initSkillProgressAnimation();
   initCardSpotlight();
   initMarqueeOptimization();
 });

@@ -4240,13 +4240,27 @@ textarea.form-control {
    Responsive Scroll Reveals & Dynamic Micro-Interactions (Fluid 60fps/120fps)
    ========================================================================== */
 
+/* 0. Top Reading Scroll Progress Bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--gradient-primary);
+  z-index: 99999;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+  transition: width 0.05s ease-out;
+}
+
 /* 1. Scroll-Triggered Reveal Animations - Desktop */
 @media (min-width: 769px) {
   .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(32px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     will-change: opacity, transform;
@@ -4268,9 +4282,9 @@ textarea.form-control {
 @media (max-width: 768px) {
   .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.36s cubic-bezier(0.25, 1, 0.5, 1),
-                transform 0.36s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateY(18px);
+    transition: opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     will-change: opacity, transform;
@@ -4582,6 +4596,9 @@ textarea.form-control {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  .scroll-progress-bar {
+    display: none !important;
   }
   .card-spotlight::before {
     display: none !important;
