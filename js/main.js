@@ -1597,7 +1597,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const revealTargets = document.querySelectorAll(
       '.section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
-      '.skill-card, .project-card, .cert-card, .exp-timeline-item, .contact-method-card, .contact-form-card, .stat-item'
+      '.skill-card, .skill-category-card, .about-visual-card, .gateway-card, ' +
+      '.project-card, .cert-card, .exp-timeline-item, .contact-method-card, .contact-form-card, .stat-item'
     );
 
     if (!revealTargets.length) return;
@@ -1608,7 +1609,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats) - Desktop Only
     const gridContainers = document.querySelectorAll(
-      '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid'
+      '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid, .gateway-grid'
     );
 
     gridContainers.forEach(grid => {
@@ -1648,6 +1649,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     revealTargets.forEach(el => revealObserver.observe(el));
+
+    // Universal failsafe: ensure all content becomes visible without delay
+    setTimeout(() => {
+      revealTargets.forEach(el => el.classList.add('revealed', 'reveal-done'));
+    }, 1500);
   }
 
   // ------------------------------------------------------------------------
@@ -1659,7 +1665,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isPointerFine) return;
 
     const spotlightCards = document.querySelectorAll(
-      '.project-card, .cert-card, .skill-card, .dev-dossier-card, .about-connect-card, .stat-item, .contact-method-card'
+      '.project-card, .cert-card, .skill-card, .skill-category-card, .about-visual-card, ' +
+      '.gateway-card, .dev-dossier-card, .about-connect-card, .stat-item, .contact-method-card, .contact-item-card'
     );
 
     spotlightCards.forEach(card => {
