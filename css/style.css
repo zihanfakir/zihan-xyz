@@ -603,6 +603,7 @@ p {
   align-items: center;
   gap: 6px;
   list-style: none;
+  position: relative;
 }
 
 .nav-mobile-cta-wrapper {
@@ -615,24 +616,48 @@ p {
   color: var(--text-secondary);
   padding: 8px 14px;
   border-radius: var(--border-radius-full) !important;
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast);
   text-decoration: none;
   position: relative;
+  z-index: 2;
 }
 
 .nav-link:hover {
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-[data-theme="light"] .nav-link:hover {
-  background: rgba(15, 23, 42, 0.04);
 }
 
 .nav-link.active {
   color: var(--primary);
   background: var(--primary-light);
   font-weight: 700;
+}
+
+/* Fluid Sliding Pill Indicator (Motion & Aceternity Layout Physics) */
+.nav-pill-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--primary-light);
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  border-radius: var(--border-radius-full) !important;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.22s ease;
+  will-change: transform, width;
+}
+
+[data-theme="light"] .nav-pill-slider {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.24);
+}
+
+/* Once slider is initialized, transparent backgrounds allow the pill to glide seamlessly */
+.nav-menu.has-slider .nav-link {
+  background: transparent !important;
 }
 
 /* Nav Actions */
@@ -3354,13 +3379,15 @@ textarea.form-control {
   }
 
   .nav-link:active,
-  .nav-link.active {
-    background: var(--primary-light);
+  .nav-link.active,
+  .nav-menu.has-slider .nav-link.active {
+    background: var(--primary-light) !important;
     color: var(--primary);
   }
 
-  /* Completely disable horizontal underline pseudo-elements inside mobile/tablet drawer */
-  .nav-menu .nav-link::after {
+  /* Completely disable horizontal underline pseudo-elements and desktop slider inside mobile drawer */
+  .nav-menu .nav-link::after,
+  .nav-menu .nav-pill-slider {
     display: none !important;
   }
 

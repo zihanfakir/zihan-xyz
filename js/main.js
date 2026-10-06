@@ -250,6 +250,135 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ------------------------------------------------------------------------
+  // 3b. Fluid Sliding Nav Indicator (Aceternity UI & Motion Layout Physics)
+  // ------------------------------------------------------------------------
+  function initNavPillSlider() {
+    if (!navMenu) return;
+
+    let slider = navMenu.querySelector('.nav-pill-slider');
+    if (!slider) {
+      slider = document.createElement('div');
+      slider.className = 'nav-pill-slider';
+      slider.setAttribute('aria-hidden', 'true');
+      navMenu.prepend(slider);
+    }
+
+    const links = Array.from(navMenu.querySelectorAll('.nav-link'));
+    let activeLink = navMenu.querySelector('.nav-link.active') || links[0];
+    if (!activeLink) return;
+
+    const moveSlider = (targetEl, animate = true) => {
+      if (!targetEl || window.innerWidth <= 1024) return;
+      if (!animate) {
+        slider.style.transition = 'none';
+      } else {
+        slider.style.transition = 'transform 0.42s cubic-bezier(0.16, 1, 0.3, 1), width 0.42s cubic-bezier(0.16, 1, 0.3, 1), height 0.42s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease';
+      }
+      const x = targetEl.offsetLeft;
+      const y = targetEl.offsetTop;
+      const w = targetEl.offsetWidth;
+      const h = targetEl.offsetHeight;
+
+      slider.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      slider.style.width = `${w}px`;
+      slider.style.height = `${h}px`;
+      slider.style.opacity = '1';
+    };
+
+    // Check cross-page sliding animation data from sessionStorage
+    const prevPill = sessionStorage.getItem('nav_prev_pill');
+    let hasAnimatedFromPrev = false;
+
+    if (prevPill && window.innerWidth > 1024) {
+      try {
+        const data = JSON.parse(prevPill);
+        sessionStorage.removeItem('nav_prev_pill');
+
+        if (Date.now() - data.timestamp < 3500 && typeof data.fromLeft === 'number') {
+          // Mount slider at origin link coordinates without transition
+          slider.style.transition = 'none';
+          slider.style.transform = `translate3d(${data.fromLeft}px, ${data.fromTop}px, 0)`;
+          slider.style.width = `${data.fromWidth}px`;
+          slider.style.height = `${data.fromHeight}px`;
+          slider.style.opacity = '1';
+
+          navMenu.classList.add('has-slider');
+
+          // Force browser reflow
+          void slider.offsetHeight;
+
+          // In next paint frame, smoothly glide all the way across to the active tab!
+          requestAnimationFrame(() => {
+            slider.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), width 0.48s cubic-bezier(0.16, 1, 0.3, 1), height 0.48s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease';
+            moveSlider(activeLink, true);
+          });
+          hasAnimatedFromPrev = true;
+        }
+      } catch (e) {
+        sessionStorage.removeItem('nav_prev_pill');
+      }
+    }
+
+    if (!hasAnimatedFromPrev) {
+      // Direct load: position on active link and activate has-slider
+      setTimeout(() => {
+        if (window.innerWidth > 1024) {
+          moveSlider(activeLink, false);
+          navMenu.classList.add('has-slider');
+          slider.style.transition = 'opacity 0.25s ease';
+          slider.style.opacity = '1';
+        }
+      }, 30);
+    }
+
+    // Hover & Click interactions
+    links.forEach(link => {
+      // Store position on click so next page can animate from here
+      link.addEventListener('click', () => {
+        if (window.innerWidth > 1024) {
+          try {
+            sessionStorage.setItem('nav_prev_pill', JSON.stringify({
+              fromLeft: link.offsetLeft,
+              fromTop: link.offsetTop,
+              fromWidth: link.offsetWidth,
+              fromHeight: link.offsetHeight,
+              timestamp: Date.now()
+            }));
+          } catch (e) {}
+
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          activeLink = link;
+          moveSlider(link, true);
+        }
+      });
+
+      // Desktop hover follow
+      link.addEventListener('mouseenter', () => {
+        if (window.innerWidth > 1024) {
+          moveSlider(link, true);
+        }
+      });
+    });
+
+    navMenu.addEventListener('mouseleave', () => {
+      if (window.innerWidth > 1024) {
+        moveSlider(activeLink, true);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1024) {
+        moveSlider(activeLink, false);
+      } else {
+        slider.style.opacity = '0';
+      }
+    }, { passive: true });
+  }
+
+  initNavPillSlider();
+
   // Unified High-Performance Passive Scroll Handler (rAF Debounced)
   let isScrolling = false;
   window.addEventListener('scroll', () => {
