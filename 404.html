@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zihan Fakir | Official Portfolio</title>
+  <script>
+    (function() {
+      try {
+        var h = window.location.hostname.toLowerCase();
+        var p = window.location.pathname;
+        
+        // 1. Auto-Redirect from *.github.io to verified custom domain (zihan.xyz or zihan.uk)
+        if (h.indexOf('github.io') !== -1) {
+          var isUk = h.indexOf('uk') !== -1 || p.indexOf('zihan-uk') !== -1;
+          var targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
+          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
+          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
+          window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
+          return;
+        }
+
+        // 2. Client-side route resolver for clean URLs on static GitHub Pages
+        var cleanSegment = p.replace(/^\/+/, '').replace(/\/+$/, '').toLowerCase();
+        var validRoutes = ['about', 'projects', 'skills', 'certificates', 'education', 'resume', 'contact'];
+        if (validRoutes.indexOf(cleanSegment) !== -1) {
+          window.location.replace('/' + cleanSegment + '.html' + window.location.search + window.location.hash);
+        } else {
+          window.location.replace('/' + window.location.search + window.location.hash);
+        }
+      } catch(e) {
+        window.location.replace('/');
+      }
+    })();
+  </script>
+  <meta http-equiv="refresh" content="0; url=/">
+  <style>
+    body {
+      background: #090d16;
+      color: #94a3b8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(99, 102, 241, 0.2);
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="spinner"></div>
+    <p style="font-size: 1.05rem; color: #f8fafc; font-weight: 600; margin: 0 0 6px;">Loading Zihan Fakir Portfolio...</p>
+    <p style="font-size: 0.88rem; margin: 0;">Routing to verified custom domain (zihan.xyz / zihan.uk)...</p>
+  </div>
+</body>
+</html>

@@ -4,6 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   
+  <script>
+    (function() {
+      try {
+        var h = window.location.hostname.toLowerCase();
+        var p = window.location.pathname;
+        if (h.indexOf('github.io') !== -1) {
+          var isUk = h.indexOf('uk') !== -1 || p.indexOf('zihan-uk') !== -1;
+          var targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
+          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
+          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
+          window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
+          return;
+        }
+        if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
+          if (p.slice(-11) === '/index.html') {
+            window.history.replaceState(null, '', (p.slice(0, -10) || '/') + window.location.search + window.location.hash);
+          } else if (p.slice(-5) === '.html') {
+            window.history.replaceState(null, '', p.slice(0, -5) + window.location.search + window.location.hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <title>Zihan Fakir丨AI Engineer &amp; Full Software Developer</title>
   <link rel="canonical" href="https://zihan.uk/">
   <meta name="description" content="Official portfolio of Zihan Fakir (also known as zihan or zihanfakir) on zihan.uk — AI-Powered Full Stack Software Developer &amp; GenAI Builder. Explore Alora AI, Ecomace, Alokpo, and verified cloud credentials.">
@@ -868,7 +893,7 @@
 
       <div class="footer-bottom">
         <div>
-          &copy; <span id="current-year">2026</span> Zihan Fakir • <a href="https://zihan.uk" style="color: var(--primary);">zihan.uk</a> • Universal Handle: <strong style="color: var(--text-main);">@zihanfakir</strong>
+          &copy; <span id="current-year">2026</span> Zihan Fakir • <a href="https://zihan.uk" class="footer-active-domain active-domain-link" style="color: var(--primary);">zihan.uk</a> • Universal Handle: <strong style="color: var(--text-main);">@zihanfakir</strong>
         </div>
         <div>
           <span>Crafted with <i class="fas fa-heart" style="color: #ec4899;" aria-hidden="true"></i> for the web</span>

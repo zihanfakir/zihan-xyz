@@ -4,8 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   
+  <script>
+    (function() {
+      try {
+        var h = window.location.hostname.toLowerCase();
+        var p = window.location.pathname;
+        if (h.indexOf('github.io') !== -1) {
+          var isUk = h.indexOf('uk') !== -1 || p.indexOf('zihan-uk') !== -1;
+          var targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
+          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
+          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
+          window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
+          return;
+        }
+        if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
+          if (p.slice(-11) === '/index.html') {
+            window.history.replaceState(null, '', (p.slice(0, -10) || '/') + window.location.search + window.location.hash);
+          } else if (p.slice(-5) === '.html') {
+            window.history.replaceState(null, '', p.slice(0, -5) + window.location.search + window.location.hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <title>Resume &amp; Curriculum Vitae丨Zihan Fakir - AI Engineer &amp; Full-Stack Developer</title>
-  <link rel="canonical" href="https://zihan.uk/resume.html">
+  <link rel="canonical" href="https://zihan.uk/resume">
   <meta name="description" content="Official Curriculum Vitae and Resume of Zihan Fakir (@zihanfakir) - AI Engineer & Full-Stack Software Architect. Review work history, technical skills, education, and download PDF.">
   <meta name="keywords" content="Zihan Fakir Resume, Zihan Fakir CV, AI Engineer CV, Full Stack Developer Resume, Software Engineer Resume, Download CV, zihanfakir">
   <meta name="author" content="Zihan Fakir">
@@ -13,14 +38,14 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="profile">
-  <meta property="og:url" content="https://zihan.uk/resume.html">
+  <meta property="og:url" content="https://zihan.uk/resume">
   <meta property="og:title" content="Resume &amp; Curriculum Vitae丨Zihan Fakir">
   <meta property="og:description" content="Official Curriculum Vitae and Resume of Zihan Fakir - AI Engineer & Full-Stack Developer.">
   <meta property="og:image" content="assets/social-preview.jpg">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://zihan.uk/resume.html">
+  <meta property="twitter:url" content="https://zihan.uk/resume">
   <meta property="twitter:title" content="Resume &amp; Curriculum Vitae丨Zihan Fakir">
   <meta property="twitter:description" content="Official Curriculum Vitae and Resume of Zihan Fakir - AI Engineer & Full-Stack Developer.">
   <meta property="twitter:image" content="assets/social-preview.jpg">
@@ -159,7 +184,7 @@
                 <span class="resume-contact-item"><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh (Remote Worldwide)</span>
                 <span class="resume-contact-item"><i class="fas fa-envelope"></i> <a href="mailto:x@zihan.uk" style="color: inherit;">x@zihan.uk</a></span>
                 <span class="resume-contact-item"><i class="fas fa-phone-alt"></i> <a href="tel:+8801402963123" style="color: inherit;">+880 1402-963123</a></span>
-                <span class="resume-contact-item"><i class="fas fa-globe"></i> <a href="https://zihan.uk" style="color: inherit;">zihan.uk</a></span>
+                <span class="resume-contact-item"><i class="fas fa-globe"></i> <a href="https://zihan.uk" class="active-domain-link" style="color: inherit;">zihan.uk</a></span>
                 <span class="resume-contact-item"><i class="fab fa-github"></i> <a href="https://github.com/zihanfakir" target="_blank" rel="noopener noreferrer" style="color: inherit;">github.com/zihanfakir</a></span>
                 <span class="resume-contact-item"><i class="fab fa-linkedin"></i> <a href="https://linkedin.com/in/zihanfakir" target="_blank" rel="noopener noreferrer" style="color: inherit;">linkedin.com/in/zihanfakir</a></span>
               </div>
@@ -434,7 +459,7 @@
 
       <div class="footer-bottom">
         <div>
-          &copy; <span id="current-year">2026</span> Zihan Fakir • <a href="https://zihan.uk" style="color: var(--primary);">zihan.uk</a> • Universal Handle: <strong style="color: var(--text-main);">@zihanfakir</strong>
+          &copy; <span id="current-year">2026</span> Zihan Fakir • <a href="https://zihan.uk" class="footer-active-domain active-domain-link" style="color: var(--primary);">zihan.uk</a> • Universal Handle: <strong style="color: var(--text-main);">@zihanfakir</strong>
         </div>
         <div>
           <span>Crafted with <i class="fas fa-heart" style="color: #ec4899;" aria-hidden="true"></i> for the web</span>

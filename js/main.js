@@ -1,7 +1,44 @@
 /**
  * ZIHAN FAKIR - PROFESSIONAL PORTFOLIO
- * Main Interactive Logic: Theme Switcher, Typewriter, Filters, Modals, Form & AI Assistant
+ * Main Interactive Logic: Clean Domain & URLs, Theme Switcher, Typewriter, Filters, Modals & Animations
  */
+
+// ============================================================================
+// Clean Domain & Clean URL Router (Strictly zihan.uk & zihan.xyz - No github.io)
+// ============================================================================
+(function enforceCleanDomainAndUrl() {
+  try {
+    const host = window.location.hostname.toLowerCase();
+    const path = window.location.pathname;
+
+    // 1. Instant Auto-Redirect: Never allow *.github.io - redirect to custom domain
+    if (host.includes('github.io')) {
+      const isUk = host.includes('uk') || path.includes('zihan-uk');
+      const targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
+      let cleanPath = path.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+      if (cleanPath.endsWith('/index.html')) {
+        cleanPath = cleanPath.slice(0, -10);
+      } else if (cleanPath.endsWith('.html')) {
+        cleanPath = cleanPath.slice(0, -5);
+      }
+      window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
+      return;
+    }
+
+    // 2. Clean URL: seamlessly strip .html extension in browser address bar (HTTP/HTTPS only)
+    if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
+      if (path.endsWith('/index.html')) {
+        const cleanPath = path.slice(0, -10) || '/';
+        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+      } else if (path.endsWith('.html')) {
+        const cleanPath = path.slice(0, -5);
+        window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+      }
+    }
+  } catch (err) {
+    console.warn('Clean domain routing:', err);
+  }
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
@@ -1357,7 +1394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<i class="fas fa-envelope-open-text" style="color:var(--accent-emerald);margin-right:6px;"></i> <strong>Contact Zihan Fakir:</strong><br>
         • <strong>Email:</strong> <a href="mailto:x@zihan.uk" style="color:var(--primary);">x@zihan.uk</a><br>
         • <strong>Phone & WhatsApp:</strong> <a href="tel:+8801402963123" style="color:var(--primary);">+880 1402-963123</a><br>
-        • <strong>Domain:</strong> <a href="https://zihan.uk" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.uk</a><br>
+        • <strong>Domain:</strong> <a href="https://zihan.xyz" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.xyz</a> / <a href="https://zihan.uk" target="_blank" rel="noopener noreferrer" style="color:var(--secondary);">zihan.uk</a><br>
         • <strong>All Usernames:</strong> <strong style="color:var(--text-main);">@zihanfakir</strong> (GitHub, Facebook, Instagram, Telegram, LinkedIn, X)`;
       }
 
@@ -1575,19 +1612,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 11. Scroll-Triggered Reveal Animations (Fluid Desktop Cascade, Completely Disabled on Mobile)
+  // 11. Scroll-Triggered Reveal Animations (Responsive Cascade on Every Page)
   // ------------------------------------------------------------------------
   function initScrollReveal() {
     const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      // Mobile: Completely remove all animations, keep elements native and immediately visible
-      return;
-    }
 
     const revealTargets = document.querySelectorAll(
-      '.section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
-      '.skill-card, .skill-category-card, .about-visual-card, .gateway-card, ' +
-      '.project-card, .cert-card, .exp-timeline-item, .contact-method-card, .contact-form-card, .stat-item'
+      '.page-hero, .section-header, .about-text, .dev-dossier-card, .about-connect-card, .about-feature-item, ' +
+      '.skill-card, .skill-category-card, .about-visual-card, .gateway-card, .glass-card, ' +
+      '.project-card, .projects-filter, .project-callout, .cert-card, .certificates-filter, ' +
+      '.timeline-item, .timeline-card, .resume-toolbar, .resume-paper, .resume-section, ' +
+      '.contact-item-card, .contact-form-box, .stat-item, .section-view-all-cta'
     );
 
     if (!revealTargets.length) return;
@@ -1596,15 +1631,16 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.add('reveal-on-scroll');
     });
 
-    // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats) - Desktop Only
+    // Apply staggered delays inside grid containers (Projects, Certificates, Skills, Stats, Timelines)
     const gridContainers = document.querySelectorAll(
-      '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid, .gateway-grid'
+      '.skills-grid, .projects-grid, .cert-grid, .certs-grid, .about-features, .stats-grid, ' +
+      '.gateway-grid, .contact-info-cards, .timeline-container'
     );
 
     gridContainers.forEach(grid => {
       const children = grid.querySelectorAll('.reveal-on-scroll');
       children.forEach((child, idx) => {
-        const delay = (idx % 3) * 0.07;
+        const delay = isMobile ? (idx % 2) * 0.03 : (idx % 4) * 0.06;
         child.style.transitionDelay = `${delay}s`;
       });
     });
@@ -1628,13 +1664,13 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             el.classList.add('reveal-done');
             el.style.transitionDelay = '';
-          }, (delaySec * 1000) + 550);
+          }, (delaySec * 1000) + (isMobile ? 380 : 520));
         }
       });
     }, {
       root: null,
-      rootMargin: '0px 0px 80px 0px',
-      threshold: 0.01
+      rootMargin: isMobile ? '0px 0px 40px 0px' : '0px 0px 80px 0px',
+      threshold: 0.02
     });
 
     revealTargets.forEach(el => revealObserver.observe(el));
@@ -1715,7 +1751,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2500);
   }
 
-  // Initialize Hero Particles, Desktop Micro-Interactions, and Progressive Loader
+  // ------------------------------------------------------------------------
+  // 14. Dynamic Active Domain Synchronization (Strictly zihan.uk & zihan.xyz)
+  // ------------------------------------------------------------------------
+  function initDomainSync() {
+    const host = window.location.hostname.toLowerCase();
+    const isUk = host === 'zihan.uk' || host.endsWith('.uk');
+    const isXyz = host === 'zihan.xyz' || host.endsWith('.xyz');
+    const activeDomain = isUk ? 'zihan.uk' : (isXyz ? 'zihan.xyz' : 'zihan.xyz');
+
+    // Update active domain indicators in footer, dossier, links
+    document.querySelectorAll('.active-domain-text, .footer-active-domain').forEach(el => {
+      el.textContent = activeDomain;
+      if (el.tagName === 'A') {
+        el.setAttribute('href', `https://${activeDomain}`);
+      }
+    });
+
+    // Dynamic canonical link update to match active origin
+    if (window.location.protocol.startsWith('http') && (isUk || isXyz)) {
+      const canonicalTag = document.querySelector('link[rel="canonical"]');
+      let cleanPath = window.location.pathname;
+      if (cleanPath.endsWith('/index.html')) cleanPath = cleanPath.slice(0, -10) || '/';
+      else if (cleanPath.endsWith('.html')) cleanPath = cleanPath.slice(0, -5);
+      if (canonicalTag) {
+        canonicalTag.setAttribute('href', `${window.location.origin}${cleanPath || '/'}`);
+      }
+    }
+  }
+
+  // Initialize Active Domain Sync, Hero Particles, Micro-Interactions, and Progressive Loader
+  initDomainSync();
   initHeroParticles();
   initScrollReveal();
   initCardSpotlight();

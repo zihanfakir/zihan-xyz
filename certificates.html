@@ -4,8 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   
+  <script>
+    (function() {
+      try {
+        var h = window.location.hostname.toLowerCase();
+        var p = window.location.pathname;
+        if (h.indexOf('github.io') !== -1) {
+          var isUk = h.indexOf('uk') !== -1 || p.indexOf('zihan-uk') !== -1;
+          var targetDomain = isUk ? 'https://zihan.uk' : 'https://zihan.xyz';
+          var cleanPath = p.replace(/^\/(zihan-xyz|zihan-uk)/i, '');
+          if (cleanPath.slice(-11) === '/index.html') cleanPath = cleanPath.slice(0, -10);
+          else if (cleanPath.slice(-5) === '.html') cleanPath = cleanPath.slice(0, -5);
+          window.location.replace(targetDomain + cleanPath + window.location.search + window.location.hash);
+          return;
+        }
+        if (window.history && window.history.replaceState && window.location.protocol.indexOf('http') === 0) {
+          if (p.slice(-11) === '/index.html') {
+            window.history.replaceState(null, '', (p.slice(0, -10) || '/') + window.location.search + window.location.hash);
+          } else if (p.slice(-5) === '.html') {
+            window.history.replaceState(null, '', p.slice(0, -5) + window.location.search + window.location.hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <title>Verified Certifications &amp; Honors丨Zihan Fakir</title>
-  <link rel="canonical" href="https://zihan.uk/certificates.html">
+  <link rel="canonical" href="https://zihan.uk/certificates">
   <meta name="description" content="Explore the verified technical certifications and accreditations earned by Zihan Fakir (@zihanfakir) from Google Cloud, Microsoft, AWS, Cambridge/UniAthena, HP LIFE, UNDP, and Semrush.">
   <meta name="keywords" content="Zihan Fakir Certificates, Google Cloud Certification, Microsoft Analytics, AWS Machine Learning, Cambridge UniAthena, HP LIFE AI, Semrush Academy, zihanfakir">
   <meta name="author" content="Zihan Fakir">
@@ -13,14 +38,14 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://zihan.uk/certificates.html">
+  <meta property="og:url" content="https://zihan.uk/certificates">
   <meta property="og:title" content="Verified Certifications &amp; Honors丨Zihan Fakir">
   <meta property="og:description" content="Explore verified technical certifications earned by Zihan Fakir from Google Cloud, Microsoft, AWS, Cambridge, HP LIFE, and Semrush.">
   <meta property="og:image" content="assets/social-preview.jpg">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://zihan.uk/certificates.html">
+  <meta property="twitter:url" content="https://zihan.uk/certificates">
   <meta property="twitter:title" content="Verified Certifications &amp; Honors丨Zihan Fakir">
   <meta property="twitter:description" content="Explore verified technical certifications earned by Zihan Fakir from Google Cloud, Microsoft, AWS, Cambridge, HP LIFE, and Semrush.">
   <meta property="twitter:image" content="assets/social-preview.jpg">
@@ -539,7 +564,7 @@
 
       <div class="footer-bottom">
         <div>
-          &copy; <span id="current-year">2026</span> Zihan Fakir • <a href="https://zihan.uk" style="color: var(--primary);">zihan.uk</a> • Universal Handle: <strong style="color: var(--text-main);">@zihanfakir</strong>
+          &copy; <span id="current-year">2026</span> Zihan Fakir • <a href="https://zihan.uk" class="footer-active-domain active-domain-link" style="color: var(--primary);">zihan.uk</a> • Universal Handle: <strong style="color: var(--text-main);">@zihanfakir</strong>
         </div>
         <div>
           <span>Crafted with <i class="fas fa-heart" style="color: #ec4899;" aria-hidden="true"></i> for the web</span>
