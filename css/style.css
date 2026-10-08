@@ -18,7 +18,7 @@
 :root,
 [data-theme="dark"] {
   --font-brand: 'SincopaNina', var(--font-sans);
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Safe Area Inset Tokens (iOS Dynamic Island, Notch & Android Gesture Bars) */
